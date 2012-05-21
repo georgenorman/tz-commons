@@ -1,0 +1,28 @@
+<configuration>
+
+  <!-- ===============================================================================
+        DAO Registry
+          - If the Locator component was replaced by CID, then these config entries would be replaced by
+            similar entries in the beans.xml file, since these services are essentially @Alternative.
+       =============================================================================== -->
+  <section name="com.thruzero.domain.dao.DAO">
+    <entry key="com.thruzero.auth.dao.UserDAO" value="com.thruzero.auth.dsc.dao.DscUserDAO" />
+  </section>
+
+  <!-- ===============================================================================
+        DscSettingDAO configuration
+       =============================================================================== -->
+  <section name="com.thruzero.auth.dsc.dao.DscUserDAO">
+    <entry key="com.thruzero.domain.dsc.store.DataStoreContainerFactory" value="[com.thruzero.domain.dsc.dao.AbstractDataStoreDAO]{com.thruzero.domain.dsc.store.DataStoreContainerFactory}" />
+    <entry key="base" value="DscUserDAO" />
+  </section>
+
+
+  <!-- Add the following section, to your main config file, to specify the location of the file system data store:
+  <section name="com.thruzero.domain.dsc.fs.FileDataStoreContainerFactory">
+    <entry key="rootStorePath" value="/home/george/pf-test-desktop/demo-data-store" />
+  </section>
+   -->
+
+
+</configuration>

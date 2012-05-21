@@ -1,0 +1,24 @@
+<com.javacoast.core.map.impl.AttributeDictionaryImpl>
+  <parameters>
+    <entry>
+      <string>integerTwo</string>
+      <int>22</int>
+    </entry>
+    <entry>
+      <string>listOne</string>
+      <list>
+        <string>one</string>
+        <string>two</string>
+        <string>three</string>
+      </list>
+    </entry>
+    <entry>
+      <string>integerOne</string>
+      <int>1</int>
+    </entry>
+    <entry>
+      <string>integerThree</string>
+      <int>333</int>
+    </entry>
+  </parameters>
+</com.javacoast.core.map.impl.AttributeDictionaryImpl>

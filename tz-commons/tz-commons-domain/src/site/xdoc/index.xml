@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <author>George Norman</author>
+    <title>ThruZero Commons - Domain</title>
+  </properties>
+  <body>
+    <section name="Introduction">
+      <p>
+        This module provides basic services that are common to many applications.
+        For example, the <i>MailService</i> enables clients to send simple email messages (without attachments).
+        Coupled with the <i>EmailTemplate</i> support class, emails can be defined in text files and may contain substitution variables.
+        The substitution variables are replaced, using one of the available substitution strategies, each time an email is sent.
+      </p>
+    </section>
+
+    <section name="Overview">
+
+    <subsection name="Interface to Implemntation Bindings">
+    <p>
+      Interfaces for Services and DAOs are <b>bound</b> to concrete implementations using an InterfaceToClassBinding.
+      There are two ways to bind interfaces to implementations. First, services and DAOs have locators which provide access
+      to their internal registries. So, clients may programmatically add these bindings via the locator.
+      Second, if no bindings are registered when a request to locate an implementation is received, the locator will attempt
+      to register the bindings via the config file.
+      Below is an example of an application configured to use JPA (using the default JPA binding config files):
+    </p>
+<div class="code-block">
+&lt;configuration&gt;
+  &lt;include name=&quot;config.domain.service.impl.xml&quot; /&gt;
+  &lt;include name=&quot;config.domain.jpa.transaction.xml&quot; /&gt;
+  &lt;include name=&quot;config.domain.jpa.dao.xml&quot; /&gt;
+  ...
+</div>
+
+    <p>
+      Default <i>bindings</i> for the core domain services are provided by the tz-commons-domain package.
+      These default config files can be used as-is, or replaced with custom configurations.
+      Below is an example bindings file (config.domain.service.impl.xml):
+<div class="code-block">
+&lt;-- Core Service Registry --&gt;
+&lt;section name=&quot;com.thruzero.common.core.service.Service&quot;&gt;
+
+  &lt;-- InfoNodeService is bound to GenericInfoNodeService --&gt;
+  &lt;entry key=&quot;com.thruzero.domain.service.<span class="code-em">InfoNodeService</span>&quot;
+      value=&quot;com.thruzero.domain.service.impl.GenericInfoNodeService&quot; /&gt;
+
+  &lt;-- PreferenceService is bound to GenericPreferenceService --&gt;
+  &lt;entry key=&quot;com.thruzero.domain.service.<span class="code-em">PreferenceService</span>&quot;
+      value=&quot;com.thruzero.domain.service.impl.GenericPreferenceService&quot; /&gt;
+
+  &lt;-- SettingService is bound to GenericSettingService --&gt;
+  &lt;entry key=&quot;com.thruzero.domain.service.<span class="code-em">SettingService</span>&quot;
+      value=&quot;com.thruzero.domain.service.impl.GenericSettingService&quot; /&gt;
+
+  &lt;-- MailService is bound to SimpleMailService --&gt;
+  &lt;entry key=&quot;com.thruzero.domain.service.<span class="code-em">MailService</span>&quot;
+      value=&quot;com.thruzero.domain.service.impl.SimpleMailService&quot; /&gt;
+
+&lt;/section&gt;
+</div>
+    </p>
+    </subsection>
+
+    <subsection name="Initialization">
+    <p>
+      If an implementation implements Initializable, then it will be <b>initialized</b> by the locator when it's first created.
+      The locator uses an InitializationStrategy class to initialize the located instance
+      (e.g., ConfigInitializationStrategy is used to initialize implementations using a config file,
+      SettingsInitializationStrategy is used to init from a settings table in a database).
+      The default initialization strategy is ConfigInitializationStrategy.
+      Typically, the fully qualified class path of the implementation class is used as the section name.
+      Below is a custom configuration used to initialize the <i>JpaDatabaseTransactionMgr</i>.
+
+<div class="code-block">
+&lt;section name=&quot;com.thruzero.domain.jpa.transaction.JpaDatabaseTransactionMgr&quot;&gt;
+  &lt;entry key=&quot;persistence-unit.name&quot; value=&quot;tz-commons-domain-manager&quot; /&gt;
+
+  &lt;entry key=&quot;javax.persistence.jdbc.user&quot; value=&quot;testy&quot; /&gt;
+  &lt;entry key=&quot;javax.persistence.jdbc.password&quot; value=&quot;xb-JaZrcsombXeuQ0gn1Kg&quot; /&gt;
+  &lt;entry key=&quot;javax.persistence.jdbc.driver&quot; value=&quot;com.mysql.jdbc.Driver&quot; /&gt;
+  etc...
+&lt;/section&gt;
+</div>
+      </p>
+
+      <p>
+      Some Services and DAOs may <b>extend</b> an abstract base class, which provide common functions and constants.
+      In a similar fashion, the initialization system can provide common settings.
+      This is done in two ways. First, substitution variables can be used to read values from any section.
+      For example, the <i>environment</i> section can provide a default path to where all data stores are kept in the file system.
+      <i>FileDataStoreContainerFactory</i> indirectly references this value to create it's <i>rootStorePath</i>, as follows:
+
+<div class="code-block">
+&lt;section name=&quot;environment&quot;&gt;
+  &lt;entry key=&quot;allFileDataStores&quot; value=&quot;/home/allFileDataStores&quot;/&gt;
+&lt;/section&gt;
+
+&lt;section name=&quot;com.thruzero.domain.dsc.fs.FileDataStoreContainerFactory&quot;&gt;
+  &lt;!-- full path to the root data store directory (can be anywhere on the file system) --&gt;
+  &lt;entry key=&quot;rootStorePath&quot; value=&quot;[environment]{allFileDataStores}/demo-data-store&quot; /&gt;
+&lt;/section&gt;
+</div>
+
+      The second mechanism uses the class hierarchy of the class to be initialized. It starts at the root base class and reads
+      each section for each sub-class, walking down the class hierarchy (excluding interfaces, unless explicitly specified).
+      The result is that all parameters from all inherited sections, are read with each subclass overwriting the common keys of any parent section.
+      </p>
+    </subsection>
+
+    <subsection name="Persistent and non-persistent Services">
+
+      <p>
+        Services that are persistent will almost always use a DAO to access their data store.
+        Separate modules provide implementations for each DAO interface, based on a particular data store type.
+        The data store type is configurable for each DAO.
+        For example, the Preferences DAO can be mapped to a JPA implementation, while the Settings DAO can be mapped to a DSC implementation, as shown below.
+      </p>
+
+<div class="code-block">
+&lt;-- Domain DAO Registry --&gt;
+&lt;section name=&quot;com.thruzero.domain.dao.DAO&quot;&gt;
+  &lt;entry key=&quot;com.thruzero.domain.dao.PreferenceDAO&quot; value=&quot;com.thruzero.domain.jpa.dao.<span class="code-em">JpaPreferenceDAO</span>&quot; /&gt;
+  &lt;entry key=&quot;com.thruzero.domain.dao.SettingDAO&quot; value=&quot;com.thruzero.domain.dsc.dao.<span class="code-em">DscSettingDAO</span>&quot; /&gt;
+&lt;/section&gt;
+</div>
+
+      <p>
+        The mail service doesn't use persistence, so it doesn't need a DAO.
+        However, it uses configuration to enable or disable the sending of email messages as well enable or disable email message logging.
+        Below is an example configuration for <i>SimpleMailService</i>:
+      </p>
+
+<div class="code-block">
+&lt;-- SimpleMailService Service Configuration --&gt;
+&lt;section name=&quot;com.thruzero.domain.service.impl.SimpleMailService&quot;&gt;
+  &lt;entry key=&quot;email-enabled&quot; value=&quot;false&quot; /&gt;
+  &lt;entry key=&quot;email-logging-enabled&quot; value=&quot;true&quot; /&gt;
+  &lt;entry key=&quot;email-smtp-host&quot; value=&quot;mail.thruzero.com&quot; /&gt;
+  &lt;entry key=&quot;email-user&quot; value=&quot;xxx@thruzero.com&quot; /&gt;
+  &lt;entry key=&quot;email-password&quot; value=&quot;***&quot; /&gt;
+  &lt;entry key=&quot;email-filter&quot; value=&quot;&quot; /&gt;
+&lt;/section&gt;
+</div>
+    </subsection>
+
+    </section>
+
+    <section name="Architecture">
+    <subsection name="Overview">
+      <img src="images/tz-commons-domain-overview.png" />
+    </subsection>
+
+    <subsection name="Single Service Example">
+    <p>
+    Below is an example of an application configured to use a single preferences service. It may be configured to use JPA, Hibernate,
+    DSC file system or DSC web service. The limitation is that there can only be one preference service and it must be configured to
+    a single data store. Ordinarily, this is all that's required.
+    </p>
+    <p>
+    When an application first makes a request for an instance of PreferenceService, the ServiceLocator checks its cache to see if one is available.
+    If not, it checks its registry to determine the concrete implementation to create.
+    In this scenario, GenericPreferenceService is registered via the config file.
+    When GenericPreferenceService is constructed, it uses the DAOLocator to determine the concrete implementation of its PreferenceDAO.
+    As with the ServiceLocator, the DAOLocator first checks its cache, then uses the registry to find the concrete implementation to create.
+    In this scenario, DscPreferenceDAO is specified via the config file.
+    DscPreferenceDAO is Initializable, via AbstractDataStoreDAO, so the DAOLocator initializes it.
+    This is where AbstractDataStoreDAO creates the type of DataStoreContainer to use (also specified via the config file).
+    Both the DAOLocator and the ServiceLocator cache these implementations so the next time they are requested, they will be immediately returned.
+    </p>
+      <img src="images/tz-commons-domain-single.service.png" />
+    </subsection>
+
+    <subsection name="Multiple Services Example">
+    <p>
+    Sometimes it's desirable to have a particular Service be configured to a particular data store type, while another instance is configured in a generic way (e.g., JPA, Hibernate, DSC).
+    Below is an example of an application configured to use a two InfoNode services.
+    One is generic, and so may be configured to use JPA, Hibernate, DSC file system or DSC web service.
+    The other is specifically configured to be a DscInfoNodeService (files system or web service).
+    The pf-test18 application is configured this way so the dashboard can be read from the file system (increasing the odds that it will render the home page).
+    The other pages may be based on a database or web service (which are more likely to initially have set up and configuration issues).
+    </p>
+    <p>
+    The scenario for initialization is the same as for the Single Service Example, except that this time an extra configuration has been added for the DscInfoNodeService.
+    </p>
+      <img src="images/tz-commons-domain-dual.service.png" />
+    </subsection>
+    </section>
+
+    <section name="Maven Dependency">
+      <pre>
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.thruzero.common&lt;/groupId&gt;
+      &lt;artifactId&gt;tz-commons-domain&lt;/artifactId&gt;
+      &lt;version&gt;1.0.0&lt;/version&gt;
+      &lt;type&gt;jar&lt;/type&gt;
+      &lt;scope&gt;compile&lt;/scope&gt;
+    &lt;/dependency&gt;
+      </pre>
+    </section>
+  </body>
+</document>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+
+    Copyright 2012 George Norman
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+ -->
+
+<hibernate-mapping package="com.thruzero.auth.model.impl" default-access="field">
+
+  <class name="BasicUserDetails" table="USER_DETAILS">
+
+    <!-- Common id property -->
+    <id name="id" column="USER_DETAILS_ID" type="long">
+      <generator class="increment"/>
+    </id>
+
+    <property name="firstName" type="string" column="FIRST_NAME" />
+    <property name="middleName" type="string" column="MIDDLE_NAME" />
+    <property name="lastName" type="string" column="LAST_NAME" />
+    <property name="primaryEmail" type="string" column="PRIMARY_EMAIL" />
+    <property name="secondaryEmail" type="string" column="SECONDARY_EMAIL" />
+    <property name="workEmail" type="string" column="WORK_EMAIL" />
+    <property name="primaryPhone" type="string" column="PRIMARY_PHONE" />
+    <property name="secondaryPhone" type="string" column="SECONDARY_PHONE" />
+    <property name="workPhone" type="string" column="WORK_PHONE" />
+
+  </class>
+
+</hibernate-mapping>

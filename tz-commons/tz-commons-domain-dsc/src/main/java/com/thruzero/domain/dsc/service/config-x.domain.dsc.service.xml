@@ -1,0 +1,23 @@
+<configuration>
+    <!--
+        This is an x-file. It contains extensions to the normal registry. A Singleton is typically registered with an interface
+        bound to a single implementation. In the x-file cases, two (or more) implementations of the same Singleton is desired
+        (e.g., a TextEnvelopeService that uses the file system while another TextEnvelopeService that uses a database via JPA).
+     -->
+
+  <!-- ===============================================================================
+        Service Registry
+          - If the Locator component was replaced by CID, then these config entries would be replaced by
+            similar entries in the beans.xml file, since these services are equivalent to @Alternative.
+       =============================================================================== -->
+
+  <section name="com.thruzero.common.core.service.Service">
+    <!--
+        NOTE: The following Service uses the concrete class as the interface, to support two different services at the same time (e.g., one from the file system plus JPA).
+        The DscInfoNodeService will explicitly look for the a DAO with DscTextEnvelopeDAO registered as the interface. Clients of this service will explicitly locate the
+        DscInfoNodeService.
+     -->
+    <entry key="com.thruzero.domain.dsc.service.DscInfoNodeService" value="com.thruzero.domain.dsc.service.DscInfoNodeService" />
+  </section>
+
+</configuration>

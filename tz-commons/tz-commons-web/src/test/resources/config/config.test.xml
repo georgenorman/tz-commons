@@ -1,0 +1,11 @@
+<configuration>
+
+  <section name="testTypes">
+      <entry key="booleanTrue" value="true" />
+      <entry key="float12dot34" value="12.34" />
+      <entry key="int123" value="123" />
+      <entry key="urlA" value="http://www.google.com/" />
+      <entry key="urlMalformed" value="abc/www.google" />
+  </section>
+
+</configuration>

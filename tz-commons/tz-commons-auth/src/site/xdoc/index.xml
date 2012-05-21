@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <author>George Norman</author>
+    <title>ThruZero Commons - Auth</title>
+  </properties>
+  <body>
+    <section name="Overview">
+      <p>
+        The <b>tz-commons-auth</b> module integrates Shiro with tz-commons via TzAuthorizingRealm.
+      </p>
+    </section>
+
+    <section name="Architecture">
+      <p>
+      When a user attempts to login, Shiro calls the registered realm(s). In this scenario, TzAuthorizingRealm is the only realm registered.
+      TzAuthorizingRealm accesses the registered UserService, which uses the registered UserDAO to load in a user from a data store (e.g., database).
+      If a user is found, then the hashed password is hashed again, using the nonce and is validated against the user's one-time password.
+      On success, TzAuthorizingRealm will create a Shiro SimpleAccount, associating it with the validated user.
+      </p>
+      <img src="images/tz-commons-auth.png" />
+    </section>
+
+    <section name="Maven Dependency">
+      <pre>
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.thruzero.common&lt;/groupId&gt;
+      &lt;artifactId&gt;tz-commons-auth&lt;/artifactId&gt;
+      &lt;version&gt;1.0.0&lt;/version&gt;
+      &lt;type&gt;jar&lt;/type&gt;
+      &lt;scope&gt;compile&lt;/scope&gt;
+    &lt;/dependency&gt;
+      </pre>
+    </section>
+
+  </body>
+</document>

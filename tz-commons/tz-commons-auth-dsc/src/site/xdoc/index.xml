@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <author>George Norman</author>
+    <title>ThruZero Commons - Auth DSC</title>
+  </properties>
+  <body>
+    <section name="Overview">
+      <p>
+        This module contains DSC-specific implementations of the auth module.
+      </p>
+    </section>
+
+    <section name="DAOs">
+      <ul>
+        <li>
+          <b><a href="apidocs/com/thruzero/auth/dsc/dao/DscUserDAO.html">DscUserDAO</a></b>:
+          An implementation of UserDAO that uses DSC for storage.
+        </li>
+
+      </ul>
+    </section>
+
+    <section name="Maven Dependency">
+      <pre>
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.thruzero.common&lt;/groupId&gt;
+      &lt;artifactId&gt;tz-commons-auth-dsc&lt;/artifactId&gt;
+      &lt;version&gt;1.0.0&lt;/version&gt;
+      &lt;type&gt;jar&lt;/type&gt;
+      &lt;scope&gt;compile&lt;/scope&gt;
+    &lt;/dependency&gt;
+      </pre>
+    </section>
+  </body>
+</document>

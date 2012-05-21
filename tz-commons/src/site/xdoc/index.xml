@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <author>George Norman</author>
+    <title>ThruZero Commons</title>
+  </properties>
+  <body>
+    <section name="Overview">
+      <p>
+        ThruZero Commons (tz-commons) is a collection of Java components I've developed over the years (since about 2002) while creating various websites and services.
+        The components are reusable and many components are extensions to or leverage existing open source components.
+        <p />
+        ThruZero Commons is divided into the following modules:
+        <ul>
+          <li><b><a href="tz-commons-core/index.html">tz-commons-core</a></b>: Basic low-level components (e.g., Config, ConfigLocator, ServiceLocator, InfoNodeElement)</li>
+          <li><b><a href="tz-commons-domain/index.html">tz-commons-domain</a></b>: Focuses on common Services (e.g., PreferenceService, SettingService and InfoNodeService)
+              <ul style="margin-top:0px;">
+                <li><b><a href="tz-commons-domain-jpa/index.html">tz-commons-domain-jpa</a></b>: JPA-based implementations of DAOs, using Hibernate.</li>
+                <li><b><a href="tz-commons-domain-hibernate/index.html">tz-commons-domain-hibernate</a></b>: Hibernate-based implementations of DAOs.</li>
+                <li><b><a href="tz-commons-domain-dsc/index.html">tz-commons-domain-dsc</a></b>: DSC-based implementations of domain DAOs.</li>
+              </ul>
+          </li>
+          <li><b><a href="tz-commons-auth/index.html">tz-commons-auth</a></b>: Basic authentication and authorization services (<a href="http://shiro.apache.org/">Shiro</a> integration)
+              <ul style="margin-top:0px;">
+                <li><a href="tz-commons-auth-jpa/index.html">tz-commons-auth-jpa</a>: JPA-based implementations of auth DAOs.</li>
+                <li><a href="tz-commons-auth-hibernate/index.html">tz-commons-auth-hibernate</a>: Hibernate-based implementations of auth DAOs.</li>
+                <li><a href="tz-commons-auth-dsc/index.html">tz-commons-auth-dsc</a>: DSC-based implementations of auth DAOs.</li>
+              </ul>
+          </li>
+          <li><b><a href="tz-commons-web/index.html">tz-commons-web</a></b>: Basic Utils and filters useful to the web tier.</li>
+          <li><b><a href="tz-commons-jsf/index.html">tz-commons-jsf</a></b>: Basic Utils useful to JSF apps</li>
+        </ul>
+      </p>
+    </section>
+
+    <section name="Sample Applications">
+        There's a sample application:
+        <ul>
+          <li><b>pf-test18 [Desktop]</b>: A PrimeFaces test application, for desktop browsers, configurable for JPA, Hibernate, DSC file system or DSC web service.
+            It tests tz-commons using some of the following PrimeFaces components:
+            <ul>
+              <li>Accordion Panel (using JPA and DSC concurrently)</li>
+              <li>Carousel Panel</li>
+              <li>RSS Feed</li>
+              <li>Chart</li>
+              <li>Map</li>
+              <li>Galleria</li>
+              <li>Image Switch</li>
+            </ul>
+            <i>Plus, some custom tools:</i>
+            <ul>
+              <li>Guest Book</li>
+              <li>Escape Utility</li>
+              <li>Authentication test (Shiro integration)</li>
+            </ul>
+          </li>
+          <li><b>pf-test18 [Mobile]</b>: TODO-p0(george) A PrimeFaces test application, for mobile, configurable for JPA, Hibernate, DSC file system or DSC web service.</li>
+          <li><b>pf-test18 [Responsive]</b>: TODO-p0(george) A PrimeFaces test application, for desktop and mobile, configurable for JPA, Hibernate, DSC file system or DSC web service.</li>
+        </ul>
+    </section>
+
+    <section name="Architecture">
+      <img src="images/tz-commons-overview.png" />
+    </section>
+
+  </body>
+</document>

@@ -1,0 +1,84 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.thruzero.common</groupId>
+    <artifactId>tz-commons</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>tz-commons-web</artifactId>
+  <packaging>jar</packaging>
+
+  <name>tz-commons-web</name>
+  <url>http://www.thruzero.com/</url>
+  <description>Module of basic web-related utilities and components.</description>
+
+  <scm>
+    <connection>scm:svn:http://svn.thruzero.com/tz-commons-web/</connection>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>george</id>
+      <name>George Norman</name>
+      <email>george@thruzero.com</email>
+      <roles>
+        <role>Developer (Architecture, Java Implementation, SQL, Testing, Documentation, Bugs, etc)</role>
+      </roles>
+      <organization>ThruZero</organization>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.thruzero.common</groupId>
+      <artifactId>tz-commons-core</artifactId>
+      <version>${tz.commons.version}</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang.version}</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- JSP -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Testing -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.thruzero.common</groupId>
+      <artifactId>tz-commons-core</artifactId>
+      <version>${tz.commons.version}</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

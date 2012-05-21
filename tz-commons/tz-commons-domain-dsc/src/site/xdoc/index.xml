@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <author>George Norman</author>
+    <title>ThruZero Commons - Domain File System</title>
+  </properties>
+  <body>
+    <section name="Overview">
+      <p>
+        This module contains File System specific implementations of the domain layer.
+      </p>
+
+      <subsection name="DAOs">
+        <ul>
+          <li>
+            <b><a href="apidocs/com/thruzero/domain/dsc/dao/DscPreferenceDAO.html">DscPreferenceDAO</a></b>:
+            An implementation of PreferenceDAO that uses the file system as storage.
+          </li>
+
+          <li>
+            <b><a href="apidocs/com/thruzero/domain/dsc/dao/DscSettingDAO.html">DscSettingDAO</a></b>:
+            An implementation of SettingDAO that uses the file system as storage.
+          </li>
+
+          <li>
+            <b><a href="apidocs/com/thruzero/domain/dsc/dao/DscTextEnvelopeDAO.html">DscTextEnvelopeDAO</a></b>:
+            An implementation of TextEnvelopeDAO that uses the file system as storage.
+          </li>
+        </ul>
+      </subsection>
+
+      <subsection name="Services">
+        <ul>
+          <li>
+            <b><a href="apidocs/com/thruzero/domain/dsc/service/DscInfoNodeService.html">DscInfoNodeService</a></b>:
+            An InfoNodeService implemented explicitly to use the file system as storage (using DscTextEnvelopeDAO).
+          </li>
+
+        </ul>
+      </subsection>
+    </section>
+
+    <section name="Architecture">
+      <subsection name="DAOs">
+        <img src="images/tz-commons-domain-dsc.png" />
+      </subsection>
+    </section>
+
+    <section name="Maven Dependency">
+      <pre>
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.thruzero.common&lt;/groupId&gt;
+      &lt;artifactId&gt;tz-commons-domain-dsc&lt;/artifactId&gt;
+      &lt;version&gt;1.0.0&lt;/version&gt;
+      &lt;type&gt;jar&lt;/type&gt;
+      &lt;scope&gt;compile&lt;/scope&gt;
+    &lt;/dependency&gt;
+      </pre>
+    </section>
+  </body>
+</document>

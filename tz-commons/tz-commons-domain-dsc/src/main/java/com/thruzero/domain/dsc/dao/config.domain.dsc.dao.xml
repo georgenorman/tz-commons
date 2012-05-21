@@ -1,0 +1,45 @@
+<configuration>
+
+  <!-- ===============================================================================
+        DAO Registry
+          - If the Locator component was replaced by CID, then these config entries would be replaced by
+            similar entries in the beans.xml file, since these services are equivalent to @Alternative.
+       =============================================================================== -->
+  <section name="com.thruzero.domain.dao.DAO">
+    <entry key="com.thruzero.domain.dao.TextEnvelopeDAO" value="com.thruzero.domain.dsc.dao.DscTextEnvelopeDAO" />
+    <entry key="com.thruzero.domain.dao.SettingDAO" value="com.thruzero.domain.dsc.dao.DscSettingDAO" />
+    <entry key="com.thruzero.domain.dao.PreferenceDAO" value="com.thruzero.domain.dsc.dao.DscPreferenceDAO" />
+  </section>
+
+  <!-- ===============================================================================
+        DscTextEnvelopeDAO configuration
+       =============================================================================== -->
+  <section name="com.thruzero.domain.dsc.dao.DscTextEnvelopeDAO">
+    <entry key="com.thruzero.domain.dsc.store.DataStoreContainerFactory" value="[com.thruzero.domain.dsc.dao.AbstractDataStoreDAO]{com.thruzero.domain.dsc.store.DataStoreContainerFactory}" />
+    <entry key="base" value="DscTextEnvelopeDAO" />
+  </section>
+
+  <!-- ===============================================================================
+        DscPreferenceDAO configuration
+       =============================================================================== -->
+  <section name="com.thruzero.domain.dsc.dao.DscPreferenceDAO">
+    <entry key="com.thruzero.domain.dsc.store.DataStoreContainerFactory" value="[com.thruzero.domain.dsc.dao.AbstractDataStoreDAO]{com.thruzero.domain.dsc.store.DataStoreContainerFactory}" />
+    <entry key="base" value="DscPreferenceDAO" />
+  </section>
+
+  <!-- ===============================================================================
+        DscSettingDAO configuration
+       =============================================================================== -->
+  <section name="com.thruzero.domain.dsc.dao.DscSettingDAO">
+    <entry key="com.thruzero.domain.dsc.store.DataStoreContainerFactory" value="[com.thruzero.domain.dsc.dao.AbstractDataStoreDAO]{com.thruzero.domain.dsc.store.DataStoreContainerFactory}" />
+    <entry key="base" value="DscSettingDAO" />
+  </section>
+
+
+  <!-- Add the following section, to your main config file, to specify the location of the file system data store:
+  <section name="com.thruzero.domain.dsc.fs.FileDataStoreContainerFactory">
+    <entry key="rootStorePath" value="/home/george/pf-test-desktop/demo-data-store" />
+  </section>
+   -->
+
+</configuration>

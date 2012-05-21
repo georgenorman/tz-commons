@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <author>George Norman</author>
+    <title>ThruZero Commons - Domain JPA Hibernate</title>
+  </properties>
+  <body>
+    <section name="Overview">
+      <p>
+        This module contains JPA specific implementations of the domain layer.
+      </p>
+    </section>
+
+    <section name="DAOs">
+      <ul>
+        <li>
+          <b><a href="apidocs/com/thruzero/domain/jpa/dao/JpaPreferenceDAO.html">JpaPreferenceDAO</a></b>:
+          An implementation of PreferenceDAO that uses JPA to manage storage in a database.
+        </li>
+
+        <li>
+          <b><a href="apidocs/com/thruzero/domain/jpa/dao/JpaSettingDAO.html">JpaSettingDAO</a></b>:
+          An implementation of SettingDAO that uses JPA to manage storage in a database.
+        </li>
+
+        <li>
+          <b><a href="apidocs/com/thruzero/domain/jpa/dao/JpaTextEnvelopeDAO.html">JpaTextEnvelopeDAO</a></b>:
+          An implementation of TextEnvelopeDAO that uses JPA to manage storage in a database.
+        </li>
+      </ul>
+    </section>
+
+    <section name="Maven Dependency">
+      <pre>
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.thruzero.common&lt;/groupId&gt;
+      &lt;artifactId&gt;tz-commons-domain-jpa&lt;/artifactId&gt;
+      &lt;version&gt;1.0.0&lt;/version&gt;
+      &lt;type&gt;jar&lt;/type&gt;
+      &lt;scope&gt;compile&lt;/scope&gt;
+    &lt;/dependency&gt;
+      </pre>
+    </section>
+  </body>
+</document>

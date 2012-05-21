@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <author>George Norman</author>
+    <title>ThruZero Commons - Core</title>
+  </properties>
+  <body>
+    <section name="Overview">
+      <p>
+        This module contains a variety of primitive components that are shared across all
+        <i>tz-commons</i> modules as well as external web-applications and services.
+        Following are examples of some of the core features.
+      </p>
+
+      <ul>
+        <li>
+        <b><a href="apidocs/com/thruzero/common/core/locator/package-summary.html">Locator package</a></b>: A package used to create and initialize an instance of a
+        registered Singleton interface and then return it for all subsequent requests.
+        The following example locates the configured PreferenceService implementation:
+<div class="code-block">
+  PreferenceService preferenceService = ServiceLocator.locate(PreferenceService.class);
+</div>
+        The following example locates the configured PreferenceDAO implementation:
+<div class="code-block">
+  PreferenceDAO preferenceDAO = DAOLocator.locate(PreferenceDAO.class);
+</div>
+        A Service may use zero or more DAOs for its implementation. If a Service uses a DAO, it typically uses a DAOLocator to locate it.
+        Services and DAOs are configured independently. If a particular Service is coded to a particular
+        DAO interface (e.g., PreferenceDAO), then it's possible to reuse the Service across different implementations of the DAO
+        (e.g., the PreferenceService can be re-used with JpaPreferenceDAO or DscPreferenceDAO, giving a common service implementation across a variety of store types).
+        <p/>
+        </li>
+
+        <li>
+        <b><a href="apidocs/com/thruzero/common/core/config/Config.html">Config</a></b>: A class for reading values from a section-based config file, similar to an <a href="http://en.wikipedia.org/wiki/INI_file">INI file</a>.
+        The following example illustrates how to read a boolean value from the email config section and if a value is not found, uses a default value:
+<div class="code-block">
+  boolean logEnabled = ConfigLocator.locate().getBooleanValue(EMAIL_CONFIG_SECTION, EMAIL_LOGGING_ENABLED, false);
+</div>
+        </li>
+
+        <li>
+        <b><a href="apidocs/com/thruzero/common/core/infonode/InfoNodeElement.html">InfoNodeElement</a></b>: A class that enables a client (e.g., a web page
+        supported by an expression language), to use an xpath to access sub-elements.
+        For example, the title for an Accordion Panel tab can be defined using an InfoNodeElement as follows:
+<div class="code-block">
+  &lt;p:tab title=&quot;#{movieCollectionBean.movies.find('//movie[@id=1]/@title').value}&quot;&gt;
+</div>
+        given a movies <i>InfoNodeElement</i> represented by:
+<div class="code-block">
+  &lt;movies&gt;
+    &lt;movie id="1" title="Far Far Away - Part I" image="/images/apps/demo/movies/far-far-away/part1.jpg" disabled="false"&gt;
+      Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.
+      Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+    &lt;/movie&gt;
+    ...
+</div>
+        </li>
+
+        <li>
+        <b><a href="apidocs/com/thruzero/common/core/infonode/builder/package-summary.html">InfoNodeElement builder Package</a></b>:
+        Provides a variety of InfoNodeElement builders,
+        such as ConfigInfoNodeBuilder, which builds an InfoNodeElement from a named section of a config file;
+        DomInfoNodeBuilder which builds an InfoNodeElement from a DOM; SaxInfoNodeBuilder which builds an InfoNodeElement from an XML stream.
+        <p/>
+        The following code illustrates how to build a compound InfoNodeElement using a TokenStreamInfoNodeBuilder:
+<div class="code-block">
+  TokenStreamInfoNodeBuilder builder = TokenStreamInfoNodeBuilder.DEFAULT;
+  InfoNodeElement result = builder.buildInfoNode("contentDescription");
+
+  result.addChildNode(builder.buildInfoNode("title=FAQ TITLE|contentBanner=BANNER"));
+  result.addChildNode(builder.buildInfoNode("toc", "item[@primaryKey='topic', @title='TOPIC']=Note 123"));
+</div>
+        The following XML represents the resulting InfoNodeLement structure:
+<div class="code-block">
+ &lt;contentDescription&gt;
+   &lt;title&gt;FAQ TITLE&lt;/title&gt;
+   &lt;contentBanner&gt;BANNER&lt;/contentBanner&gt;
+   &lt;toc&gt;
+     &lt;item primaryKey=&quot;topic&quot; title=&quot;TOPIC&quot;&gt;Note 123&lt;/item&gt;
+   &lt;/toc&gt;
+ &lt;/contentDescription&gt;
+</div>
+        </li>
+
+        <li>
+        <b><a href="apidocs/com/thruzero/common/core/fs/HierarchicalFileWalker.html">HierarchicalFileWalker</a></b>:
+        The HierarchicalFileWalker class walks a filtered tree, using the Visitor pattern to visit each file and sub-directory along the way.
+        Several <b><a href="apidocs/com/thruzero/common/core/fs/walker/visitor/package-summary.html">Visitor</a></b> implementations are provided.
+        The following example uses the <i>ZipCompressingVisitor</i> to compresses the "foo" directory into a file named "archive.zip":
+<div class="code-block">
+  File zipArchive = new File("/home/archives","archive.zip");
+  HierarchicalFileWalker walker = new HierarchicalFileWalker("/home/foo");
+  FileWalkerStatus status = walker.accept(new ZipCompressingVisitor(zipArchive));
+</div>
+        </li>
+
+        <li>
+        <b><a href="apidocs/com/thruzero/common/core/security/SimpleCipher.html">SimpleCipher</a></b>: Provides encryption and decryption functions using a pass-phrase.
+        Useful for encrypting and decrypting a database password stored in a config file (e.g., hibernate.cfg.xml).
+        Following is an example that decrypts a database password:
+<div class="code-block">
+  SimpleCipher cipher = new SimpleCipher(new SimpleCipherConfiguration(salt, passPhrase, iterationCount));
+  String clearText = cipher.decrypt(encryptedDatabasePassword);
+</div>
+        </li>
+      </ul>
+    </section>
+
+    <section name="Maven">
+      <pre>
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.thruzero.common&lt;/groupId&gt;
+      &lt;artifactId&gt;tz-commons-core&lt;/artifactId&gt;
+      &lt;version&gt;1.0.0&lt;/version&gt;
+      &lt;type&gt;jar&lt;/type&gt;
+      &lt;scope&gt;compile&lt;/scope&gt;
+    &lt;/dependency&gt;
+      </pre>
+    </section>
+
+  </body>
+</document>

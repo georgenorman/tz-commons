@@ -1,0 +1,12 @@
+<configuration>
+
+  <!-- ===============================================================================
+        Service Registry
+          - If the Locator component was replaced by CID, then these config entries would be replaced by
+            similar entries in the beans.xml file, since these services are essentially @Alternative.
+       =============================================================================== -->
+  <section name="com.thruzero.common.core.service.Service">
+    <entry key="com.thruzero.auth.service.UserService" value="com.thruzero.auth.service.impl.GenericUserService" />
+  </section>
+
+</configuration>

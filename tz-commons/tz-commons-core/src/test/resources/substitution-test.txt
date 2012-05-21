@@ -1,0 +1,9 @@
+This is a test.
+This is a test too.
+Here's a substitution var: ${substitution-var-1}
+This is another test.
+
+This is a test.
+This is a test too.
+Here's a substitution var: ${substitution-var-2}
+This is another test.

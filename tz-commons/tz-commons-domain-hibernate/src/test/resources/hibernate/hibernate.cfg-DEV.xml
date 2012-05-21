@@ -1,0 +1,60 @@
+<!DOCTYPE hibernate-configuration SYSTEM "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<!--
+
+    Copyright 2012 George Norman
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+ -->
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Settings for DEV HSQL database. -->
+        <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
+        <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
+        <property name="connection.url">jdbc:hsqldb:mem:trapo</property>
+        <property name="connection.username">sa</property>
+        <property name="connection.password"></property>
+        <property name="hibernate.generate_statistics">false</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+
+        <!-- see http://docs.jboss.org/hibernate/core/3.3/reference/en/html/architecture.html#architecture-current-session -->
+        <property name="hibernate.transaction.auto_close_session">true</property>
+        <property name="hibernate.current_session_context_class">org.hibernate.context.ThreadLocalSessionContext</property>
+        <!-- property name="hibernate.current_session_context_class">org.hibernate.context.ManagedSessionContext</property-->
+
+        <!-- Enable auto-commit mode for special cases (integration testing) -->
+        <property name="connection.autocommit">false</property>
+
+        <!-- Disable the second-level cache  -->
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+        <property name="cache.use_query_cache">false</property>
+        <property name="cache.use_minimal_puts">false</property>
+
+        <!-- In eager fetching, only join three tables deep if joins are used -->
+        <property name="max_fetch_depth">3</property>
+
+        <!-- Print SQL to stdout, format it nicely  -->
+        <property name="show_sql">false</property>
+        <property name="format_sql">false</property>
+        <property name="use_sql_comments">false</property>
+
+        <!-- mapping files -->
+        <mapping resource="hibernate/TextEnvelope.hbm.xml"/>
+
+        <mapping resource="hibernate/Preference.hbm.xml"/>
+        <mapping resource="hibernate/Setting.hbm.xml"/>
+    </session-factory>
+
+</hibernate-configuration>

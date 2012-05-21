@@ -1,0 +1,49 @@
+<!--
+
+    Copyright 2012 George Norman
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+ -->
+<configuration>
+
+  <section name="testTypes">
+      <entry key="booleanTrue" value="true" />
+      <entry key="float12dot34" value="12.34" />
+      <entry key="int123" value="123" />
+      <entry key="urlA" value="http://www.google.com/" />
+      <entry key="urlMalformed" value="abc/www.google" />
+  </section>
+
+  <section name="com.thruzero.common.core.security.SimpleCipher">
+    <entry key="SimpleCipherSalt" value="0xc3, 0x41, 0x55, 0xed, 0xf4, 0x41, 0x3e, 0x61"/>
+    <entry key="SimpleCipherPassPhrase" value="SimpleCipherTest Pass Phrase Test 1234"/>
+    <entry key="SimpleCipherIterationCount" value="23"/>
+  </section>
+
+  <section name="com.thruzero.domain.service.impl.SimpleMailService">
+    <entry key="email-enabled" value="true" />  <!-- Using Dumbster - fake SMTP server  -->
+    <entry key="email-logging-enabled" value="true" />
+
+    <entry key="email-smtp-host" value="localhost" />
+    <entry key="email-user" value="xxx@thruzero.com" />
+    <entry key="email-password" value="***" />
+    <!-- entry key="email-filter" value="testy@thruzero.com" /-->
+
+    <entry key="email-template-directory" value="target/test-classes/templates" />
+    <entry key="email-template-file-extension" value=".html" />
+
+    <entry key="DISABLE_EMAIL_TEST" value="true" />
+  </section>
+
+</configuration>

@@ -1,0 +1,10 @@
+#leftColumn {
+ width: 200px;
+ float:left;
+ overflow: auto;
+ white-space:nowrap;
+}
+#bodyColumn {
+  margin-right: 1.5em;
+  margin-left: 215px;
+}

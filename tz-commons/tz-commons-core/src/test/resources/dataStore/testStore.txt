@@ -1,0 +1,10 @@
+<com.javacoast.core.common.TestDataStore-TestObject>
+  <items>
+    <string>Test Item #1</string>
+    <string>Test Item #2</string>
+  </items>
+  <intField>11</intField>
+  <longField>22</longField>
+  <floatObjField>3.3</floatObjField>
+  <strField>45678</strField>
+</com.javacoast.core.common.TestDataStore-TestObject>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+   - Example mapping file. Copy this file to the application's domain module, then rename the table and columns
+   - to match the actual table and column names (this file should reside in the application's domain jar).
+ -->
+<hibernate-mapping package="com.thruzero.domain.model" default-access="field">
+
+  <class name="Setting" table="EXAMPLE_SETTINGS">
+
+    <!-- Common id property -->
+    <id name="id" column="SETTING_ID" type="long">
+      <generator class="increment"/>
+    </id>
+
+    <property name="accessPrivilege" type="string" column="ACCESS_PRIVILEGE" />
+    <property name="context" type="string" column="CONTEXT" />
+    <property name="type" type="string" column="SETTING_TYPE" />
+    <property name="name" type="string" column="SETTING_NAME" />
+    <property name="value" type="string" column="SETTING_VALUE" />
+    <property name="description" type="string" column="DESCRIPTION" />
+
+  </class>
+
+</hibernate-mapping>

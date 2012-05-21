@@ -1,0 +1,23 @@
+<configuration>
+
+  <!-- ===============================================================================
+        Service Registry
+          - If the Locator component was replaced by CID, then these config entries would be replaced by
+            similar entries in the beans.xml file, since these services are equivalent to @Alternative.
+       =============================================================================== -->
+  <section name="com.thruzero.common.core.service.Service">
+    <entry key="com.thruzero.domain.service.InfoNodeService" value="com.thruzero.domain.service.impl.GenericInfoNodeService" />
+    <entry key="com.thruzero.domain.service.PreferenceService" value="com.thruzero.domain.service.impl.GenericPreferenceService" />
+    <entry key="com.thruzero.domain.service.SettingService" value="com.thruzero.domain.service.impl.GenericSettingService" />
+    <entry key="com.thruzero.domain.service.MailService" value="com.thruzero.domain.service.impl.SimpleMailService" />
+  </section>
+
+  <!-- ===============================================================================
+        SimpleMailService configuration
+       =============================================================================== -->
+  <section name="com.thruzero.domain.service.impl.SimpleMailService">
+    <entry key="emailEnabled" value="false" />
+    <entry key="emailLoggingEnabled" value="true" />
+  </section>
+
+</configuration>

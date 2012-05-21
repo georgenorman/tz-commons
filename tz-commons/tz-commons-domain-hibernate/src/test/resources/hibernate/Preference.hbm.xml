@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.thruzero.domain.model" default-access="field">
+
+  <class name="Preference" table="PREFERENCES">
+
+    <!-- Common id property -->
+    <id name="id" column="PREFERENCE_ID" type="long">
+      <generator class="increment"/>
+    </id>
+
+    <property name="owner" type="string" column="OWNER" />
+    <property name="context" type="string" column="CONTEXT" />
+    <property name="name" type="string" column="NAME" />
+    <property name="value" type="string" column="PREFERENCE_VALUE" />
+
+  </class>
+
+</hibernate-mapping>

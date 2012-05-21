@@ -1,0 +1,11 @@
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+version="2.0">
+   <persistence-unit name="tz-commons-domain-manager" transaction-type="RESOURCE_LOCAL">
+      <properties>
+        <!--  see "com.thruzero.domain.jpa.transaction.JpaDatabaseTransactionMgr" section of config file -->
+      </properties>
+   </persistence-unit>
+</persistence>

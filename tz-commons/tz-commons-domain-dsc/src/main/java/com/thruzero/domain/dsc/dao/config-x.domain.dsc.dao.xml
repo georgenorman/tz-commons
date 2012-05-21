@@ -1,0 +1,39 @@
+<configuration>
+    <!--
+        This is an x-file. It contains extensions to the normal registry. A Singleton is typically registered with an interface
+        bound to a single implementation. In the x-file cases, two (or more) implementations of the same Singleton is desired
+        (e.g., a TextEnvelopeService that uses the file system while another TextEnvelopeService that uses a database via JPA).
+     -->
+
+  <!-- ===============================================================================
+        DAO Registry
+          - If the Locator component was replaced by CID, then these config entries would be replaced by
+            similar entries in the beans.xml file, since these services are equivalent to @Alternative.
+       =============================================================================== -->
+  <section name="com.thruzero.domain.dao.DAO">
+    <!-- NOTE: The following DAO uses the concrete class as the interface, to support two different data stores at the same time (e.g., one from the file system plus JPA). -->
+    <entry key="com.thruzero.domain.dsc.dao.DscTextEnvelopeDAO" value="com.thruzero.domain.dsc.dao.DscTextEnvelopeDAO" />
+  </section>
+
+  <!-- ===============================================================================
+        DscTextEnvelopeDAO configuration
+       =============================================================================== -->
+  <section name="com.thruzero.domain.dsc.dao.DscTextEnvelopeDAO">
+    <entry key="com.thruzero.domain.dsc.store.DataStoreContainerFactory" value="[com.thruzero.domain.dsc.dao.AbstractDataStoreDAO]{com.thruzero.domain.dsc.store.DataStoreContainerFactory}" />
+    <entry key="base" value="DscTextEnvelopeDAO" />
+  </section>
+
+  <!-- If using FileDataStoreContainerFactory, add the following section, to your main config file, to specify the location of the file system data store (change the value for your system):
+  <section name="com.thruzero.domain.dsc.fs.FileDataStoreContainerFactory">
+    <entry key="rootStorePath" value="/home/george/pf-test-desktop/demo-data-store" />
+  </section>
+   -->
+
+  <!-- If using WsDataStoreContainerFactory, add the following section, to your main config file, to specify the location of the web service (change the value for your system):
+  <section name="com.thruzero.domain.dsc.ws.WsDataStoreContainerFactory">
+    <entry key="rootServiceUri" value="http://localhost:8080/pf-test18-jpa/rws/" />
+  </section>
+   -->
+
+
+</configuration>

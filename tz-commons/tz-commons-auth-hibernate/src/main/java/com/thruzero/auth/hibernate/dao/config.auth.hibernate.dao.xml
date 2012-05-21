@@ -1,0 +1,12 @@
+<configuration>
+
+  <!-- ===============================================================================
+        DAO Registry
+          - If the Locator component was replaced by CID, then these config entries would be replaced by
+            similar entries in the beans.xml file, since these services are essentially @Alternative.
+       =============================================================================== -->
+  <section name="com.thruzero.domain.dao.DAO">
+    <entry key="com.thruzero.auth.dao.UserDAO" value="com.thruzero.auth.hibernate.dao.HibernateUserDAO" />
+  </section>
+
+</configuration>

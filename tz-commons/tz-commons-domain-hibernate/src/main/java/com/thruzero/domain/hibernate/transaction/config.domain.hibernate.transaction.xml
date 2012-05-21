@@ -1,0 +1,7 @@
+<configuration>
+
+  <section name="com.thruzero.common.core.transaction.TransactionMgr">
+    <entry key="com.thruzero.common.core.transaction.TransactionMgr" value="com.thruzero.domain.hibernate.transaction.HibernateDatabaseTransactionMgr" />
+  </section>
+
+</configuration>
