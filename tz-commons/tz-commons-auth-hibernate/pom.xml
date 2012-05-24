@@ -11,12 +11,8 @@
   <packaging>jar</packaging>
 
   <name>tz-commons-auth-hibernate</name>
-  <url>http://www.thruzero.com/</url>
+  <url>https://github.com/georgenorman/tz-commons/</url>
   <description>Hibernate implementation of the tz-commons authentication module.</description>
-
-  <scm>
-    <connection>scm:svn:http://svn.thruzero.com/tz-commons-auth-hibernate/</connection>
-  </scm>
 
   <developers>
     <developer>

@@ -11,12 +11,8 @@
   <packaging>jar</packaging>
 
   <name>tz-commons-domain-dsc</name>
-  <url>http://www.thruzero.com/</url>
+  <url>https://github.com/georgenorman/tz-commons/</url>
   <description>DSC implementation of the tz-commons domain module.</description>
-
-  <scm>
-    <connection>scm:svn:http://svn.thruzero.com/tz-commons-domain-dsc/</connection>
-  </scm>
 
   <developers>
     <developer>

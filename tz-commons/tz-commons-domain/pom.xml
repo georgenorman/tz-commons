@@ -11,12 +11,8 @@
   <packaging>jar</packaging>
 
   <name>tz-commons-domain</name>
-  <url>http://www.thruzero.com/</url>
+  <url>https://github.com/georgenorman/tz-commons/</url>
   <description>Module containing interfaces and generic implementations of key domain components.</description>
-
-  <scm>
-    <connection>scm:svn:http://svn.thruzero.com/tz-commons-domain/</connection>
-  </scm>
 
   <developers>
     <developer>

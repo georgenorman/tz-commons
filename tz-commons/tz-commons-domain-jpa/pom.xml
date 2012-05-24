@@ -11,12 +11,8 @@
   <packaging>jar</packaging>
 
   <name>tz-commons-domain-jpa</name>
-  <url>http://www.thruzero.com/</url>
+  <url>https://github.com/georgenorman/tz-commons/</url>
   <description>JPA implementation of the tz-commons domain module.</description>
-
-  <scm>
-    <connection>scm:svn:http://svn.thruzero.com/tz-commons-domain-jpa/</connection>
-  </scm>
 
   <developers>
     <developer>

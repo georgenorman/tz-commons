@@ -14,10 +14,6 @@
   <url>http://thruzero.com/tz-commons-core/</url>
   <description>Module of core components used throughout tz-commons..</description>
 
-  <scm>
-    <connection>scm:svn:http://svn.thruzero.com/tz-commons-core/</connection>
-  </scm>
-
   <developers>
     <developer>
       <id>george</id>

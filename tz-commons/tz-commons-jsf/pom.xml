@@ -11,12 +11,8 @@
   <packaging>jar</packaging>
 
   <name>tz-commons-jsf</name>
-  <url>http://www.thruzero.com/</url>
+  <url>https://github.com/georgenorman/tz-commons/</url>
   <description>Module of JSF utilities and components.</description>
-
-  <scm>
-    <connection>scm:svn:http://svn.thruzero.com/tz-commons-jsf/</connection>
-  </scm>
 
   <developers>
     <developer>
