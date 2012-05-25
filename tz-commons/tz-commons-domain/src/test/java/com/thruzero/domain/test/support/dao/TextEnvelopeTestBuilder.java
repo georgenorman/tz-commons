@@ -17,9 +17,9 @@ package com.thruzero.domain.test.support.dao;
 
 import java.io.Serializable;
 
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.model.TextEnvelope;
-import com.thruzero.domain.store.ContainerPath;
-import com.thruzero.domain.store.EntityPath;
 
 /**
  *

@@ -48,7 +48,7 @@ public class SampleNodeBuilderUtils {
   public static final String TEST_ELEMENT_ONE_VALUE = "TestElementOneValue";
   public static final String TEST_ELEMENT_TWO_NAME = "TestElementTwo";
   public static final String TEST_ELEMENT_TWO_VALUE = "TestElementTwoValue";
-  public static final String PRIMARY_VALUE_ONE = "primaryValueOne";
+  public static final String ENTITY_PATH_VALUE_ONE = "/home/foo/ex1.txt";
 
   public static final String RESULT_AS_STRING_PARENT_ELEMENT_START_TAG_NO_ATTRIBUTES = "<"+TEST_PARENT_ELEMENT_NAME+">";
 

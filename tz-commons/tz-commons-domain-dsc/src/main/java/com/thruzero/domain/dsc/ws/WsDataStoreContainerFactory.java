@@ -21,11 +21,11 @@ import com.thruzero.common.core.bookmarks.InitializationParameterKeysBookmark;
 import com.thruzero.common.core.locator.InitializationException;
 import com.thruzero.common.core.locator.InitializationStrategy;
 import com.thruzero.common.core.map.StringMap;
+import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.domain.dsc.dao.AbstractDataStoreDAO.DataStoreDAOInitParamKeys;
 import com.thruzero.domain.dsc.store.AbstractDataStoreContainerFactory;
 import com.thruzero.domain.dsc.store.DataStoreContainer;
 import com.thruzero.domain.store.BaseStorePath;
-import com.thruzero.domain.store.ContainerPath;
 
 /**
  * A factory for creating instances of {@link com.thruzero.domain.dsc.ws.WsDataStoreContainer WsDataStoreContainer} to manage CRUD

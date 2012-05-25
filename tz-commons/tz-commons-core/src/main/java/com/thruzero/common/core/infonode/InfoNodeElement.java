@@ -25,6 +25,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.ValueTransformer;
 
 /**
@@ -60,8 +61,8 @@ public class InfoNodeElement extends Element {
    * Defines reserved attribute keys used by a {@code InfoNodeElement}.
    */
   public static interface AttributeKeys {
-    /** The primary key of this InfoNodeElement */
-    String PRIMARY_KEY_ATTR_KEY = "primaryKey";
+    /** The entity path this InfoNodeElement */
+    String ENTITY_PATH_ATTR_KEY = "entityPath";
   }
 
   // =======================================================================
@@ -92,14 +93,14 @@ public class InfoNodeElement extends Element {
     setNamespace(Namespace.NO_NAMESPACE);
   }
 
-  public String getPrimaryKey() {
-    String result = getAttributeValue(AttributeKeys.PRIMARY_KEY_ATTR_KEY);
+  public EntityPath getEntityPath() {
+    EntityPath result = new EntityPath(getAttributeValue(AttributeKeys.ENTITY_PATH_ATTR_KEY));
 
     return result;
   }
 
-  public void setPrimaryKey(final String value) {
-    setAttribute(AttributeKeys.PRIMARY_KEY_ATTR_KEY, value);
+  public void setEntityPath(final EntityPath value) {
+    setAttribute(AttributeKeys.ENTITY_PATH_ATTR_KEY, value.toString());
   }
 
   /**

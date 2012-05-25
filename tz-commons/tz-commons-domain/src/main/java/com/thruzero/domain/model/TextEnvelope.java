@@ -15,8 +15,9 @@
  */
 package com.thruzero.domain.model;
 
+import com.thruzero.common.core.infonode.InfoNodeElement;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.store.AbstractPersistent;
-import com.thruzero.domain.store.EntityPath;
 import com.thruzero.domain.store.Persistent;
 
 /**
@@ -40,6 +41,14 @@ public class TextEnvelope extends AbstractPersistent {
   public TextEnvelope(final EntityPath entityPath, final String data) {
     this.entityPath = entityPath;
     this.data = data;
+  }
+
+  /**
+   * Construct an instance with the given text {@code data} and {@code entityPath}.
+   */
+  public TextEnvelope(final InfoNodeElement infoNode) {
+    this.entityPath = infoNode.getEntityPath();
+    this.data = infoNode.toStringFormatted();
   }
 
   @Override

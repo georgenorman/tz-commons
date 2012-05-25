@@ -21,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.thruzero.auth.test.support.AbstractAuthTestCase;
-import com.thruzero.common.core.config.Config;
 import com.thruzero.common.core.locator.ConfigLocator;
 
 /**

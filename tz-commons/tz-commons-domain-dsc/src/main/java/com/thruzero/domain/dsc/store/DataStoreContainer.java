@@ -18,8 +18,8 @@ package com.thruzero.domain.dsc.store;
 import java.io.InputStream;
 import java.util.List;
 
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dao.GenericDAO.DAOException;
-import com.thruzero.domain.store.EntityPath;
 
 /**
  * An interface that defined basic CRUD operations within a single container; it doesn't manage sub-containers or parent

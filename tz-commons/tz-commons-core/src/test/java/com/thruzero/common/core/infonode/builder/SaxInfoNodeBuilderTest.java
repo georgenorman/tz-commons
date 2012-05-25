@@ -63,12 +63,12 @@ public class SaxInfoNodeBuilderTest extends AbstractCoreTestCase {
 
   @Test
   public void testPrimaryKeyInfoNode() throws IOException, SAXException {
-    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createPrimaryKeyInfoNode();
+    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createEntityPathInfoNode();
 
     // <TestParentElement TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue" primaryKey="primaryValueOne">TestParentElementValue</TestParentElement>
     InfoNodeElement rootInfoNodeElement = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(sampleInfoNode.toStringFormatted());
 
-    assertEquals(SampleNodeBuilderUtils.PRIMARY_VALUE_ONE, rootInfoNodeElement.getPrimaryKey());
+    assertEquals(SampleNodeBuilderUtils.ENTITY_PATH_VALUE_ONE, rootInfoNodeElement.getEntityPath().toString());
     SampleNodeBuilderUtils.verifySimpleInfoNodeData(rootInfoNodeElement);
   }
 

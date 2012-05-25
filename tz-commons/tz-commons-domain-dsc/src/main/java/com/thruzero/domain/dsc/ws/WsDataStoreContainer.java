@@ -26,11 +26,11 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.infonode.builder.SaxInfoNodeBuilder;
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dsc.store.DataStoreContainer;
 import com.thruzero.domain.dsc.store.SimpleDataStoreEntity;
 import com.thruzero.domain.store.BaseStorePath;
-import com.thruzero.domain.store.ContainerPath;
-import com.thruzero.domain.store.EntityPath;
 
 /**
  * Web Service based data store container
@@ -61,7 +61,9 @@ public class WsDataStoreContainer implements DataStoreContainer {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add("containerPath", resourceContainerPath.getPath());
     params.add("entityName", entityName);
+
     String response = resource.path("readEntity").queryParams(params).get(String.class);
+
     SimpleDataStoreEntity result = new SimpleDataStoreEntity(IOUtils.toInputStream(response), new EntityPath(new ContainerPath(), entityName));
 
     return result;
@@ -102,7 +104,9 @@ public class WsDataStoreContainer implements DataStoreContainer {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add("containerPath", resourceContainerPath.getPath());
     params.add("entityName", entityName);
+
     String response = resource.path("isExistingEntity").queryParams(params).get(String.class);
+
     InfoNodeElement responseAsNode = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(response);
 
     return responseAsNode.getAttributeTransformer("value").getBooleanValue();

@@ -20,8 +20,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -94,36 +92,6 @@ public abstract class AbstractSettingServiceTestHelper {
 
     @Override
     public Set<String> splitStringValueFor(String context, String name, String separator) {
-      return null;
-    }
-
-    @Override
-    public int getIntValue(String context, String name, int defaultValue) {
-      return 0;
-    }
-
-    @Override
-    public long getLongValue(String context, String name, long defaultValue) {
-      return 0;
-    }
-
-    @Override
-    public float getFloatValue(String context, String name, float defaultValue) {
-      return 0;
-    }
-
-    @Override
-    public boolean getBooleanValue(String context, String name, boolean defaultValue) {
-      return false;
-    }
-
-    @Override
-    public Date getDateValue(String context, String name, Date defaultValue) throws ParseException {
-      return null;
-    }
-
-    @Override
-    public Date getDateValue(String context, String name, Date defaultValue, String... parsePatterns) throws ParseException {
       return null;
     }
 

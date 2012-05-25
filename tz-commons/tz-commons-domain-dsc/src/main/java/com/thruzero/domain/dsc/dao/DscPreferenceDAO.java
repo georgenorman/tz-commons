@@ -17,10 +17,10 @@ package com.thruzero.domain.dsc.dao;
 
 import java.util.List;
 
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dao.PreferenceDAO;
 import com.thruzero.domain.model.Preference;
-import com.thruzero.domain.store.ContainerPath;
-import com.thruzero.domain.store.EntityPath;
 
 /**
  * An implementation of PreferenceDAO that uses a DataStoreContainer (DSC) as storage.

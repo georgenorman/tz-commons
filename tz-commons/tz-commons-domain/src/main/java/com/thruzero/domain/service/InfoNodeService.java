@@ -19,8 +19,8 @@ import java.util.Collection;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.service.Service;
-import com.thruzero.domain.store.ContainerPath;
-import com.thruzero.domain.store.EntityPath;
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 
 /**
  * A Service interface to manage persistence-related functionality of InfoNodeElement instances.
@@ -77,9 +77,22 @@ public interface InfoNodeService extends Service {
    */
   InfoNodeElement getFirstInfoNode(EntityPath entityPath, String xpathExpr);
 
+  /** Save the new domainObject to the data store */
+  void save(InfoNodeElement domainObject);
+
+  /**
+   * Tests to see if the object is new or has been previously persisted and if the object is new, it creates a new
+   * entity in the data store (e.g., inserts a new row) or if it's already in the data store, it will update the
+   * existing entity.
+   */
+  void saveOrUpdate(InfoNodeElement domainObject);
+
+  /** Update the data store from the given domainObject. */
+  void update(InfoNodeElement domainObject);
+
+  /** Delete the domainObject from the data store, if it exists. */
+  void delete(InfoNodeElement domainObject);
+
   /** Return a simple description of the service configuration (e.g., "GenericInfoNodeService configured using JpaTextEnvelopeDAO"). */
   String getInfo();
-
-  // TODO-p1(george) add CRUD functions.
-
 }

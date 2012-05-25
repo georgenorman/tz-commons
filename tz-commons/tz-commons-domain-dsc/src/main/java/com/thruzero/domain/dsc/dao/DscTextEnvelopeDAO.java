@@ -22,13 +22,13 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dao.TextEnvelopeDAO;
 import com.thruzero.domain.dsc.store.DataStoreContainer;
 import com.thruzero.domain.dsc.store.DataStoreContainer.DataStoreEntity;
 import com.thruzero.domain.dsc.store.SimpleDataStoreEntity;
 import com.thruzero.domain.model.TextEnvelope;
-import com.thruzero.domain.store.ContainerPath;
-import com.thruzero.domain.store.EntityPath;
 
 /**
  * An implementation of TextEnvelopeDAO that uses a DataStoreContainer (DSC) as storage.

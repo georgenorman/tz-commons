@@ -16,8 +16,8 @@
 package com.thruzero.domain.dsc.store;
 
 import com.thruzero.common.core.locator.InitializationStrategy;
+import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.domain.store.BaseStorePath;
-import com.thruzero.domain.store.ContainerPath;
 
 /**
  * A factory for creating instances of {@link com.thruzero.domain.store.DataStoreContainer DataStoreContainer}, which

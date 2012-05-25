@@ -24,6 +24,8 @@ import com.thruzero.common.core.locator.InitializationException;
 import com.thruzero.common.core.locator.InitializationStrategy;
 import com.thruzero.common.core.locator.LocatorUtils;
 import com.thruzero.common.core.map.StringMap;
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.KeyGen;
 import com.thruzero.common.core.support.SimpleIdGenerator;
 import com.thruzero.common.core.utils.ClassUtils;
@@ -33,8 +35,6 @@ import com.thruzero.domain.dsc.store.DataStoreContainer;
 import com.thruzero.domain.dsc.store.DataStoreContainer.DataStoreEntity;
 import com.thruzero.domain.dsc.store.DataStoreContainerFactory;
 import com.thruzero.domain.store.BaseStorePath;
-import com.thruzero.domain.store.ContainerPath;
-import com.thruzero.domain.store.EntityPath;
 import com.thruzero.domain.store.Persistent;
 
 /**

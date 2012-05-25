@@ -14,8 +14,8 @@
       <generator class="increment" />
     </id>
 
-    <component name="entityPath" class="com.thruzero.domain.store.EntityPath">
-      <component name="containerPath" class="com.thruzero.domain.store.ContainerPath">
+    <component name="entityPath" class="com.thruzero.common.core.support.EntityPath">
+      <component name="containerPath" class="com.thruzero.common.core.support.ContainerPath">
         <property name="path" column="PATH" />
       </component>
       <property name="entityName" column="NAME" />

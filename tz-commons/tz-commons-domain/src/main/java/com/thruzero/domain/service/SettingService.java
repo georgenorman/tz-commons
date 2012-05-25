@@ -15,8 +15,6 @@
  */
 package com.thruzero.domain.service;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -63,18 +61,6 @@ public interface SettingService extends Service {
   ValueTransformer<String> getValueTransformer(String context, String name);
 
   Set<String> splitStringValueFor(String context, String name, final String separator);
-
-  int getIntValue(String context, String name, int defaultValue);
-
-  long getLongValue(String context, String name, long defaultValue);
-
-  float getFloatValue(String context, String name, float defaultValue);
-
-  boolean getBooleanValue(String context, String name, boolean defaultValue);
-
-  Date getDateValue(String context, String name, Date defaultValue) throws ParseException;
-
-  Date getDateValue(String context, String name, Date defaultValue, final String... parsePatterns) throws ParseException;
 
   List<? extends Setting> getSettings(String context);
 

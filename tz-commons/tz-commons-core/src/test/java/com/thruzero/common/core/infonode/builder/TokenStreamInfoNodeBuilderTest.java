@@ -58,8 +58,8 @@ public class TokenStreamInfoNodeBuilderTest extends AbstractCoreTestCase {
   @Test
   public void testPrimaryKeyInfoNode() {
     // <TestParentElement primaryKey="primaryValueOne" TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue">TestParentElementValue</TestParentElement>
-    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createPrimaryKeyInfoNode();
-    assertEquals(SampleNodeBuilderUtils.PRIMARY_VALUE_ONE, infoNode.getPrimaryKey());
+    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createEntityPathInfoNode();
+    assertEquals(SampleNodeBuilderUtils.ENTITY_PATH_VALUE_ONE, infoNode.getEntityPath().toString());
     SampleNodeBuilderUtils.verifySimpleInfoNodeData(infoNode);
   }
 

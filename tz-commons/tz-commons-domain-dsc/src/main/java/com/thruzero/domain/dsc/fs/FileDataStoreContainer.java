@@ -26,12 +26,12 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dao.GenericDAO.DAOException;
 import com.thruzero.domain.dsc.store.DataStoreContainer;
 import com.thruzero.domain.dsc.store.DataStoreException;
 import com.thruzero.domain.store.BaseStorePath;
-import com.thruzero.domain.store.ContainerPath;
-import com.thruzero.domain.store.EntityPath;
 
 /**
  * A DataStoreContainer that simply manages files within a single directory; it doesn't manage sub-directories or parent

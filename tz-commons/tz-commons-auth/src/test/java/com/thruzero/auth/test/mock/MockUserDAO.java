@@ -19,10 +19,10 @@ import java.io.Serializable;
 
 import com.thruzero.auth.dao.UserDAO;
 import com.thruzero.auth.model.User;
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.KeyGen;
 import com.thruzero.domain.dao.impl.GenericMemoryDAO;
-import com.thruzero.domain.store.ContainerPath;
-import com.thruzero.domain.store.EntityPath;
 import com.thruzero.domain.store.SimpleMemoryStore;
 
 /**

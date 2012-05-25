@@ -17,8 +17,8 @@ package com.thruzero.domain.dsc.store;
 
 import java.io.InputStream;
 
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dsc.store.DataStoreContainer.DataStoreEntity;
-import com.thruzero.domain.store.EntityPath;
 
 
 /**

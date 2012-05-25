@@ -23,11 +23,11 @@ import org.jdom.JDOMException;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.infonode.builder.SaxInfoNodeBuilder;
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dao.TextEnvelopeDAO;
 import com.thruzero.domain.model.TextEnvelope;
 import com.thruzero.domain.service.InfoNodeService;
-import com.thruzero.domain.store.ContainerPath;
-import com.thruzero.domain.store.EntityPath;
 
 /**
  * An abstract base-class implementing the {@code InfoNodeService} interface, allowing for multiple types of
@@ -98,6 +98,59 @@ public abstract class AbstractInfoNodeService implements InfoNodeService {
     boolean result = getTextEnvelopeDAO().isExistingTextEnvelope(entityPath);
 
     return result;
+  }
+
+  @Override
+  public void save(InfoNodeElement infoNodeElement) {
+    if (infoNodeElement.getEntityPath() == null) {
+      throw new RuntimeException("Error attempting to save InfoNodeElement: The EntityPath is null. An EntityPath is required to save an InfoNodeElement.");
+    }
+
+    TextEnvelope domainObject = new TextEnvelope(infoNodeElement);
+
+    getTextEnvelopeDAO().save(domainObject);
+  }
+
+  @Override
+  public void saveOrUpdate(InfoNodeElement infoNodeElement) {
+    if (infoNodeElement.getEntityPath() == null) {
+      throw new RuntimeException("Error attempting to save or update InfoNodeElement: The EntityPath is null. An EntityPath is required to save or update an InfoNodeElement.");
+    }
+
+    if (isExistingEntity(infoNodeElement.getEntityPath())) {
+      update(infoNodeElement);
+    } else {
+      save(infoNodeElement);
+    }
+  }
+
+  @Override
+  public void update(InfoNodeElement infoNodeElement) {
+    if (infoNodeElement.getEntityPath() == null) {
+      throw new RuntimeException("Error attempting to update InfoNodeElement: The EntityPath is null. An EntityPath is required to update an InfoNodeElement.");
+    }
+
+    TextEnvelope domainObject = new TextEnvelope(infoNodeElement);
+
+    getTextEnvelopeDAO().update(domainObject);
+  }
+
+  @Override
+  public void delete(InfoNodeElement infoNodeElement) {
+    if (infoNodeElement.getEntityPath() == null) {
+      throw new RuntimeException("Error attempting to delete InfoNodeElement: The EntityPath is null. An EntityPath is required to delete an InfoNodeElement.");
+    }
+
+    TextEnvelope domainObject = new TextEnvelope(infoNodeElement);
+
+    getTextEnvelopeDAO().delete(domainObject);
+
+  }
+
+  @Override
+  public String getInfo() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   protected TextEnvelopeDAO getTextEnvelopeDAO() {

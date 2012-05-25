@@ -17,8 +17,9 @@ package com.thruzero.auth.dsc.dao;
 
 import com.thruzero.auth.dao.UserDAO;
 import com.thruzero.auth.model.User;
+import com.thruzero.common.core.support.EntityPath;
+import com.thruzero.domain.dsc.dao.AbstractDataStoreDAO;
 import com.thruzero.domain.dsc.dao.GenericDscDAO;
-import com.thruzero.domain.store.EntityPath;
 
 /**
  * An implementation of UserDAO that uses a DataStoreContainer (DSC) as storage.

@@ -20,7 +20,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.thruzero.common.core.security.PasswordHelper;
 import com.thruzero.test.support.AbstractCoreTestCase;
 
 /**

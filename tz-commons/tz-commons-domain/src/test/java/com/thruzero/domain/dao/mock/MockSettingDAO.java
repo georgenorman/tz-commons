@@ -18,12 +18,12 @@ package com.thruzero.domain.dao.mock;
 import java.io.Serializable;
 import java.util.List;
 
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.KeyGen;
 import com.thruzero.domain.dao.SettingDAO;
 import com.thruzero.domain.dao.impl.GenericMemoryDAO;
 import com.thruzero.domain.model.Setting;
-import com.thruzero.domain.store.ContainerPath;
-import com.thruzero.domain.store.EntityPath;
 import com.thruzero.domain.store.SimpleMemoryStore;
 
 /**

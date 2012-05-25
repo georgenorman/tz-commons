@@ -57,14 +57,14 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
 
   @Test
   public void testPrimaryKeyInfoNode() throws IOException, SAXException {
-    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createPrimaryKeyInfoNode();
+    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createEntityPathInfoNode();
     Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
 
     // <TestParentElement TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue" primaryKey="primaryValueOne">TestParentElementValue</TestParentElement>
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
     InfoNodeElement rootInfoNodeElement = infoNodeDocument.getRootInfoNodeElement();
 
-    assertEquals(SampleNodeBuilderUtils.PRIMARY_VALUE_ONE, rootInfoNodeElement.getPrimaryKey());
+    assertEquals(SampleNodeBuilderUtils.ENTITY_PATH_VALUE_ONE, rootInfoNodeElement.getEntityPath().toString());
     SampleNodeBuilderUtils.verifySimpleInfoNodeData(rootInfoNodeElement);
   }
 

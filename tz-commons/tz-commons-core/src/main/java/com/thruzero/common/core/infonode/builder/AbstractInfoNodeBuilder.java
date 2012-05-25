@@ -16,12 +16,14 @@
 package com.thruzero.common.core.infonode.builder;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
+import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.SimpleIdGenerator;
 
 /**
  * An abstract base class that can be used to build {@link com.thruzero.common.core.infonode.InfoNodeElement
  * InfoNodeElement} instances. {@code InfoNodeElement} builders are not required to extend this class.
- * 
+ *
  * @author George Norman
  */
 public abstract class AbstractInfoNodeBuilder {
@@ -30,7 +32,7 @@ public abstract class AbstractInfoNodeBuilder {
 
   /**
    * The constructor called by subclasses.
-   * 
+   *
    * @param primaryKeyGenerationEnabled if true, will generate primary keys for each node created by this builder.
    * @param rootNodeGenerationEnabled if true, will create a {@link com.thruzero.common.core.infonode.InfoNodeDocument
    * InfoNodeDocument} and set it as the parent of the root node created by this builder. This is required in order for
@@ -70,7 +72,7 @@ public abstract class AbstractInfoNodeBuilder {
    */
   protected void handlePrimaryKey(final InfoNodeElement infoNode) {
     if (primaryKeyGenerationEnabled) {
-      infoNode.setPrimaryKey(SimpleIdGenerator.getInstance().getNextIdAsString());
+      infoNode.setEntityPath(new EntityPath(new ContainerPath(), SimpleIdGenerator.getInstance().getNextIdAsString()));
     }
   }
 

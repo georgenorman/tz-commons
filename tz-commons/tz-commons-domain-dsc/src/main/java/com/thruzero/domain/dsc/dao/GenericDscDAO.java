@@ -20,9 +20,9 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 
 import com.thoughtworks.xstream.XStream;
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dsc.store.DataStoreContainer.DataStoreEntity;
 import com.thruzero.domain.dsc.store.SimpleDataStoreEntity;
-import com.thruzero.domain.store.EntityPath;
 import com.thruzero.domain.store.Persistent;
 
 /**

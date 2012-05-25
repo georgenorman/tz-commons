@@ -20,8 +20,8 @@ import org.junit.Before;
 
 import com.thruzero.auth.dao.UserDAO;
 import com.thruzero.auth.service.impl.AuthServiceRegistry;
-import com.thruzero.auth.test.mock.MockUserDAO;
 import com.thruzero.auth.test.mock.MockAuthDAORegistry;
+import com.thruzero.auth.test.mock.MockUserDAO;
 import com.thruzero.domain.locator.DAOLocator;
 import com.thruzero.test.support.AbstractCoreTestCase;
 

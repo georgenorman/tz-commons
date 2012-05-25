@@ -43,12 +43,14 @@ import com.thruzero.common.core.support.LogHelper;
 
 /**
  * Static utility methods pertaining to DOMs (e.g., {@code org.w3c.dom.Document}, {@code org.w3c.dom.Node}, etc)..
- * 
+ *
  * @author George Norman
  */
 public class XmlUtils {
   private static Logger logger = Logger.getLogger(XmlUtils.class);
   private static XmlUtilsLogHelper xmlUtilsLogHelper = new XmlUtilsLogHelper(XmlUtils.class);
+
+  public static final String XML_HEADER = "<?xml version=\"1.0\"?>";
 
   // ---------------------------------------------------------------
   // XmlParseException
@@ -319,7 +321,7 @@ public class XmlUtils {
    * For the given {@code sourceNode}, read each "top level" element into the resulting {@code Map}. Each element name
    * is a key to the map, each element value is the value paired to the key. Example - anchor is the node, label and
    * href are keys:
-   * 
+   *
    * <pre>
    * {@code
    * <anchor>

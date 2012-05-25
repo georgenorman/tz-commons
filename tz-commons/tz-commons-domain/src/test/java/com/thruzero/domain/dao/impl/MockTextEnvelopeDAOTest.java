@@ -22,11 +22,11 @@ import java.io.Serializable;
 
 import org.junit.Test;
 
+import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dao.TextEnvelopeDAO;
 import com.thruzero.domain.dao.mock.MockTextEnvelopeDAO;
 import com.thruzero.domain.locator.DAOLocator;
 import com.thruzero.domain.model.TextEnvelope;
-import com.thruzero.domain.store.EntityPath;
 import com.thruzero.domain.test.support.AbstractDomainTestCase;
 import com.thruzero.domain.test.support.dao.AbstractTextEnvelopeDAOTestHelper;
 import com.thruzero.domain.test.support.dao.TextEnvelopeTestBuilder;

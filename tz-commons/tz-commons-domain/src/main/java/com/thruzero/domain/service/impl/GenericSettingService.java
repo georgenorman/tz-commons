@@ -15,8 +15,6 @@
  */
 package com.thruzero.domain.service.impl;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +22,6 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import com.thruzero.common.core.support.ValueTransformer;
-import com.thruzero.common.core.utils.StringUtilsExt;
 import com.thruzero.domain.dao.SettingDAO;
 import com.thruzero.domain.locator.DAOLocator;
 import com.thruzero.domain.model.Setting;
@@ -88,36 +85,6 @@ public class GenericSettingService implements SettingService {
     }
 
     return result;
-  }
-
-  @Override
-  public int getIntValue(String context, String name, int defaultValue) {
-    return StringUtilsExt.stringToInt(getStringValue(context, name), defaultValue);
-  }
-
-  @Override
-  public long getLongValue(String context, String name, long defaultValue) {
-    return StringUtilsExt.stringToLong(getStringValue(context, name), defaultValue);
-  }
-
-  @Override
-  public float getFloatValue(String context, String name, float defaultValue) {
-    return StringUtilsExt.stringToFloat(getStringValue(context, name), defaultValue);
-  }
-
-  @Override
-  public boolean getBooleanValue(String context, String name, boolean defaultValue) {
-    return StringUtilsExt.stringToBoolean(getStringValue(context, name), defaultValue);
-  }
-
-  @Override
-  public Date getDateValue(String context, String name, Date defaultValue) throws ParseException {
-    return StringUtilsExt.stringToDate(getStringValue(context, name), defaultValue);
-  }
-
-  @Override
-  public Date getDateValue(String context, String name, Date defaultValue, String... parsePatterns) throws ParseException {
-    return StringUtilsExt.stringToDate(getStringValue(context, name), defaultValue, parsePatterns);
   }
 
   @Override

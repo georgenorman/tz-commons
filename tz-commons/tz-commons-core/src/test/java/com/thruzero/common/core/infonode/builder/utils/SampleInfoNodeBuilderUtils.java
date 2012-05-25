@@ -59,9 +59,9 @@ public class SampleInfoNodeBuilderUtils extends SampleNodeBuilderUtils {
    * <TestParentElement primaryKey="primaryValueOne" TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue">TestParentElementValue</TestParentElement>
    * }</pre>
    */
-  public static InfoNodeElement createPrimaryKeyInfoNode() {
+  public static InfoNodeElement createEntityPathInfoNode() {
     InfoNodeElement result = TokenStreamInfoNodeBuilder.DEFAULT.buildInfoNode(
-        TEST_PARENT_ELEMENT_NAME + "[@" + AttributeKeys.PRIMARY_KEY_ATTR_KEY + "='" + PRIMARY_VALUE_ONE + "',@" + TEST_ATTRIBUTE_ONE_KEY + "='" + TEST_ATTRIBUTE_ONE_VALUE + "',@"
+        TEST_PARENT_ELEMENT_NAME + "[@" + AttributeKeys.ENTITY_PATH_ATTR_KEY + "='" + ENTITY_PATH_VALUE_ONE + "',@" + TEST_ATTRIBUTE_ONE_KEY + "='" + TEST_ATTRIBUTE_ONE_VALUE + "',@"
             + TEST_ATTRIBUTE_TWO_KEY + "='" + TEST_ATTRIBUTE_TWO_VALUE + "']=" + TEST_PARENT_ELEMENT_VALUE);
 
     return result;
