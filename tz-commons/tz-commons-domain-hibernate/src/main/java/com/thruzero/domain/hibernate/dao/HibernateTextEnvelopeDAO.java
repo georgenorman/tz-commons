@@ -33,6 +33,24 @@ import com.thruzero.domain.store.EntityPath;
  */
 public class HibernateTextEnvelopeDAO extends HibernateGenericDAO<TextEnvelope> implements TextEnvelopeDAO {
 
+  @Override
+  public boolean isExistingTextEnvelope(EntityPath entityPath) {
+    Session session = getCurrentSession();
+
+    StrBuilderExt hql = new StrBuilderExt(100);
+    hql.append("SELECT COUNT (textEnvelope) FROM TextEnvelope textEnvelope");
+    hql.append("  WHERE textEnvelope.entityPath.containerPath = :containerPath ");
+    hql.append("    AND textEnvelope.entityPath.entityName = :entityName ");
+
+    Query hqlQuery = session.createQuery(hql.toString());
+    hqlQuery.setString("containerPath", entityPath.getContainerPath().getPath());
+    hqlQuery.setString("entityName", entityPath.getEntityName());
+
+    Long result = (Long)hqlQuery.uniqueResult();
+
+    return result != null && result > 0;
+  }
+
   /**
    * Allow for class extensions; disallow client instantiation (use {@link com.thruzero.domain.locator.DAOLocator
    * DAOLocator} to access a particular DAO)

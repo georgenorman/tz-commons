@@ -95,6 +95,22 @@ public class HibernateGenericDAO<T extends Persistent> implements GenericDAO<T> 
     return result;
   }
 
+  @Override
+  public boolean isExistingEntity(Serializable primaryKey) {
+    Session session = getCurrentSession();
+
+    StrBuilderExt hql = new StrBuilderExt(100);
+    hql.append("SELECT COUNT (entity) FROM ", tableName, " entity");
+    hql.append("  WHERE entity.id = :primaryKey ");
+
+    Query hqlQuery = session.createQuery(hql.toString());
+    hqlQuery.setParameter("primaryKey", primaryKey);
+
+    Long result = (Long) hqlQuery.uniqueResult();
+
+    return result != null && result > 0;
+  }
+
   /**
    * make transient objects persistent. save() does guarantee to return an identifier. If an INSERT has to be executed
    * to get the identifier ( e.g. "identity" generator, not "sequence"), this INSERT happens immediately, no matter if

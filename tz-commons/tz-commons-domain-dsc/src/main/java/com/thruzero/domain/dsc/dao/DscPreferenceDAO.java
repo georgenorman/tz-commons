@@ -78,6 +78,14 @@ public class DscPreferenceDAO extends GenericDscDAO<Preference> implements Prefe
   }
 
   @Override
+  public boolean isExistingPreference(String owner, String context, String name) {
+    EntityPath id = ((DscPreferenceKeyGen)getKeyGen()).createKey(owner, context, name);
+    boolean result = isExistingEntity(id);
+
+    return result;
+  }
+
+  @Override
   public String getPreferenceValue(String owner, String context, String name) {
     return getPreferenceValue(owner, context, name, null);
   }

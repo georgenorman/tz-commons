@@ -26,6 +26,8 @@ import com.thruzero.domain.model.Preference;
  */
 public interface PreferenceDAO extends GenericDAO<Preference> {
 
+  boolean isExistingPreference(String owner, String context, String name);
+
   Preference getPreference(String owner, String context, String name);
 
   String getPreferenceValue(String owner, String context, String name);

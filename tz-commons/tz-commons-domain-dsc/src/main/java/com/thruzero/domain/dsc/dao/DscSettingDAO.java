@@ -77,6 +77,14 @@ public class DscSettingDAO extends GenericDscDAO<Setting> implements SettingDAO 
   }
 
   @Override
+  public boolean isExistingSetting(String context, String name) {
+    EntityPath id = ((DscSettingKeyGen)getKeyGen()).createKey(context, name);
+    boolean result = isExistingEntity(id);
+
+    return result;
+  }
+
+  @Override
   public String getSettingValue(String context, String name) {
     return getSettingValue(context, name, null);
   }

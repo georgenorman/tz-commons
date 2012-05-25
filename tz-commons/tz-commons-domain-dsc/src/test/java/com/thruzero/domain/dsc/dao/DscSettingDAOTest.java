@@ -97,4 +97,9 @@ public class DscSettingDAOTest extends AbstractDomainDscTestCase<DscSettingDAO> 
     testHelper.doTestGetComplexSetting();
   }
 
+  @Test
+  public void testIsExistingSetting() {
+    testHelper.doTestIsExistingSetting(DAOLocator.locate(SettingDAO.class));
+  }
+
 }

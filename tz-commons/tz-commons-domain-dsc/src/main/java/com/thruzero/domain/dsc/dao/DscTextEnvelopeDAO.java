@@ -104,6 +104,11 @@ public class DscTextEnvelopeDAO extends AbstractDataStoreDAO<TextEnvelope> imple
   }
 
   @Override
+  public boolean isExistingTextEnvelope(EntityPath entityPath) {
+    return isExistingEntity(entityPath);
+  }
+
+  @Override
   public List<? extends TextEnvelope> getTextEnvelopes(ContainerPath containerPath, boolean recursive) {
     List<TextEnvelope> result = new ArrayList<TextEnvelope>();
     DataStoreContainer dsc = createDataStoreContainer(containerPath, true);

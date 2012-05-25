@@ -53,6 +53,11 @@ public class HttpSessionTextEnvelopeDAO extends HttpSessionDAO<TextEnvelope> imp
   }
 
   @Override
+  public boolean isExistingTextEnvelope(EntityPath entityPath) {
+    return isExistingEntity(entityPath);
+  }
+
+  @Override
   public List<? extends TextEnvelope> getTextEnvelopes(ContainerPath containerPath, boolean recursive) {
     List<TextEnvelope> result = new ArrayList<TextEnvelope>();
     Collection<? extends TextEnvelope> allEntities = getMemoryStore().getResultList();

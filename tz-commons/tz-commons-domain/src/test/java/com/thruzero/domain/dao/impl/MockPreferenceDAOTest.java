@@ -96,4 +96,9 @@ public class MockPreferenceDAOTest extends AbstractDomainTestCase {
     testHelper.doTestGetComplexPreference(DAOLocator.locate(PreferenceDAO.class));
   }
 
+  @Test
+  public void testIsExistingPreference() {
+    testHelper.doTestIsExistingPreference(DAOLocator.locate(PreferenceDAO.class));
+  }
+
 }

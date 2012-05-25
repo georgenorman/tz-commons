@@ -181,6 +181,27 @@ public abstract class AbstractTextEnvelopeDAOTestHelper {
     }
   }
 
+  public void doTestIsExistingTextEnvelope(TextEnvelopeDAO dao) {
+    for (int i = 1; i>0; i++) {
+      beginTransaction(); // simulate the Transaction per Request pattern - Begin request cycle
+      switch (i) {
+        case 1: {
+          TextEnvelope newNode = (textEnvelopeTestBuilder.createTestTextEnvelopeTwo());
+          dao.save(newNode);
+        }
+          break;
+        case 2: {
+          boolean result = dao.isExistingTextEnvelope((textEnvelopeTestBuilder.createNodePathTwo()));
+          assertTrue(result);
+        }
+          break;
+        default:
+          i=-1;
+      }
+      commitTransaction(); // simulate the Transaction per Request pattern - End request cycle
+    }
+  }
+
   protected abstract void beginTransaction();
 
   protected abstract void commitTransaction();

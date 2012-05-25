@@ -36,6 +36,24 @@ public class HibernateSettingDAO extends HibernateGenericDAO<Setting> implements
   }
 
   @Override
+  public boolean isExistingSetting(String context, String name) {
+    Session session = getCurrentSession();
+
+    StrBuilderExt hql = new StrBuilderExt(100);
+    hql.append("SELECT COUNT (setting) FROM Setting setting");
+    hql.append("  WHERE setting.context = :context ");
+    hql.append("    AND setting.name = :name ");
+
+    Query hqlQuery = session.createQuery(hql.toString());
+    hqlQuery.setString("context", context);
+    hqlQuery.setString("name", name);
+
+    Long result = (Long)hqlQuery.uniqueResult();
+
+    return result != null && result > 0;
+  }
+
+  @Override
   public String getSettingValue( String context, String name ) {
     return getSettingValue(context, name, null);
   }

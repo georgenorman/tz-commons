@@ -99,4 +99,9 @@ public class HibernateTextEnvelopeDAOTest extends AbstractDomainHibernateTestCas
     testHelper.doTestDeletePersistedNode(DAOLocator.locate(TextEnvelopeDAO.class));
   }
 
+  @Test
+  public void testIsExistingTextEnvelope() {
+    testHelper.doTestIsExistingTextEnvelope(DAOLocator.locate(TextEnvelopeDAO.class));
+  }
+
 }

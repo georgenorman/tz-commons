@@ -60,6 +60,13 @@ public class MockSettingDAO extends GenericMemoryDAO<Setting> implements Setting
   }
 
   @Override
+  public boolean isExistingSetting(String context, String name) {
+    Serializable key = ((SettingKeyGen)getKeyGen()).createKey(context, name);
+
+    return isExistingEntity(key);
+  }
+
+  @Override
   public Setting getSetting(String context, String name) {
     Serializable key = ((SettingKeyGen)getKeyGen()).createKey(context, name);
 

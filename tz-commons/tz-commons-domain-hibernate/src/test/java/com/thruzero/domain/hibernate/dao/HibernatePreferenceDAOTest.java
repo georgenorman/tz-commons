@@ -93,4 +93,9 @@ public class HibernatePreferenceDAOTest extends AbstractDomainHibernateTestCase 
   public void testGetComplexPreference() {
     testHelper.doTestGetComplexPreference(DAOLocator.locate(PreferenceDAO.class));
   }
+
+  @Test
+  public void testIsExistingPreference() {
+    testHelper.doTestIsExistingPreference(DAOLocator.locate(PreferenceDAO.class));
+  }
 }

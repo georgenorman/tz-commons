@@ -128,6 +128,17 @@ public class GenericMemoryDAO<T extends Persistent> implements GenericDAO<T> {
   }
 
   @Override
+  public boolean isExistingEntity(Serializable primaryKey) {
+    boolean result = false;
+
+    if (primaryKey != null) {
+      result = memoryStore.find(primaryKey) != null;
+    }
+
+    return result;
+  }
+
+  @Override
   public Collection<? extends T> getAll() {
     return new ArrayList<T>(memoryStore.getResultList()); // TODO-p1(george) JSF EL (using h:dataTable tag) can't use Collection returned by Map.
   }

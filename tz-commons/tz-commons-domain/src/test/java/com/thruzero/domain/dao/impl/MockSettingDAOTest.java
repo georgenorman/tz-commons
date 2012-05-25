@@ -97,4 +97,9 @@ public class MockSettingDAOTest extends AbstractDomainTestCase {
     testHelper.doTestGetComplexSetting();
   }
 
+  @Test
+  public void testIsExistingPreference() {
+    testHelper.doTestIsExistingSetting(DAOLocator.locate(SettingDAO.class));
+  }
+
 }

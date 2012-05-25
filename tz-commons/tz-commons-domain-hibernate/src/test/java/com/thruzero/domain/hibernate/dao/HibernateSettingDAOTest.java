@@ -95,4 +95,9 @@ public class HibernateSettingDAOTest extends AbstractDomainHibernateTestCase {
     testHelper.doTestGetComplexSetting();
   }
 
+  @Test
+  public void testIsExistingSetting() {
+    testHelper.doTestIsExistingSetting(DAOLocator.locate(SettingDAO.class));
+  }
+
 }

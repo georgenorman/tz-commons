@@ -95,6 +95,22 @@ public class JpaGenericDAO<T extends Persistent> implements GenericDAO<T> {
   }
 
   @Override
+  public boolean isExistingEntity(Serializable primaryKey) {
+    EntityManager entityManager = getCurrentPersistenceManager();
+
+    StrBuilderExt hql = new StrBuilderExt(100);
+    hql.append("SELECT COUNT (entity) FROM ", clazz.getSimpleName(), " entity");
+    hql.append("  WHERE entity.id = :primaryKey ");
+
+    Query hqlQuery = entityManager.createQuery(hql.toString());
+    hqlQuery.setParameter("primaryKey", primaryKey);
+
+    Long result = (Long)hqlQuery.getSingleResult();
+
+    return result != null && result > 0;
+  }
+
+  @Override
   public void save(T domainObject) {
     EntityManager persistenceManager = getCurrentPersistenceManager( );
 

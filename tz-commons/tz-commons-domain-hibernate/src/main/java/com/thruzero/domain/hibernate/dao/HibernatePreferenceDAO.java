@@ -36,6 +36,26 @@ public class HibernatePreferenceDAO extends HibernateGenericDAO<Preference> impl
   }
 
   @Override
+  public boolean isExistingPreference(String owner, String context, String name) {
+    Session session = getCurrentSession();
+
+    StrBuilderExt hql = new StrBuilderExt(100);
+    hql.append("SELECT COUNT (preference) FROM Preference preference");
+    hql.append("  WHERE preference.context = :context ");
+    hql.append("  AND preference.name = :name ");
+    hql.append("  AND preference.owner = :owner ");
+
+    Query hqlQuery = session.createQuery(hql.toString());
+    hqlQuery.setString("context", context);
+    hqlQuery.setString("name", name);
+    hqlQuery.setString("owner", owner);
+
+    Long result = (Long) hqlQuery.uniqueResult();
+
+    return result != null && result > 0;
+  }
+
+  @Override
   public String getPreferenceValue(String owner, String context, String name) {
     return getPreferenceValue(owner, context, name, null);
   }

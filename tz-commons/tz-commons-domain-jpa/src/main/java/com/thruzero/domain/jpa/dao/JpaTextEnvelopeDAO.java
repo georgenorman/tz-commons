@@ -34,6 +34,24 @@ import com.thruzero.domain.store.EntityPath;
  */
 public class JpaTextEnvelopeDAO extends JpaGenericDAO<TextEnvelope> implements TextEnvelopeDAO {
 
+  @Override
+  public boolean isExistingTextEnvelope(EntityPath entityPath) {
+    EntityManager entityManager = getCurrentPersistenceManager();
+
+    StrBuilderExt hql = new StrBuilderExt(100);
+    hql.append("SELECT COUNT(textEnvelope) FROM TextEnvelope textEnvelope");
+    hql.append("  WHERE textEnvelope.entityPath.containerPath.path = :path ");
+    hql.append("    AND textEnvelope.entityPath.entityName = :entityName ");
+
+    Query hqlQuery = entityManager.createQuery(hql.toString());
+    hqlQuery.setParameter("path", entityPath.getContainerPath().getPath());
+    hqlQuery.setParameter("entityName", entityPath.getEntityName());
+
+    Long result = JpaUtils.getSingleResultHack(hqlQuery);
+
+    return result != null && result > 0;
+  }
+
   /**
    * Allow for class extensions; disallow client instantiation (use {@link com.thruzero.domain.locator.DAOLocator
    * DAOLocator} to access a particular DAO)

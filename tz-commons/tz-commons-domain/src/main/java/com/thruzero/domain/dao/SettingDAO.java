@@ -26,6 +26,8 @@ import com.thruzero.domain.model.Setting;
  */
 public interface SettingDAO extends GenericDAO<Setting> {
 
+  boolean isExistingSetting(String context, String name);
+
   Setting getSetting(String context, String name);
 
   String getSettingValue(String context, String name);

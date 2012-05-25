@@ -310,6 +310,20 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
     return null; // TODO-p1(george) IMPLEMENT
   }
 
+  @Override
+  public boolean isExistingEntity(Serializable id) {
+    boolean result = false;
+
+    if (id != null) {
+      EntityPath primaryKey = (EntityPath)id;
+      DataStoreContainer dataStoreContainer = createDataStoreContainer(primaryKey.getContainerPath(), true); // create the parent directory if it doesn't exist
+
+      result = dataStoreContainer.isExistingEntity(primaryKey.getEntityName());
+    }
+
+    return result;
+  }
+
   // Support functions ////////////////////////////////////////////////////////////////////
 
   /**

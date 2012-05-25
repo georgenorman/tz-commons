@@ -37,6 +37,26 @@ public class JpaPreferenceDAO extends JpaGenericDAO<Preference> implements Prefe
   }
 
   @Override
+  public boolean isExistingPreference(String owner, String context, String name) {
+    EntityManager entityManager = getCurrentPersistenceManager();
+
+    StrBuilderExt hql = new StrBuilderExt(100);
+    hql.append("SELECT COUNT (preference) FROM Preference preference");
+    hql.append("  WHERE preference.context = :context ");
+    hql.append("    AND preference.name = :name ");
+    hql.append("    AND preference.owner = :owner ");
+
+    Query hqlQuery = entityManager.createQuery(hql.toString());
+    hqlQuery.setParameter("context", context);
+    hqlQuery.setParameter("name", name);
+    hqlQuery.setParameter("owner", owner);
+
+    Long result = (Long)hqlQuery.getSingleResult();
+
+    return result != null && result > 0;
+  }
+
+  @Override
   public String getPreferenceValue( String owner, String context, String name ) {
     return getPreferenceValue(owner, context, name, null);
   }

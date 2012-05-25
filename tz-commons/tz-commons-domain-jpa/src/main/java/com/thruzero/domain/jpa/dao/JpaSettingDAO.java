@@ -37,6 +37,24 @@ public class JpaSettingDAO extends JpaGenericDAO<Setting> implements SettingDAO 
   }
 
   @Override
+  public boolean isExistingSetting(String context, String name) {
+    EntityManager entityManager = getCurrentPersistenceManager();
+
+    StrBuilderExt hql = new StrBuilderExt(100);
+    hql.append("SELECT COUNT (setting) FROM Setting setting");
+    hql.append("  WHERE setting.context = :context ");
+    hql.append("    AND setting.name = :name ");
+
+    Query hqlQuery = entityManager.createQuery(hql.toString());
+    hqlQuery.setParameter("context", context);
+    hqlQuery.setParameter("name", name);
+
+    Long result = (Long)hqlQuery.getSingleResult();
+
+    return result != null && result > 0;
+  }
+
+  @Override
   public String getSettingValue( String context, String name ) {
     return getSettingValue(context, name, null);
   }

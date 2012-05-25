@@ -60,6 +60,13 @@ public class MockPreferenceDAO extends GenericMemoryDAO<Preference> implements P
   }
 
   @Override
+  public boolean isExistingPreference(String owner, String context, String name) {
+    Serializable key = ((PreferenceKeyGen)getKeyGen()).createKey(owner, context, name);
+
+    return isExistingEntity(key);
+  }
+
+  @Override
   public Preference getPreference(String owner, String context, String name) {
     Serializable key = ((PreferenceKeyGen)getKeyGen()).createKey(owner, context, name);
 

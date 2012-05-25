@@ -93,6 +93,13 @@ public abstract class AbstractInfoNodeService implements InfoNodeService {
     return result;
   }
 
+  @Override
+  public boolean isExistingEntity(EntityPath entityPath) {
+    boolean result = getTextEnvelopeDAO().isExistingTextEnvelope(entityPath);
+
+    return result;
+  }
+
   protected TextEnvelopeDAO getTextEnvelopeDAO() {
     return textEnvelopeDAO;
   }

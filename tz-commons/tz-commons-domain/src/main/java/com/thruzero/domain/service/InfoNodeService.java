@@ -57,6 +57,9 @@ public interface InfoNodeService extends Service {
 
   InfoNodeElement getInfoNode(EntityPath entityPath);
 
+  /** Return true if resource exists at the given entity path. */
+  boolean isExistingEntity(EntityPath entityPath);
+
   /**
    * Return the first InfoNodeElement found at the given entityPath and xpathExpr.
    * For example, consider a Service configured for a database with the TEXT_ENVELOPE table populated as follows:

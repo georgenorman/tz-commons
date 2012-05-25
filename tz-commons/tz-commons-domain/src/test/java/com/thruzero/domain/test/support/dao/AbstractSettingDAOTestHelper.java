@@ -238,6 +238,27 @@ public abstract class AbstractSettingDAOTestHelper {
     }
   }
 
+  public void doTestIsExistingSetting(SettingDAO dao) {
+    for (int i = 1; i>0; i++) {
+      beginTransaction(); // simulate the Transaction per Request pattern - Begin request cycle
+      switch (i) {
+        case 1: {
+          Setting newSetting1 = settingTestBuilder.createTestSettingOneA();
+          dao.save(newSetting1);
+        }
+          break;
+        case 2: {
+          boolean value = dao.isExistingSetting(SettingTestConst.TEST_ONE_CONTEXTA, SettingTestConst.TEST_ONE_NAME);
+          assertTrue(value);
+        }
+          break;
+        default:
+          i=-1;
+      }
+      commitTransaction(); // simulate the Transaction per Request pattern - End request cycle
+    }
+  }
+
   protected abstract void beginTransaction();
 
   protected abstract void commitTransaction();

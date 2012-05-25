@@ -76,6 +76,9 @@ public interface GenericDAO<T> extends DAO {
   /** Load and return the Domain Object from the data store, for the given primaryKey; returning null if not found. */
   T getByKey(Serializable primaryKey);
 
+  /** Return true if resource exists for the given primaryKey. */
+  boolean isExistingEntity(Serializable primaryKey);
+
   /** Return all of the domainObject's, of type T, from the data store */
   Collection<? extends T> getAll();
 

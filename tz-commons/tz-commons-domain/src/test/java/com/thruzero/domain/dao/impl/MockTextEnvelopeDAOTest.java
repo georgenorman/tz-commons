@@ -101,4 +101,9 @@ public class MockTextEnvelopeDAOTest extends AbstractDomainTestCase {
     testHelper.doTestDeletePersistedNode(DAOLocator.locate(TextEnvelopeDAO.class));
   }
 
+  @Test
+  public void testIsExistingTextEnvelope() {
+    testHelper.doTestIsExistingTextEnvelope(DAOLocator.locate(TextEnvelopeDAO.class));
+  }
+
 }

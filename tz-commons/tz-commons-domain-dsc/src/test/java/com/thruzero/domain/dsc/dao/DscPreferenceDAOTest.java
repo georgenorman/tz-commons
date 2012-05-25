@@ -97,4 +97,9 @@ public class DscPreferenceDAOTest extends AbstractDomainDscTestCase<DscPreferenc
     testHelper.doTestGetComplexPreference(DAOLocator.locate(PreferenceDAO.class));
   }
 
+  @Test
+  public void testIsExistingPreference() {
+    testHelper.doTestIsExistingPreference(DAOLocator.locate(PreferenceDAO.class));
+  }
+
 }

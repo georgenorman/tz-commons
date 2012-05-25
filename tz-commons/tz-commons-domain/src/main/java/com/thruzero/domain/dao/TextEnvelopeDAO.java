@@ -29,6 +29,11 @@ import com.thruzero.domain.store.EntityPath;
 public interface TextEnvelopeDAO extends GenericDAO<TextEnvelope> {
 
   /**
+   * Returns true if a node at the given {@code entityPath} exists; otherwise, returns false.
+   */
+  boolean isExistingTextEnvelope(EntityPath entityPath);
+
+  /**
    * Return all {@code TextEnvelope} instances with the given {@code containerPath} and if {@code recursive} is true, additionally return
    * all "nested" children under the {@code containerPath}. For example, if a store contains the following TextEnvelope instances:
    * <pre>
@@ -47,4 +52,3 @@ public interface TextEnvelopeDAO extends GenericDAO<TextEnvelope> {
   TextEnvelope getTextEnvelope(EntityPath entityPath);
 
 }
-

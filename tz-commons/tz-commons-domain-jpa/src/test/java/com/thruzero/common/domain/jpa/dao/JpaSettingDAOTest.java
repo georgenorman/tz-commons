@@ -95,4 +95,9 @@ public class JpaSettingDAOTest extends AbstractDomainJpaTestCase {
   public void testGetComplexSetting() {
     testHelper.doTestGetComplexSetting();
   }
+
+  @Test
+  public void testIsExistingSetting() {
+    testHelper.doTestIsExistingSetting(DAOLocator.locate(SettingDAO.class));
+  }
 }

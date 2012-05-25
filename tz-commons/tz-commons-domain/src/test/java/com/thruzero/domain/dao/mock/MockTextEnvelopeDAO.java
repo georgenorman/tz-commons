@@ -53,6 +53,11 @@ public class MockTextEnvelopeDAO extends GenericMemoryDAO<TextEnvelope> implemen
   }
 
   @Override
+  public boolean isExistingTextEnvelope(EntityPath entityPath) {
+    return isExistingEntity(entityPath);
+  }
+
+  @Override
   public List<? extends TextEnvelope> getTextEnvelopes(ContainerPath containerPath, boolean recursive) {
     // TODO-p1(george) Auto-generated method stub
     return null;
