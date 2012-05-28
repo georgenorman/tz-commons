@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.thruzero.common.core.support.KeyGen;
+import com.thruzero.common.core.support.SimpleInfo;
 import com.thruzero.domain.dao.GenericDAO;
 import com.thruzero.domain.store.Persistent;
 
@@ -171,8 +172,8 @@ public class GenericMemoryDAO<T extends Persistent> implements GenericDAO<T> {
   }
 
   @Override
-  public String getInfo() {
-    return getClass().getSimpleName() + ".";
+  public SimpleInfo getSimpleInfo() {
+    return SimpleInfo.createSimpleInfo(this);
   }
 
 }

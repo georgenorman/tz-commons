@@ -25,6 +25,7 @@ import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.infonode.builder.SaxInfoNodeBuilder;
 import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
+import com.thruzero.common.core.support.SimpleInfo;
 import com.thruzero.domain.dao.TextEnvelopeDAO;
 import com.thruzero.domain.model.TextEnvelope;
 import com.thruzero.domain.service.InfoNodeService;
@@ -148,7 +149,7 @@ public abstract class AbstractInfoNodeService implements InfoNodeService {
   }
 
   @Override
-  public String getInfo() {
+  public SimpleInfo getSimpleInfo() {
     // TODO Auto-generated method stub
     return null;
   }

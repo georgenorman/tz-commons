@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.thruzero.common.core.locator.InitializationException;
 import com.thruzero.common.core.locator.InitializationStrategy;
 import com.thruzero.common.core.map.StringMap;
+import com.thruzero.common.core.support.SimpleInfo;
 import com.thruzero.domain.dsc.dao.AbstractDataStoreDAO.DataStoreDAOInitParamKeys;
 import com.thruzero.domain.store.BaseStorePath;
 
@@ -63,6 +64,11 @@ public abstract class AbstractDataStoreContainerFactory implements DataStoreCont
   @Override
   public BaseStorePath getBaseStorePath() {
     return baseStorePath;
+  }
+
+  @Override
+  public SimpleInfo getSimpleInfo() {
+    return SimpleInfo.createSimpleInfo(this);
   }
 
 }

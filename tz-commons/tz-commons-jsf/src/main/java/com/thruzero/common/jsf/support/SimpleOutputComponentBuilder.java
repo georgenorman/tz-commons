@@ -93,7 +93,7 @@ public class SimpleOutputComponentBuilder {
     HtmlOutputLink result = new HtmlOutputLink();
 
     if (url.startsWith("/")) {
-      result.setValue("/" + FacesUtils.ServletContextName() + url);
+      result.setValue("/" + FacesUtils.getServletContextName() + url);
     } else {
       result.setValue(url);
     }

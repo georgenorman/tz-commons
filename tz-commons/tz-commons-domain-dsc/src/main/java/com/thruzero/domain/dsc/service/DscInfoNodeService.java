@@ -15,6 +15,7 @@
  */
 package com.thruzero.domain.dsc.service;
 
+import com.thruzero.common.core.support.SimpleInfo;
 import com.thruzero.domain.dsc.dao.DscTextEnvelopeDAO;
 import com.thruzero.domain.locator.DAOLocator;
 import com.thruzero.domain.service.impl.AbstractInfoNodeService;
@@ -55,7 +56,7 @@ public class DscInfoNodeService extends AbstractInfoNodeService {
   }
 
   @Override
-  public String getInfo() {
-    return getClass().getSimpleName() + " is configured to use " + getTextEnvelopeDAO().getInfo();
+  public SimpleInfo getSimpleInfo() {
+    return SimpleInfo.createSimpleInfo(this, getTextEnvelopeDAO());
   }
 }

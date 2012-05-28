@@ -17,13 +17,14 @@ package com.thruzero.auth.service;
 
 import com.thruzero.auth.model.User;
 import com.thruzero.common.core.service.Service;
+import com.thruzero.common.core.support.SimpleInfoProvider;
 
 /**
  * Manages registered Users and is used for authentication and authorization.
  *
  * @author George Norman
  */
-public interface UserService extends Service {
+public interface UserService extends Service, SimpleInfoProvider {
 
   /** Return the User with the given loginId, or null if not found. */
   User getUserByLoginId(String loginId);
@@ -39,8 +40,5 @@ public interface UserService extends Service {
   void updateUser(User user);
 
   void deleteUser(User user); // TODO-p0(george) hmmm, may want to retire the user, so history is preserved.
-
-  /** Return a simple description of the service configuration (e.g., "UserService configured using JpaUserDAO"). */
-  String getInfo();
 
 }

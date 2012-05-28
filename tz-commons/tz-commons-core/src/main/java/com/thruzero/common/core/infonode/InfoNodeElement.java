@@ -104,7 +104,7 @@ public class InfoNodeElement extends Element {
   }
 
   /**
-   * Find a child name using the given {@code xpathExpr}. Examples:
+   * Find the first child using the given {@code xpathExpr}. Examples:
    * <pre>
    * "ChildElement1/TestOneElement[@TestOneAttributeOne='attrone2']"
    * </pre>
@@ -113,6 +113,12 @@ public class InfoNodeElement extends Element {
     XPath xpath = XPath.newInstance(xpathExpr);
 
     return xpath.selectSingleNode(this);
+  }
+
+  public Object findAll(final String xpathExpr) throws JDOMException {
+    XPath xpath = XPath.newInstance(xpathExpr);
+
+    return xpath.selectNodes(this);
   }
 
   public InfoNodeElement addChildNode(final InfoNodeElement child) {

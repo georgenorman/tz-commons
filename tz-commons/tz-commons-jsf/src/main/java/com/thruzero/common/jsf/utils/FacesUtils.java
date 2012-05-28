@@ -71,7 +71,7 @@ public class FacesUtils {
     return result;
   }
 
-  public static String ServletContextName() {
+  public static String getServletContextName() {
     ServletContext ServletContext = (ServletContext)getExternalContext().getContext();
 
     return ServletContext.getServletContextName();

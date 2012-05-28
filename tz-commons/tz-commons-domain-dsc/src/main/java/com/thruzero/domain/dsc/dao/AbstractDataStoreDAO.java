@@ -28,6 +28,7 @@ import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.KeyGen;
 import com.thruzero.common.core.support.SimpleIdGenerator;
+import com.thruzero.common.core.support.SimpleInfo;
 import com.thruzero.common.core.utils.ClassUtils;
 import com.thruzero.common.core.utils.ClassUtils.ClassUtilsException;
 import com.thruzero.domain.dao.GenericDAO;
@@ -364,8 +365,8 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
   }
 
   @Override
-  public String getInfo() {
-    return getClass().getSimpleName() + " using " + dscFactory.getClass().getSimpleName() + " at " + getBaseStorePath();
+  public SimpleInfo getSimpleInfo() {
+    return SimpleInfo.createSimpleInfo(this, " using ", dscFactory);
   }
 
 }

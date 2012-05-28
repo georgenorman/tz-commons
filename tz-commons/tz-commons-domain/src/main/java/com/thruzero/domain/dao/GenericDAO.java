@@ -18,6 +18,7 @@ package com.thruzero.domain.dao;
 import java.io.Serializable;
 import java.util.Collection;
 
+import com.thruzero.common.core.support.SimpleInfoProvider;
 import com.thruzero.common.core.utils.ExceptionUtilsExt;
 
 /**
@@ -32,7 +33,7 @@ import com.thruzero.common.core.utils.ExceptionUtilsExt;
  * @author George Norman
  * @param <T> The type of object managed by the DAO.
  */
-public interface GenericDAO<T> extends DAO {
+public interface GenericDAO<T> extends DAO, SimpleInfoProvider {
 
   // ------------------------------------------------
   // DAOException
@@ -81,8 +82,5 @@ public interface GenericDAO<T> extends DAO {
 
   /** Return all of the domainObject's, of type T, from the data store */
   Collection<? extends T> getAll();
-
-  /** Return a simple description of the service configuration (e.g., "JpaTextEnvelopeDAO configured with "). */
-  String getInfo();
 
 }

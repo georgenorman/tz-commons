@@ -26,6 +26,7 @@ import com.thruzero.auth.model.User;
 import com.thruzero.auth.service.UserService;
 import com.thruzero.auth.test.support.SimpleUserTestBuilder;
 import com.thruzero.auth.test.support.SimpleUserTestBuilder.UserTestConst;
+import com.thruzero.common.core.support.SimpleInfo;
 import com.thruzero.domain.dao.GenericDAO;
 import com.thruzero.domain.locator.DAOLocator;
 import com.thruzero.domain.service.impl.AbstractCrudService;
@@ -87,8 +88,8 @@ public abstract class AbstractUserServiceTestHelper {
     }
 
     @Override
-    public String getInfo() {
-      return getClass().getSimpleName() + " is configured to use " + userDAO.getInfo();
+    public SimpleInfo getSimpleInfo() {
+      return SimpleInfo.createSimpleInfo(this, userDAO);
     }
   }
 

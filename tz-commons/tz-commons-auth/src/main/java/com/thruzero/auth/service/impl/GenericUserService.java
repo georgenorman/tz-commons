@@ -19,6 +19,7 @@ import com.thruzero.auth.dao.UserDAO;
 import com.thruzero.auth.model.User;
 import com.thruzero.auth.service.UserService;
 import com.thruzero.auth.utils.AuthenticationUtils;
+import com.thruzero.common.core.support.SimpleInfo;
 import com.thruzero.domain.locator.DAOLocator;
 
 /**
@@ -80,8 +81,8 @@ public class GenericUserService implements UserService {
   }
 
   @Override
-  public String getInfo() {
-    return getClass().getSimpleName() + " is configured to use " + userDAO.getInfo();
+  public SimpleInfo getSimpleInfo() {
+    return SimpleInfo.createSimpleInfo(this, userDAO);
   }
 
 }

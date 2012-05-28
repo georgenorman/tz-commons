@@ -15,6 +15,7 @@
  */
 package com.thruzero.auth.jpa.service;
 
+import com.thruzero.common.core.support.SimpleInfo;
 import com.thruzero.domain.jpa.dao.JpaTextEnvelopeDAO;
 import com.thruzero.domain.locator.DAOLocator;
 import com.thruzero.domain.service.impl.AbstractInfoNodeService;
@@ -51,8 +52,8 @@ public class JpaInfoNodeService extends AbstractInfoNodeService {
   }
 
   @Override
-  public String getInfo() {
-    return getClass().getSimpleName() + " is configured to use " + getTextEnvelopeDAO().getInfo();
+  public SimpleInfo getSimpleInfo() {
+    return SimpleInfo.createSimpleInfo(this, getTextEnvelopeDAO());
   }
 
 }

@@ -17,6 +17,7 @@ package com.thruzero.domain.dsc.store;
 
 import com.thruzero.common.core.locator.InitializationStrategy;
 import com.thruzero.common.core.support.ContainerPath;
+import com.thruzero.common.core.support.SimpleInfoProvider;
 import com.thruzero.domain.store.BaseStorePath;
 
 /**
@@ -26,7 +27,7 @@ import com.thruzero.domain.store.BaseStorePath;
  *
  * @author George Norman
  */
-public interface DataStoreContainerFactory {
+public interface DataStoreContainerFactory extends SimpleInfoProvider {
 
   /**
    * @param daoParams param map used to init the DAO.

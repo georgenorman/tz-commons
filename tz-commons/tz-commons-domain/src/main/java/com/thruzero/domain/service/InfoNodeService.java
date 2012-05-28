@@ -21,6 +21,7 @@ import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.service.Service;
 import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
+import com.thruzero.common.core.support.SimpleInfoProvider;
 
 /**
  * A Service interface to manage persistence-related functionality of InfoNodeElement instances.
@@ -29,7 +30,7 @@ import com.thruzero.common.core.support.EntityPath;
  *
  * @author George Norman
  */
-public interface InfoNodeService extends Service {
+public interface InfoNodeService extends Service, SimpleInfoProvider {
 
   /**
    * Return the collection of InfoNodeElement instances at the given containerPath.
@@ -92,7 +93,4 @@ public interface InfoNodeService extends Service {
 
   /** Delete the domainObject from the data store, if it exists. */
   void delete(InfoNodeElement domainObject);
-
-  /** Return a simple description of the service configuration (e.g., "GenericInfoNodeService configured using JpaTextEnvelopeDAO"). */
-  String getInfo();
 }

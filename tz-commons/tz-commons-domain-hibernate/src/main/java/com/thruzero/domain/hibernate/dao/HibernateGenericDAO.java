@@ -22,6 +22,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.thruzero.common.core.locator.TransactionMgrLocator;
+import com.thruzero.common.core.support.SimpleInfo;
 import com.thruzero.common.core.support.StrBuilderExt;
 import com.thruzero.common.core.transaction.DatabaseTransactionMgr;
 import com.thruzero.common.core.transaction.TransactionMgr;
@@ -203,8 +204,8 @@ public class HibernateGenericDAO<T extends Persistent> implements GenericDAO<T> 
   }
 
   @Override
-  public String getInfo() {
-    return getClass().getSimpleName() + ".";
+  public SimpleInfo getSimpleInfo() {
+    return SimpleInfo.createSimpleInfo(this);
   }
 
 }
