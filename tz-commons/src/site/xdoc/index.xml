@@ -36,7 +36,8 @@
     <section name="Sample Applications">
         There's a sample application:
         <ul>
-          <li><b>pf-test18 [Desktop]</b>: A PrimeFaces test application, for desktop browsers, configurable for JPA, Hibernate, DSC file system or DSC web service.
+          <li><b><a href="http://www.thruzero.com/projects/pf-test-desktop/index.html">pf-test1-desktop</a></b>: A PrimeFaces web application,
+            for desktop browsers, configurable for JPA, Hibernate, DSC file system or DSC web service.
             It tests tz-commons using some of the following PrimeFaces components:
             <ul>
               <li>Accordion Panel (using JPA and DSC concurrently)</li>
@@ -54,13 +55,18 @@
               <li>Authentication test (Shiro integration)</li>
             </ul>
           </li>
-          <li><b>pf-test18 [Mobile]</b>: TODO-p0(george) A PrimeFaces test application, for mobile, configurable for JPA, Hibernate, DSC file system or DSC web service.</li>
-          <li><b>pf-test18 [Responsive]</b>: TODO-p0(george) A PrimeFaces test application, for desktop and mobile, configurable for JPA, Hibernate, DSC file system or DSC web service.</li>
+          <li><b>jq-test-mobile</b>: Work-In-Progress. A Hybrid JQuery and JSF 2.0 test application, for mobile, configurable for JPA, Hibernate, DSC file system or DSC web service.
+              JQuery is used for the UI, JSF is used for managed beans and dependency injection and Facelets is used for templating and creating compound JQuery components as well as helper components.
+              This also tests tz-commons, using many of the same UI features as the pf-test1-desktop web application (but no PrimeFaces).
+              A semi-working live demo can be found <a href = "http://www.thruzero.com/jq-test-mobile/apps/demo/dashboard.jsf">here</a>.
+          </li>
+          <li><b>pf-test-responsive</b>: TODO-p0(george) A Hybrid JQuery and JSF 2.0 web application, for desktop and mobile, configurable
+               for JPA, Hibernate, DSC file system or DSC web service.</li>
         </ul>
     </section>
 
     <section name="Architecture">
-      <img src="images/tz-commons-overview.png" />
+      <a href="html/architecture.html"><img src="images/tz-commons-overview.png" width="900" /></a>
     </section>
 
   </body>
