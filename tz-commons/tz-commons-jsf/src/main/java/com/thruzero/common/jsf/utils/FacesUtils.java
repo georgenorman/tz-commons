@@ -16,6 +16,7 @@
 package com.thruzero.common.jsf.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.el.ExpressionFactory;
@@ -61,14 +62,13 @@ public class FacesUtils {
    * session for the request, if create is true.
    */
   public static HttpSession getSession(boolean create) {
-    HttpSession result = null;
     FacesContext facesContext = FacesContext.getCurrentInstance();
 
-    if (facesContext != null) {
-      result = (HttpSession)facesContext.getExternalContext().getSession(create);
-    }
+    return (HttpSession)facesContext.getExternalContext().getSession(create);
+  }
 
-    return result;
+  public static String getRequestHeader(String name) {
+    return getRequest().getHeader(name);
   }
 
   public static String getServletContextName() {
@@ -78,19 +78,19 @@ public class FacesUtils {
   }
 
   public static File getWebInfDir() {
-      File webAppPath = new File(getExternalContext().getRealPath("/"));
-      String warDeployPath = webAppPath.getAbsolutePath();
-      if (StringUtils.isEmpty(warDeployPath)) {
-        return null;
-      }
-
-      File webInfDir = new File(warDeployPath, "WEB-INF");
-      if (webInfDir.exists() && webInfDir.isDirectory()) {
-        return webInfDir;
-      }
-
+    File webAppPath = new File(getExternalContext().getRealPath("/"));
+    String warDeployPath = webAppPath.getAbsolutePath();
+    if (StringUtils.isEmpty(warDeployPath)) {
       return null;
     }
+
+    File webInfDir = new File(warDeployPath, "WEB-INF");
+    if (webInfDir.exists() && webInfDir.isDirectory()) {
+      return webInfDir;
+    }
+
+    return null;
+  }
 
   public static Serializable locateManagedBean(String name) {
     Serializable result = (Serializable)getExpressionValue("#{" + name + "}", Serializable.class);
