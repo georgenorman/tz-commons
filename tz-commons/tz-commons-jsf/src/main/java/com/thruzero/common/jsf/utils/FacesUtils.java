@@ -77,6 +77,10 @@ public class FacesUtils {
     return ServletContext.getServletContextName();
   }
 
+  public static String getUrlWithContextName(String url) {
+    return "/" + getServletContextName() + url;
+  }
+
   public static File getWebInfDir() {
     File webAppPath = new File(getExternalContext().getRealPath("/"));
     String warDeployPath = webAppPath.getAbsolutePath();
