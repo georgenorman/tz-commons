@@ -1,0 +1,40 @@
+= ThruZero Commons
+
+ThruZero Commons (tz-commons) is a collection of Java components I've developed
+over the years (since about 2002) while creating various websites and services.
+The components are reusable and many components are extensions to or leverage
+existing open source components.
+
+== Build
+
+1. Open a command shell and cd to the project directory. Example:
+
+   cd c:/projects/tz-commons
+
+2. Build using maven2 (I used apache-maven-2.2.1 with jdk1.6.0_07):
+
+   mvn clean install
+
+This will build all of the tz-commons jars and install them in your local maven repo.
+
+NOTE: The tz-commons-domain unit tests use dumbster as a dummy SMTP server.
+Some virus protection apps may block dumbster, causing these test to fail.
+By default, these tests have been disabled. They can be enabled by setting
+DISABLE_EMAIL_TEST to false in the tz-commons-domain test config file.
+
+== License
+
+Copyright 2012 George Norman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this software except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
