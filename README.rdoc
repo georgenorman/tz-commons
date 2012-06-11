@@ -5,6 +5,10 @@ over the years (since about 2002) while creating various websites and services.
 The components are reusable and many components are extensions to or leverage
 existing open source components.
 
+See this link for documentation:
+
+http://www.thruzero.com/projects/tz-commons/index.html
+
 == Build
 
 1. Open a command shell and cd to the project directory. Example:
