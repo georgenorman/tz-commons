@@ -83,6 +83,13 @@
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>com.thruzero.common</groupId>
+      <artifactId>tz-commons-web</artifactId>
+      <version>${tz.commons.version}</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>

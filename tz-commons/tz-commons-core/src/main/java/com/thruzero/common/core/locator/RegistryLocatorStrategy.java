@@ -1,5 +1,5 @@
 /*
- *   Copyright 2011 George Norman
+ *   Copyright 2011-2012 George Norman
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -287,7 +287,8 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
 
         // error if attempting to register the same binding twice.
         if (bindingMap.containsKey(binding.getInterfaceName())) {
-          throw new LocatorException("InterfaceBindingRegistry ERROR - Binding already exists for given interface: " + binding.getInterfaceName());
+          throw ExceptionUtilsExt.logAndCreateLocatorException(logHelper.getLogger(),
+                "InterfaceBindingRegistry ERROR - Binding already exists for given interface: " + binding.getInterfaceName());
         }
 
         bindingMap.put(binding.getInterfaceName(), binding);
@@ -387,7 +388,7 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
           InterfaceToClassBinding<T> binding = getRegisteredBinding(type); // this will acquire the lock again for read and possibly write
 
           if (binding == null) {
-            throw new LocatorException("Error, interface is not registered: " + type);
+            throw ExceptionUtilsExt.logAndCreateLocatorException(logHelper.getLogger(), "Error, interface is not registered: " + type);
           } else {
             // create the target instance
             result = doCreateTargetInstance(binding);
@@ -429,15 +430,15 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
       // assert that the concrete-class is a Singleton
       Class<?> cls = ClassUtils.classFrom(binding.getInstanceClassName());
       if (!Singleton.class.isAssignableFrom(cls)) {
-        throw new LocatorException("Error attempting to locate class: " + binding.getInstanceClassName()
+        throw ExceptionUtilsExt.logAndCreateLocatorException(logHelper.getLogger(), "Error attempting to locate class: " + binding.getInstanceClassName()
             + ". The class must be a Singleton (since only one instance will ever be created by the locator).");
       }
 
       // assert that the concrete-class implements the registered interface
       Class<?> inf = ClassUtils.classFrom(binding.getInterfaceName());
       if (!inf.isAssignableFrom(cls)) {
-        throw new LocatorException("Error attempting to locate class: " + binding.getInstanceClassName() + ". The class must implement the registered interface: "
-            + binding.getInterfaceName());
+        throw ExceptionUtilsExt.logAndCreateLocatorException(logHelper.getLogger(), "Error attempting to locate class: " + binding.getInstanceClassName() +
+            ". The class must implement the registered interface: " + binding.getInterfaceName());
       }
 
       // create Singleton instance.
@@ -449,7 +450,8 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
         ((Initializable)result).init(getInitializationStrategy(binding));
       }
     } catch (ClassUtilsException e) {
-      throw new LocatorException("Error attempting to instantiate class: " + binding.getInstanceClassName() + " where interface is: " + binding.getInterfaceName(), e);
+      throw ExceptionUtilsExt.logAndCreateLocatorException(logHelper.getLogger(),
+          "Error attempting to instantiate class: " + binding.getInstanceClassName() + " where interface is: " + binding.getInterfaceName(), e);
     }
 
     return result;
@@ -513,7 +515,7 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
 
       // if still null, then fail.
       if (result == null) {
-        throw new LocatorException("ERROR: No interface-to-class binding was found for the requested interface '" + interfaceClass.getSimpleName() + "'.\n"
+        throw ExceptionUtilsExt.logAndCreateLocatorException(logHelper.getLogger(), "ERROR: No interface-to-class binding was found for the requested interface '" + interfaceClass.getSimpleName() + "'.\n"
               + "If using Config-based bindings, make sure the config file contains a section named '" + targetInterfaceTypeName + "' for registering the bindings.\n"
               + "Also, make sure that interface '" + interfaceClass.getName() + "' is mapped to an implementation within that section.\n"
               + "If not using Config-based bindings, make sure you have called the registerAllInterfaces() method of the provider package (e.g., DomainServiceRegistry).");

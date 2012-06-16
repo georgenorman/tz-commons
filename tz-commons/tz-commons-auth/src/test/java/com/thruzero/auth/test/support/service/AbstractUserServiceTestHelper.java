@@ -20,6 +20,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 
 import com.thruzero.auth.dao.UserDAO;
 import com.thruzero.auth.model.User;
@@ -90,6 +92,25 @@ public abstract class AbstractUserServiceTestHelper {
     @Override
     public SimpleInfo getSimpleInfo() {
       return SimpleInfo.createSimpleInfo(this, userDAO);
+    }
+
+    @Override
+    public Subject getCurrentSubject() {
+      Subject result = SecurityUtils.getSubject();
+
+      return result;
+    }
+
+    @Override
+    public User getCurrentAuthenticatedUser() {
+      User result = null;
+      Subject subject = getCurrentSubject();
+
+      if ( subject.isAuthenticated() ) {
+        result = (User)subject.getPrincipal();
+      }
+
+      return result;
     }
   }
 

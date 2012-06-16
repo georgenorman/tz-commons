@@ -15,6 +15,8 @@
  */
 package com.thruzero.auth.service;
 
+import org.apache.shiro.subject.Subject;
+
 import com.thruzero.auth.model.User;
 import com.thruzero.common.core.service.Service;
 import com.thruzero.common.core.support.SimpleInfoProvider;
@@ -26,7 +28,9 @@ import com.thruzero.common.core.support.SimpleInfoProvider;
  */
 public interface UserService extends Service, SimpleInfoProvider {
 
-  /** Return the User with the given loginId, or null if not found. */
+  // Persistence methods ////////////////////////////////////////////
+
+  /** Return the persisted User with the given loginId, or null if not found. */
   User getUserByLoginId(String loginId);
 
   /** Set the last login Date for the given user, as now, and persist. */
@@ -39,6 +43,17 @@ public interface UserService extends Service, SimpleInfoProvider {
 
   void updateUser(User user);
 
-  void deleteUser(User user); // TODO-p0(george) hmmm, may want to retire the user, so history is preserved.
+  void deleteUser(User user); // TODO-p0(george) hmmm, may want to retire the user instead of deleting, so history is preserved.
+
+  // Authentication methods ////////////////////////////////////////
+
+  /** Return the currently accessible Shiro {@code Subject} available to the calling code, depending on runtime environment. */
+  Subject getCurrentSubject();
+
+  /**
+   * Return the currently accessible authenticated {@code User} available to the calling code, depending on runtime
+   * environment, or null if user is not authenticated.
+   */
+  User getCurrentAuthenticatedUser();
 
 }

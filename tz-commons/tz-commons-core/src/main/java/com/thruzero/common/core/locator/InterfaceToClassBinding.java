@@ -1,5 +1,5 @@
 /*
- *   Copyright 2011 George Norman
+ *   Copyright 2011-2012 George Norman
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class InterfaceToClassBinding<T> {
   }
 
   public InterfaceToClassBinding(final Class<? extends T> interfaceType, final Class<? extends T> instanceType, final InitializationStrategy initStrategy) {
-    this(interfaceType.getName(), instanceType.getName(), initStrategy);
+    this(interfaceType.getName(), instanceType == null ? null : instanceType.getName(), initStrategy);
   }
 
   public InterfaceToClassBinding(final String interfaceName, final String className) {

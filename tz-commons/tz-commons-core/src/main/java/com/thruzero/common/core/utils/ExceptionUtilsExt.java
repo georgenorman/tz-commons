@@ -1,5 +1,5 @@
 /*
- *   Copyright 2007 George Norman
+ *   Copyright 2007-2012 George Norman
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -24,9 +24,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
+import com.thruzero.common.core.locator.RegistryLocatorStrategy.LocatorException;
+
 /**
  * Extensions to the apache {@code ExceptionUtils} utility class.
- *
+ * <p>
+ * NOTE: These Utils spew a lot more information than is probably needed, but JSF appears to be eating some of the
+ * Exceptions I've thrown, or maybe I'm throwing the wrong type, so it eats it. Anyway, for now, it's easier to ignore
+ * duplicated/extra spweage than it is to debug with none.
+ * </p>
+ * 
  * @author George Norman
  */
 public class ExceptionUtilsExt extends ExceptionUtils {
@@ -35,12 +42,28 @@ public class ExceptionUtilsExt extends ExceptionUtils {
   protected ExceptionUtilsExt() {
   }
 
+  public static LocatorException logAndCreateLocatorException(final Logger logger, final String errorMessage, final Exception cause) {
+    String err = errorMessage + " - " + cause.getClass().getSimpleName();
+
+    logger.error(err, cause);
+
+    return new LocatorException(err, cause);
+  }
+
+  public static LocatorException logAndCreateLocatorException(final Logger logger, final String errorMessage) {
+    LocatorException result = new LocatorException(errorMessage);
+
+    logger.error(errorMessage, result);
+
+    return result;
+  }
+
   public static IllegalArgumentException logAndCreateIllegalArgumentException(final Logger logger, final String errorMessage, final Exception cause) {
-    String err = errorMessage + cause;
+    String err = errorMessage + " - " + cause.getClass().getSimpleName();
 
-    logger.error(err);
+    logger.error(err, cause);
 
-    return new IllegalArgumentException(err);
+    return new IllegalArgumentException(err, cause);
   }
 
   public static IllegalArgumentException logAndCreateIllegalArgumentException(final Logger logger, final String errorMessage) {
@@ -50,11 +73,11 @@ public class ExceptionUtilsExt extends ExceptionUtils {
   }
 
   public static RuntimeException logAndCreateRuntimeException(final Logger logger, final String errorMessage, final Exception cause) {
-    String err = errorMessage + cause;
+    String err = errorMessage + " - " + cause.getClass().getSimpleName();
 
-    logger.error(err);
+    logger.error(err, cause);
 
-    return new RuntimeException(err);
+    return new RuntimeException(err, cause);
   }
 
   public static RuntimeException logAndCreateRuntimeException(final Logger logger, final String errorMessage) {

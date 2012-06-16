@@ -1,5 +1,5 @@
 /*
- *   Copyright 2011 George Norman
+ *   Copyright 2011-2012 George Norman
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 /**
- * Core service registry.
+ * Core Service registry used to programmatically register services (as opposed to declaratively via the config file).
  */
 package com.thruzero.common.core.service.impl;
 
