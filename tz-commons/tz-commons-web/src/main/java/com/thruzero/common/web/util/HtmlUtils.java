@@ -99,4 +99,17 @@ public class HtmlUtils {
     }
     return StringUtils.replace(text, "\n", "<br>\n");
   }
+
+  public static String appendQueryParam(final String url, final String key, final String value) {
+    StringBuffer result = new StringBuffer(url);
+
+    if (url.indexOf('?') > 0) {
+      result.append("&");
+    } else {
+      result.append("?");
+    }
+    result.append(key + "=" + value);
+
+    return result.toString();
+  }
 }

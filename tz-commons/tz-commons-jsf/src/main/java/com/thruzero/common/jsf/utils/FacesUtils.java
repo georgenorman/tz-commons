@@ -16,7 +16,6 @@
 package com.thruzero.common.jsf.utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 
 import javax.el.ExpressionFactory;

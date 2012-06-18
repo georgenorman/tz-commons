@@ -15,21 +15,28 @@
  */
 package com.thruzero.common.jsf.support.beans;
 
+import com.thruzero.common.jsf.support.ActionCallback;
+
+
+
 /**
- * Manages a message and back action for a simple message dialog.
+ * A confirmation dialog bean that manages a message plus OK and cancel actions.
  *
  * @author George Norman
  */
-@javax.faces.bean.ManagedBean(name="messageDialogBean")
+@javax.faces.bean.ManagedBean(name="confirmationDialogBean")
 @javax.faces.bean.SessionScoped // TODO-p1(george) prefer ConversationScoped
-public class MessageDialogBean {
+public class ConfirmationDialogBean {
   private String title;
   private String message;
-  private UrlBean backAction;
+  private ActionCallback okActionCallback;
+  private ActionCallback cancelActionCallback;
 
   public void reset() {
+    title = null;
     message = null;
-    backAction = null;
+    okActionCallback = null;
+    cancelActionCallback = null;
   }
 
   public String getTitle() {
@@ -48,20 +55,28 @@ public class MessageDialogBean {
     this.message = message;
   }
 
-  public void setBackAction(UrlBean backAction) {
-    this.backAction = backAction;
+  public void setOkAction(ActionCallback actionCallback) {
+    this.okActionCallback = actionCallback;
   }
 
-  public UrlBean getBackAction() { // TODO-p0(george) Consider returning UrlBean
-    return backAction;
+  public void setCancelAction(ActionCallback cancelActionCallback) {
+    this.cancelActionCallback = cancelActionCallback;
   }
 
-  public String goBack() {
-    return backAction.getUrl();
+  public String handleOkAction() {
+    return okActionCallback.handleAction().getUrl();
   }
 
-  public String goBackWithContext() {
-    return backAction.getUrlWithContext();
+  public String handleOkActionWithContext() {
+    return okActionCallback.handleAction().getUrlWithContext();
+  }
+
+  public String handleCancelAction() {
+    return cancelActionCallback.handleAction().getUrl();
+  }
+
+  public String handleCancelActionWithContext() {
+    return cancelActionCallback.handleAction().getUrlWithContext();
   }
 
 }

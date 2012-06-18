@@ -17,10 +17,9 @@ package com.thruzero.common.jsf.support.beans.page;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.thruzero.common.core.support.SimpleInfoProvider;
 import com.thruzero.common.jsf.support.beans.MessageDialogBean;
+import com.thruzero.common.jsf.support.beans.UrlBean;
 import com.thruzero.common.jsf.utils.FacesUtils;
 
 /**
@@ -36,48 +35,34 @@ public class AbstractDemoPageBean implements Serializable {
 
   /** Init the Info Dialog using the class name in the title and message and no back action. */
   protected void initInfoDialog() {
-    initInfoDialog("", false);
+    initInfoDialog((UrlBean)null);
   }
 
   /** Init the Info Dialog using the class name in the title, plus the given info for the message and no back action. */
   protected void initInfoDialog(SimpleInfoProvider info) {
-    initInfoDialog(info, null, false);
+    initInfoDialog(info, null);
   }
 
   /** Init the Info Dialog using the class name in the title, plus the given info for the message, plus the given backAction. */
-  protected void initInfoDialog(SimpleInfoProvider info, String backAction, boolean redirect) {
-    doInitInfoDialog("The backing bean for this page is " + getClass().getSimpleName() + " and its " + info.getSimpleInfo().getInfo(), backAction, redirect);
+  protected void initInfoDialog(SimpleInfoProvider info, UrlBean backAction) {
+    doInitInfoDialog("The backing bean for this page is " + getClass().getSimpleName() + " and its " + info.getSimpleInfo().getInfo(), backAction);
   }
 
   /** Init the Info Dialog using the given backAction, plus using the bean's class name in the title and message. */
-  protected void initInfoDialog(String backAction, boolean redirect) {
-    doInitInfoDialog("The backing bean for this page is " + getClass().getSimpleName() + ".", backAction, redirect);
+  protected void initInfoDialog(UrlBean backAction) {
+    doInitInfoDialog("The backing bean for this page is " + getClass().getSimpleName() + ".", backAction);
   }
 
   /** Init the Info Dialog using the given message and backAction, plus using the bean's class name in the title. */
-  protected void doInitInfoDialog(String message, String backAction, boolean redirect) {
-    doInitInfoDialog("Info about " + getClass().getSimpleName(), message, backAction, redirect);
+  protected void doInitInfoDialog(String message, UrlBean backAction) {
+    doInitInfoDialog("Info about " + getClass().getSimpleName(), message, backAction);
   }
 
   /** Init the Info Dialog using the given title, message and backAction. */
-  protected void doInitInfoDialog(String title, String message, String backAction, boolean redirect) {
+  protected void doInitInfoDialog(String title, String message, UrlBean backAction) {
     messageDialogBean.setTitle(title);
     messageDialogBean.setMessage(message);
-    messageDialogBean.setBackAction(getAction(backAction, redirect));
-  }
-
-  protected String getAction(String action, boolean redirect) {
-    String result = "";
-
-    if (StringUtils.isNotEmpty(action)) {
-      result = action + ((redirect == true) ? "?faces-redirect=true" : "");
-
-      if (result.startsWith("/")) {
-        result = FacesUtils.getUrlWithContextName(result);
-      }
-    }
-
-    return result;
+    messageDialogBean.setBackAction(backAction);
   }
 
   // IoC functions /////////////////////////////////////////////////////////////////
