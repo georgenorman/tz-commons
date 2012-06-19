@@ -25,7 +25,7 @@ import com.thruzero.common.jsf.support.ActionCallback;
  * @author George Norman
  */
 @javax.faces.bean.ManagedBean(name="confirmationDialogBean")
-@javax.faces.bean.SessionScoped // TODO-p1(george) prefer ConversationScoped
+@javax.faces.bean.SessionScoped // TODO-p0(george) investigate using Flash Scope here. Clients should be able to specify this scope (may need to move to faces-config).
 public class ConfirmationDialogBean {
   private String title;
   private String message;
