@@ -40,6 +40,11 @@ public class FacesUtils {
   public static final String REDIRECT_URL = "redirectUrl";
   public static final String REDIRECT_UTIL = "/utils/redirect.xhtml"; // TODO-p1(george) make this a servlet
 
+  /**
+   * Calls handleNavigation on the application's current NavigationHandler.
+   *
+   * @see javax.faces.application.NavigationHandler.handleNavigation(javax.faces.context.FacesContext, java.lang.String, java.lang.String)
+   */
   public static void handleNavigation(String fromAction, String outcome) {
     FacesContext facesContext = FacesContext.getCurrentInstance();
     NavigationHandler navigationHandler = facesContext.getApplication().getNavigationHandler();
@@ -56,8 +61,7 @@ public class FacesUtils {
   }
 
   /**
-   * @param create
-   * @return the current valid session associated with this request, if create is false or, if necessary, creates a new
+   * Return the current valid session associated with this request, if create is false or, if necessary, creates a new
    * session for the request, if create is true.
    */
   public static HttpSession getSession(boolean create) {
@@ -66,6 +70,7 @@ public class FacesUtils {
     return (HttpSession)facesContext.getExternalContext().getSession(create);
   }
 
+  /** Return the named request header, or null if it doesn't exist. */
   public static String getRequestHeader(String name) {
     return getRequest().getHeader(name);
   }
