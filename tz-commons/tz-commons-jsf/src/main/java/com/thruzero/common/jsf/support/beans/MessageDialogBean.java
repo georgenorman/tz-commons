@@ -52,7 +52,7 @@ public class MessageDialogBean {
     this.backAction = backAction;
   }
 
-  public UrlBean getBackAction() { // TODO-p0(george) Consider returning UrlBean
+  public UrlBean getBackAction() {
     return backAction;
   }
 
