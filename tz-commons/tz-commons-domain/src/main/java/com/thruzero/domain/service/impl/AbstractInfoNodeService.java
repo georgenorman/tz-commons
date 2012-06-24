@@ -150,8 +150,7 @@ public abstract class AbstractInfoNodeService implements InfoNodeService {
 
   @Override
   public SimpleInfo getSimpleInfo() {
-    // TODO Auto-generated method stub
-    return null;
+    return SimpleInfo.createSimpleInfo(this, textEnvelopeDAO);
   }
 
   protected TextEnvelopeDAO getTextEnvelopeDAO() {
