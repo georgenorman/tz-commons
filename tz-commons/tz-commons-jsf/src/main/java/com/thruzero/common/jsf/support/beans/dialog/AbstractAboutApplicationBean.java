@@ -29,6 +29,7 @@ import com.thruzero.common.core.locator.ProviderLocator;
 import com.thruzero.common.core.map.StringMap;
 import com.thruzero.common.core.provider.ResourceProvider;
 import com.thruzero.common.jsf.utils.FacesUtils;
+import com.thruzero.common.jsf.utils.FlashUtils;
 import com.thruzero.common.web.util.HtmlUtils.TableUtils;
 
 /**
@@ -131,6 +132,7 @@ public abstract class AbstractAboutApplicationBean implements Serializable {
       result.append(TableUtils.createSimpleFormRow("Total Memory", Runtime.getRuntime().totalMemory()/(1024000)+"M"));
       result.append(TableUtils.createSimpleFormRow("Free Memory", Runtime.getRuntime().freeMemory()/(1024000)+"M"));
       result.append(TableUtils.createSimpleFormRow("Max Memory", Runtime.getRuntime().maxMemory()/(1024000)+"M"));
+      result.append(TableUtils.createSimpleFormRow("Flash Count", FlashUtils.getFlashCount()+""));
     } catch (Exception e) {
       // don't let the about box crash the app
     }
