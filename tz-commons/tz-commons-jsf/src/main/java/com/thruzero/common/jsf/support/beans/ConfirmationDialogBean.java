@@ -16,8 +16,10 @@
 package com.thruzero.common.jsf.support.beans;
 
 import com.thruzero.common.jsf.support.ActionCallback;
+import com.thruzero.common.jsf.utils.FacesUtils;
+import com.thruzero.common.jsf.utils.FlashUtils;
 
-
+// @-@:p0 MOVE THIS to com.thruzero.common.jsf.support.beans.dialog
 
 /**
  * A confirmation dialog bean that manages a message plus OK and cancel actions.
@@ -25,58 +27,104 @@ import com.thruzero.common.jsf.support.ActionCallback;
  * @author George Norman
  */
 @javax.faces.bean.ManagedBean(name="confirmationDialogBean")
-@javax.faces.bean.SessionScoped // TODO-p0(george) investigate using Flash Scope here. Clients should be able to specify this scope (may need to move to faces-config).
+@javax.faces.bean.RequestScoped
 public class ConfirmationDialogBean {
-  private String title;
-  private String message;
-  private ActionCallback okActionCallback;
-  private ActionCallback cancelActionCallback;
 
-  public void reset() {
-    title = null;
-    message = null;
-    okActionCallback = null;
-    cancelActionCallback = null;
+  private String flashHackKey;
+
+  // ------------------------------------------------------
+  // ConfirmationDialogModel
+  // ------------------------------------------------------
+
+  public static class ConfirmationDialogModel {
+    private String title;
+    private String message;
+    private ActionCallback okActionCallback;
+    private ActionCallback cancelActionCallback;
+
+    public void reset() {
+      title = null;
+      message = null;
+      okActionCallback = null;
+      cancelActionCallback = null;
+    }
+
+    public String getTitle() {
+      return title;
+    }
+
+    public void setTitle(String title) {
+      this.title = title;
+    }
+
+    public String getMessage() {
+      return message;
+    }
+
+    public void setMessage(String message) {
+      this.message = message;
+    }
+
+    public ActionCallback getOkActionCallback() {
+      return okActionCallback;
+    }
+
+    public void setOkActionCallback(ActionCallback okActionCallback) {
+      this.okActionCallback = okActionCallback;
+    }
+
+    public ActionCallback getCancelActionCallback() {
+      return cancelActionCallback;
+    }
+
+    public void setCancelActionCallback(ActionCallback cancelActionCallback) {
+      this.cancelActionCallback = cancelActionCallback;
+    }
   }
 
-  public String getTitle() {
-    return title;
+  // ============================================================================
+  // ConfirmationDialogBean
+  // ============================================================================
+
+  public ConfirmationDialogBean() {
+    setFlashHackKey(FacesUtils.getRequest().getParameter(FlashUtils.FLASH_HACK_REQUEST_PARAMETER_KEY));
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public String getFlashHackKey() {
+    return flashHackKey;
+  }
+
+  public void setFlashHackKey(String flashHackKey) {
+    this.flashHackKey = flashHackKey;
   }
 
   public String getMessage() {
-    return message;
-  }
+    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.getFlashAttribute(flashHackKey);
 
-  public void setMessage(String message) {
-    this.message = message;
-  }
-
-  public void setOkAction(ActionCallback actionCallback) {
-    this.okActionCallback = actionCallback;
-  }
-
-  public void setCancelAction(ActionCallback cancelActionCallback) {
-    this.cancelActionCallback = cancelActionCallback;
+    return model.getMessage();
   }
 
   public String handleOkAction() {
-    return okActionCallback.handleAction().getUrl();
+    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.removeFlashAttribute(flashHackKey);
+
+    return model.getOkActionCallback().handleAction().getUrl();
   }
 
   public String handleOkActionWithContext() {
-    return okActionCallback.handleAction().getUrlWithContext();
+    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.removeFlashAttribute(flashHackKey);
+
+    return model.getOkActionCallback().handleAction().getUrlWithContext();
   }
 
   public String handleCancelAction() {
-    return cancelActionCallback.handleAction().getUrl();
+    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.removeFlashAttribute(flashHackKey);
+
+    return model.getCancelActionCallback().handleAction().getUrl();
   }
 
   public String handleCancelActionWithContext() {
-    return cancelActionCallback.handleAction().getUrlWithContext();
-  }
+    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.removeFlashAttribute(flashHackKey);
 
+    return model.getCancelActionCallback().handleAction().getUrlWithContext();
+  }
 }
