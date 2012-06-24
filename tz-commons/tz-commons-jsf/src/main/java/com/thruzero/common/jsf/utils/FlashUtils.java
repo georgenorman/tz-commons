@@ -59,6 +59,10 @@ public class FlashUtils {
     public void setAttribute(String key, Object value) {
       attributes.put(key, value);
     }
+
+    public int getTotalCount() {
+      return attributes.size();
+    }
   }
 
   // ============================================================================
@@ -106,6 +110,10 @@ public class FlashUtils {
     flashHack.setAttribute(flashHackKey, attribute);
 
     return flashHackKey;
+  }
+
+  public static int getFlashCount() {
+    return getFlashHack(true).getTotalCount();
   }
 
   private static FlashHack getFlashHack(boolean createIfNonExistant) {
