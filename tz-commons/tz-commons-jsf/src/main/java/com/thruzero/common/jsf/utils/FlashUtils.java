@@ -20,6 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.thruzero.common.core.support.SimpleIdGenerator;
 
 /**
@@ -75,10 +77,13 @@ public class FlashUtils {
    */
   public static Object getFlashAttribute(String key) {
     Object result = null;
-    FlashHack flashHack = getFlashHack(false);
 
-    if (flashHack != null) {
-      result = flashHack.getAttribute(key);
+    if (StringUtils.isNotEmpty(key)) {
+      FlashHack flashHack = getFlashHack(false);
+
+      if (flashHack != null) {
+        result = flashHack.getAttribute(key);
+      }
     }
 
     return result;
@@ -90,10 +95,13 @@ public class FlashUtils {
    */
   public static Object removeFlashAttribute(String key) {
     Object result = null;
-    FlashHack flashHack = getFlashHack(false);
 
-    if (flashHack != null) {
-      result = flashHack.removeAttribute(key);
+    if (StringUtils.isNotEmpty(key)) {
+      FlashHack flashHack = getFlashHack(false);
+
+      if (flashHack != null) {
+        result = flashHack.removeAttribute(key);
+      }
     }
 
     return result;
