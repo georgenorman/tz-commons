@@ -24,10 +24,13 @@ package com.thruzero.common.jsf.support.beans;
 @javax.faces.bean.SessionScoped // TODO-p1(george) prefer ConversationScoped
 public class MessageDialogBean {
   private String title;
+  private String header;
   private String message;
   private UrlBean backAction;
 
   public void reset() {
+    title = null;
+    header = null;
     message = null;
     backAction = null;
   }
@@ -38,6 +41,14 @@ public class MessageDialogBean {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public String getHeader() {
+    return header;
+  }
+
+  public void setHeader(String header) {
+    this.header = header;
   }
 
   public String getMessage() {

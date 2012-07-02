@@ -50,7 +50,7 @@ public class UrlBean {
     this.url = url;
 
     if (appendRedirect) {
-      this.url = HtmlUtils.appendQueryParam(url, "faces-redirect", "true"); // TODO-p1(george) Assumes that redirect is not already present
+      appendQueryParam("faces-redirect", "true"); // TODO-p1(george) Assumes that redirect is not already present
     }
   }
 
@@ -66,6 +66,10 @@ public class UrlBean {
     }
 
     return result;
+  }
+
+  public void appendQueryParam(final String key, final String value) {
+    url = HtmlUtils.appendQueryParam(url, key, value);
   }
 
 }
