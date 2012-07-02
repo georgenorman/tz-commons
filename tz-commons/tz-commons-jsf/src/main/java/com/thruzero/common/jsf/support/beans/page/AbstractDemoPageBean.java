@@ -18,8 +18,8 @@ package com.thruzero.common.jsf.support.beans.page;
 import java.io.Serializable;
 
 import com.thruzero.common.core.support.SimpleInfoProvider;
-import com.thruzero.common.jsf.support.beans.MessageDialogBean;
 import com.thruzero.common.jsf.support.beans.UrlBean;
+import com.thruzero.common.jsf.support.beans.dialog.MessageDialogBean;
 import com.thruzero.common.jsf.utils.FacesUtils;
 
 /**

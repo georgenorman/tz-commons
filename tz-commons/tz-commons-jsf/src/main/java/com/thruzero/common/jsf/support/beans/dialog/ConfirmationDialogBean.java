@@ -36,12 +36,14 @@ public class ConfirmationDialogBean {
 
   public static class ConfirmationDialogModel {
     private String title;
+    private String header;
     private String message;
     private ActionCallback okActionCallback;
     private ActionCallback cancelActionCallback;
 
     public void reset() {
       title = null;
+      header = null;
       message = null;
       okActionCallback = null;
       cancelActionCallback = null;
@@ -53,6 +55,14 @@ public class ConfirmationDialogBean {
 
     public void setTitle(String title) {
       this.title = title;
+    }
+
+    public String getHeader() {
+      return header;
+    }
+
+    public void setHeader(String header) {
+      this.header = header;
     }
 
     public String getMessage() {
@@ -96,10 +106,43 @@ public class ConfirmationDialogBean {
     this.flashHackKey = flashHackKey;
   }
 
-  public String getMessage() {
+  public String getTitle() {
+    String result;
     ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.getFlashAttribute(flashHackKey);
 
-    return model.getMessage();
+    if (model == null) {
+      result = "ERROR: Model not found.";
+    } else {
+      result = model.getTitle();
+    }
+
+    return result;
+  }
+
+  public String getHeader() {
+    String result;
+    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.getFlashAttribute(flashHackKey);
+
+    if (model == null) {
+      result = "ERROR: Model not found.";
+    } else {
+      result = model.getHeader();
+    }
+
+    return result;
+  }
+
+  public String getMessage() {
+    String result;
+    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.getFlashAttribute(flashHackKey);
+
+    if (model == null) {
+      result = "ERROR: Model not found.";
+    } else {
+      result = model.getMessage();
+    }
+
+    return result;
   }
 
   public String handleOkAction() {
