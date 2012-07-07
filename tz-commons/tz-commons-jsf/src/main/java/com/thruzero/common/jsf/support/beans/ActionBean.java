@@ -17,6 +17,8 @@ package com.thruzero.common.jsf.support.beans;
 
 import java.io.Serializable;
 
+import org.apache.log4j.Logger;
+
 import com.thruzero.common.jsf.utils.FacesUtils;
 
 /**
@@ -46,9 +48,12 @@ import com.thruzero.common.jsf.utils.FacesUtils;
 @javax.faces.bean.RequestScoped
 public class ActionBean implements Serializable {
   private static final long serialVersionUID = 1L;
+  private static final Logger logger = Logger.getLogger(ActionBean.class);
 
   public String action() {
     String action = FacesUtils.getRequest().getParameter("action");
+
+    logger.debug("ActionBean returning action: " + action);
 
     return action;
   }

@@ -17,6 +17,7 @@ package com.thruzero.common.jsf.support.beans;
 
 import com.thruzero.common.jsf.utils.FacesUtils;
 import com.thruzero.common.web.util.HtmlUtils;
+import org.apache.log4j.Logger;
 
 /**
  * Helper bean that optionally adds the faces redirect query param (faces-redirect) and the servlet context (useful for raw anchors).
@@ -24,6 +25,8 @@ import com.thruzero.common.web.util.HtmlUtils;
  * @author George Norman
  */
 public class UrlBean {
+  private static final Logger logger = Logger.getLogger(UrlBean.class);
+
   private String url;
 
   /**
@@ -55,6 +58,8 @@ public class UrlBean {
   }
 
   public String getUrl() {
+    logger.debug("UrlBean returning URL: " + url);
+
     return url;
   }
 
@@ -64,6 +69,7 @@ public class UrlBean {
     if (url.startsWith("/")) {
       result = FacesUtils.getUrlWithContextName(url); // TODO-p1(george) Assumes that context is not already present
     }
+    logger.debug("UrlBean returning URL: " + result);
 
     return result;
   }
@@ -71,5 +77,4 @@ public class UrlBean {
   public void appendQueryParam(final String key, final String value) {
     url = HtmlUtils.appendQueryParam(url, key, value);
   }
-
 }
