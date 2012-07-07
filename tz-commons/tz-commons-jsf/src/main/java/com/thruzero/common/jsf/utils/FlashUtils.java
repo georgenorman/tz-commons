@@ -72,17 +72,18 @@ public class FlashUtils {
   // ============================================================================
 
   /**
-   * Return the "flash" attribute for the given key; the key is unique per session and was returned when the attribute
+   * Return the "flash" attribute for the given flashHackKey; the key is unique per session and was returned when the attribute
    * was saved.
    */
-  public static Object getFlashAttribute(String key) {
-    Object result = null;
+  @SuppressWarnings("unchecked")
+  public static <T> T getFlashAttribute(String flashHackKey) {
+    T result = null;
 
-    if (StringUtils.isNotEmpty(key)) {
+    if (StringUtils.isNotEmpty(flashHackKey)) {
       FlashHack flashHack = getFlashHack(false);
 
       if (flashHack != null) {
-        result = flashHack.getAttribute(key);
+        result = (T)flashHack.getAttribute(flashHackKey);
       }
     }
 
@@ -90,21 +91,42 @@ public class FlashUtils {
   }
 
   /**
-   * Remove and return the "flash" attribute for the given key; the key is unique per session and was returned when the
+   * Return the "flash" attribute using the value of the "fhk" request parameter as the flash key (e.g., "foo?fhk=312" specifies that
+   * "321" be used as the flash key).
+   */
+  public static <T> T getFlashAttribute() {
+    String fhk = FacesUtils.getRequest().getParameter(FlashUtils.FLASH_HACK_REQUEST_PARAMETER_KEY);
+
+    return getFlashAttribute(fhk);
+  }
+
+  /**
+   * Remove and return the "flash" attribute for the given flashHackKey; the key is unique per session and was returned when the
    * attribute was saved.
    */
-  public static Object removeFlashAttribute(String key) {
-    Object result = null;
+  @SuppressWarnings("unchecked")
+  public static <T> T removeFlashAttribute(String flashHackKey) {
+    T result = null;
 
-    if (StringUtils.isNotEmpty(key)) {
+    if (StringUtils.isNotEmpty(flashHackKey)) {
       FlashHack flashHack = getFlashHack(false);
 
       if (flashHack != null) {
-        result = flashHack.removeAttribute(key);
+        result = (T)flashHack.removeAttribute(flashHackKey);
       }
     }
 
     return result;
+  }
+
+  /**
+   * Remove and return the "flash" attribute using the value of the "fhk" request parameter as the flash key (e.g., "foo?fhk=312" specifies that
+   * "321" be used as the flash key).
+   */
+  public static <T> T removeFlashAttribute() {
+    String fhk = FacesUtils.getRequest().getParameter(FlashUtils.FLASH_HACK_REQUEST_PARAMETER_KEY);
+
+    return removeFlashAttribute(fhk);
   }
 
   /**
