@@ -97,7 +97,11 @@ public class FlashUtils {
   public static <T> T getFlashAttribute() {
     String fhk = FacesUtils.getRequest().getParameter(FlashUtils.FLASH_HACK_REQUEST_PARAMETER_KEY);
 
-    return getFlashAttribute(fhk);
+    // type parameters of <T>T cannot be determined; no unique maximal instance exists for type variable T with upper bounds T,java.lang.Object
+    // requires java 7 to compile without this fix: FlashUtils.getFlashAttribute(fhk) => FlashUtils.<T>getFlashAttribute(fhk).
+    T result = FlashUtils.<T>getFlashAttribute(fhk); // http://stackoverflow.com/questions/314572/bug-in-eclipse-compiler-or-in-javac
+
+    return result;
   }
 
   /**
@@ -126,7 +130,11 @@ public class FlashUtils {
   public static <T> T removeFlashAttribute() {
     String fhk = FacesUtils.getRequest().getParameter(FlashUtils.FLASH_HACK_REQUEST_PARAMETER_KEY);
 
-    return removeFlashAttribute(fhk);
+    // type parameters of <T>T cannot be determined; no unique maximal instance exists for type variable T with upper bounds T,java.lang.Object
+    // requires java 7 to compile without this fix: FlashUtils.removeFlashAttribute(fhk) => FlashUtils.<T>removeFlashAttribute(fhk).
+    T result = FlashUtils.<T>removeFlashAttribute(fhk); // http://stackoverflow.com/questions/314572/bug-in-eclipse-compiler-or-in-javac
+
+    return result;
   }
 
   /**
