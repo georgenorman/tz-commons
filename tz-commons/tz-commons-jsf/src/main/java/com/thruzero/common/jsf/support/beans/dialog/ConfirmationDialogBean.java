@@ -16,8 +16,6 @@
 package com.thruzero.common.jsf.support.beans.dialog;
 
 import com.thruzero.common.jsf.support.ActionCallback;
-import com.thruzero.common.jsf.utils.FacesUtils;
-import com.thruzero.common.jsf.utils.FlashUtils;
 
 /**
  * A confirmation dialog bean that manages a message plus OK and cancel actions.
@@ -26,51 +24,25 @@ import com.thruzero.common.jsf.utils.FlashUtils;
  */
 @javax.faces.bean.ManagedBean(name="confirmationDialogBean")
 @javax.faces.bean.RequestScoped
-public class ConfirmationDialogBean {
-
-  private String flashHackKey;
+public class ConfirmationDialogBean extends AbstractFlashDialogBean {
+  private static final long serialVersionUID = 1L;
 
   // ------------------------------------------------------
   // ConfirmationDialogModel
   // ------------------------------------------------------
 
-  public static class ConfirmationDialogModel {
-    private String title;
-    private String header;
-    private String message;
+  public static class ConfirmationDialogModel extends AbstractDialogModel {
+    private static final long serialVersionUID = 1L;
+
     private ActionCallback okActionCallback;
     private ActionCallback cancelActionCallback;
 
+    @Override
     public void reset() {
-      title = null;
-      header = null;
-      message = null;
+      super.reset();
+
       okActionCallback = null;
       cancelActionCallback = null;
-    }
-
-    public String getTitle() {
-      return title;
-    }
-
-    public void setTitle(String title) {
-      this.title = title;
-    }
-
-    public String getHeader() {
-      return header;
-    }
-
-    public void setHeader(String header) {
-      this.header = header;
-    }
-
-    public String getMessage() {
-      return message;
-    }
-
-    public void setMessage(String message) {
-      this.message = message;
     }
 
     public ActionCallback getOkActionCallback() {
@@ -94,78 +66,40 @@ public class ConfirmationDialogBean {
   // ConfirmationDialogBean
   // ============================================================================
 
-  public ConfirmationDialogBean() {
-    setFlashHackKey(FacesUtils.getRequest().getParameter(FlashUtils.FLASH_HACK_REQUEST_PARAMETER_KEY));
-  }
-
-  public String getFlashHackKey() {
-    return flashHackKey;
-  }
-
-  public void setFlashHackKey(String flashHackKey) {
-    this.flashHackKey = flashHackKey;
-  }
-
-  public String getTitle() {
-    String result;
-    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.getFlashAttribute(flashHackKey);
-
-    if (model == null) {
-      result = "ERROR: Model not found.";
-    } else {
-      result = model.getTitle();
-    }
-
-    return result;
-  }
-
-  public String getHeader() {
-    String result;
-    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.getFlashAttribute(flashHackKey);
-
-    if (model == null) {
-      result = "ERROR: Model not found.";
-    } else {
-      result = model.getHeader();
-    }
-
-    return result;
-  }
-
-  public String getMessage() {
-    String result;
-    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.getFlashAttribute(flashHackKey);
-
-    if (model == null) {
-      result = "ERROR: Model not found.";
-    } else {
-      result = model.getMessage();
-    }
-
-    return result;
-  }
-
+  /**
+   * Execute the Ok ActionCallback, in the model, and return the outcome as a URL without the context (for use with a JSF anchor tag).
+   */
   public String handleOkAction() {
-    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.removeFlashAttribute(flashHackKey);
+    ConfirmationDialogModel model = (ConfirmationDialogModel)getDialogModel(true);
 
     return model.getOkActionCallback().handleAction().getUrl();
   }
 
+  /**
+   * Execute the Ok ActionCallback, in the model, and return the outcome as a URL with the context (for use with a plain HTML anchor).
+   */
   public String handleOkActionWithContext() {
-    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.removeFlashAttribute(flashHackKey);
+    ConfirmationDialogModel model = (ConfirmationDialogModel)getDialogModel(true);
 
     return model.getOkActionCallback().handleAction().getUrlWithContext();
   }
 
+  /**
+   * Execute the Cancel ActionCallback, in the model, and return the outcome as a URL without the context (for use with a JSF anchor tag).
+   */
   public String handleCancelAction() {
-    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.removeFlashAttribute(flashHackKey);
+    ConfirmationDialogModel model = (ConfirmationDialogModel)getDialogModel(true);
 
     return model.getCancelActionCallback().handleAction().getUrl();
   }
 
+  /**
+   * Execute the Cancel ActionCallback, in the model, and return the outcome as a URL with the context (for use with a plain HTML anchor).
+   */
   public String handleCancelActionWithContext() {
-    ConfirmationDialogModel model = (ConfirmationDialogModel)FlashUtils.removeFlashAttribute(flashHackKey);
+    ConfirmationDialogModel model = (ConfirmationDialogModel)getDialogModel(true);
 
     return model.getCancelActionCallback().handleAction().getUrlWithContext();
   }
+
 }

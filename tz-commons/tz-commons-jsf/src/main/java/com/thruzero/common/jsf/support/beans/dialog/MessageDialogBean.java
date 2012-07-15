@@ -18,63 +18,71 @@ package com.thruzero.common.jsf.support.beans.dialog;
 import com.thruzero.common.jsf.support.beans.UrlBean;
 
 /**
- * Manages a message and back action for a simple message dialog.
+ * Manages a message plus a back action, for a simple message dialog.
  *
  * @author George Norman
  */
 @javax.faces.bean.ManagedBean(name="messageDialogBean")
 @javax.faces.bean.SessionScoped // TODO-p1(george) prefer ConversationScoped or try FlashHack
-public class MessageDialogBean {
-  private String title;
-  private String header;
-  private String message;
-  private UrlBean backAction;
+public class MessageDialogBean extends AbstractDialogBean {
+  private static final long serialVersionUID = 1L;
+
+  private MessageDialogModel messageDialogModel;
+
+  // ------------------------------------------------------
+  // MessageDialogModel
+  // ------------------------------------------------------
+
+  public static class MessageDialogModel extends AbstractDialogModel {
+    private static final long serialVersionUID = 1L;
+
+    private UrlBean doneOutcome;
+
+    @Override
+    public void reset() {
+      super.reset();
+
+      doneOutcome = null;
+    }
+
+    public UrlBean getDoneOutcome() {
+      return doneOutcome;
+    }
+
+    public void setDoneOutcome(UrlBean doneOutcome) {
+      this.doneOutcome = doneOutcome;
+    }
+  }
+
+  // ============================================================================
+  // MessageDialogBean
+  // ============================================================================
 
   public void reset() {
-    title = null;
-    header = null;
-    message = null;
-    backAction = null;
+    if (getDialogModel(false) != null) {
+      getDialogModel(false).reset();
+    }
   }
 
-  public String getTitle() {
-    return title;
+  public UrlBean getDoneOutcome() {
+    MessageDialogModel model = getDialogModel(false);
+
+    return model.getDoneOutcome();
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  @Override
+  public MessageDialogModel getDialogModel(boolean remove) {
+    MessageDialogModel result = messageDialogModel;
+
+    if (remove) {
+      messageDialogModel = null;
+    }
+
+    return result;
   }
 
-  public String getHeader() {
-    return header;
-  }
-
-  public void setHeader(String header) {
-    this.header = header;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
-
-  public void setBackAction(UrlBean backAction) {
-    this.backAction = backAction;
-  }
-
-  public UrlBean getBackAction() {
-    return backAction;
-  }
-
-  public String goBack() {
-    return backAction.getUrl();
-  }
-
-  public String goBackWithContext() {
-    return backAction.getUrlWithContext();
+  public void setDialogModel(MessageDialogModel messageDialogModel) {
+    this.messageDialogModel = messageDialogModel;
   }
 
 }

@@ -20,6 +20,7 @@ import java.io.Serializable;
 import com.thruzero.common.core.support.SimpleInfoProvider;
 import com.thruzero.common.jsf.support.beans.UrlBean;
 import com.thruzero.common.jsf.support.beans.dialog.MessageDialogBean;
+import com.thruzero.common.jsf.support.beans.dialog.MessageDialogBean.MessageDialogModel;
 
 /**
  * Abstract base class for a simple DEMO page bean that requires support for a single Info Dialog.
@@ -58,10 +59,14 @@ public class AbstractDemoPageBean implements Serializable {
   }
 
   /** Init the Info Dialog using the given title, message and backAction. */
-  protected void doInitInfoDialog(String title, String message, UrlBean backAction) {
-    messageDialogBean.setTitle(title);
-    messageDialogBean.setMessage(message);
-    messageDialogBean.setBackAction(backAction);
+  protected void doInitInfoDialog(String title, String message, UrlBean doneOutcome) {
+    MessageDialogModel model = new MessageDialogModel();
+
+    model.setTitle(title);
+    model.setMessage(message);
+    model.setDoneOutcome(doneOutcome);
+
+    getMessageDialogBean().setDialogModel(model);
   }
 
   // IoC functions /////////////////////////////////////////////////////////////////

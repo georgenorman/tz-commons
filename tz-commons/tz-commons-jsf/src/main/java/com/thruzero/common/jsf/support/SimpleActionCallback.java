@@ -29,6 +29,6 @@ public class SimpleActionCallback extends AbstractActionCallback {
 
   @Override
   public UrlBean handleAction() {
-    return  getActionOutcome();
+    return getActionOutcome();
   }
 }
