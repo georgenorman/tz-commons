@@ -18,13 +18,13 @@ package com.thruzero.common.core.support;
 /**
  * A simple generator of identifiers that contains 2^64 unique identifiers, within the lifetime of the instance. If the
  * instance is recreated (e.g., due to application restart), then the sequence begins all over again.
- * 
+ *
  * @author George Norman
  */
 public final class SimpleIdGenerator {
   private static SimpleIdGenerator instance = new SimpleIdGenerator();
 
-  private long id;
+  private long id = 1000; // starting off at 1000 (to improve reliability of tests).
 
   private SimpleIdGenerator() {
   }
