@@ -94,8 +94,10 @@ public class TzAuthorizingRealm extends AuthorizingRealm {
         AuthenticationUtils.resetBadLoginAttemptTracker(user);
         userService.saveUser(user);
       } else {
-        AuthenticationUtils.handleBadLoginAttempt(user); // update bad login attempts or reset if time threshold has been exceeded
-        userService.saveUser(user);
+        if (user != null) {
+          AuthenticationUtils.handleBadLoginAttempt(user); // update bad login attempts or reset if time threshold has been exceeded
+          userService.saveUser(user);
+        }
         throw new MessageIdAuthenticationException(LOGIN_INVALID_LOGIN_ERROR);
       }
 
