@@ -53,13 +53,7 @@ public class MapUtilsExt extends MapUtils {
   }
 
   public static String[] getValueAsStringSeries(final String series) {
-    String[] result = StringUtils.split(series, ',');
-
-    for (int i = 0; i < result.length; i++) {
-      result[i] = result[i].trim();
-    }
-
-    return result;
+    return StringUtilsExt.splitWithTrim(series, ",");
   }
 
   /**

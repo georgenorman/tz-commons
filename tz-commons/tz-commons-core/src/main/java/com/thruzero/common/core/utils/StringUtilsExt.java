@@ -207,4 +207,15 @@ public class StringUtilsExt extends StringUtils {
     return result.iterator();
   }
 
+  public static String[] splitWithTrim(final String tokenStream, final String separator) {
+    // TODO-p1(george): optimize
+    String[] result = StringUtils.split(tokenStream, separator);
+
+    for (int i = 0; i < result.length; i++) {
+      result[i] = result[i].trim();
+    }
+
+    return result;
+  }
+
 }
