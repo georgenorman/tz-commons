@@ -34,6 +34,14 @@ import com.thruzero.domain.model.TextEnvelope;
  */
 public class JpaTextEnvelopeDAO extends JpaGenericDAO<TextEnvelope> implements TextEnvelopeDAO {
 
+  /**
+   * Allow for class extensions; disallow client instantiation (use {@link com.thruzero.domain.locator.DAOLocator
+   * DAOLocator} to access a particular DAO)
+   */
+  protected JpaTextEnvelopeDAO() {
+    super(TextEnvelope.class);
+  }
+
   @Override
   public boolean isExistingTextEnvelope(EntityPath entityPath) {
     EntityManager entityManager = getCurrentPersistenceManager();
@@ -52,21 +60,13 @@ public class JpaTextEnvelopeDAO extends JpaGenericDAO<TextEnvelope> implements T
     return result != null && result > 0;
   }
 
-  /**
-   * Allow for class extensions; disallow client instantiation (use {@link com.thruzero.domain.locator.DAOLocator
-   * DAOLocator} to access a particular DAO)
-   */
-  protected JpaTextEnvelopeDAO() {
-    super(TextEnvelope.class);
-  }
-
   @Override
   public List<? extends TextEnvelope> getTextEnvelopes(final ContainerPath containerPath, final boolean recursive) { // TODO-p1(george) implement recursive
     EntityManager entityManager = getCurrentPersistenceManager();
 
     StrBuilderExt hql = new StrBuilderExt(100);
     hql.append(" FROM TextEnvelope textEnvelope ");
-    hql.append("  WHERE textEnvelope.containerPath.path = :path ");
+    hql.append("  WHERE textEnvelope.entityPath.containerPath.path = :path ");
 
     Query hqlQuery = entityManager.createQuery(hql.toString());
     hqlQuery.setParameter("path", containerPath.getPath());
