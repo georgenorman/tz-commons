@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<facelet-taglib
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibary_2_0.xsd"
+    version="2.0">
+  <!--
+      Core tags used by many ThruZero components.
+   -->
+  <namespace>http://www.thruzero.com/tz-core</namespace>
+
+  <!-- Java-based Tags -->
+  <tag>
+    <tag-name>ternaryDefault</tag-name>
+    <component>
+      <component-type>thruzero.core.components.family.TernaryDefault</component-type>
+    </component>
+  </tag>
+
+  <!-- Facelet-based Tags -->
+  <tag>
+    <tag-name>notificationPanel</tag-name>
+    <source>source/core/notificationPanel.xhtml</source>
+  </tag>
+</facelet-taglib>

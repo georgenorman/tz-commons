@@ -1,0 +1,51 @@
+
+<f:view
+  xmlns:jsp="http://java.sun.com/JSP/Page"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:tzh="http://www.thruzero.com/tz-html5"
+  xmlns:tzc="http://www.thruzero.com/tz-core"
+  >
+<!--
+  ~ Copyright (c) 2012 George Norman.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~
+  ~ A simple notification panel.
+  ~
+  ~ PARAMS:
+  ~   - type: type of notification bar (info | warn | error).
+  ~   - rendered: when true, the component will be rendered.
+  ~   - message: message rendered in the notification bar.
+  ~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~
+  -->
+
+<html>
+  <ui:composition>
+  <tzc:ternaryDefault var="notificationPanel_type" condition="#{empty type}" valueIfTrue="info" valueIfFalse="#{type}" />
+  <tzc:ternaryDefault var="notificationPanel_rendered" condition="#{empty rendered}" valueIfTrue="false" valueIfFalse="#{rendered}" />
+
+  <h:panelGrid columns="2" class="simple-#{notificationPanel_type}-bar" style="#{style}" rendered="#{notificationPanel_rendered}"
+    columnClasses="left-mini-column, right-wide-column">
+    <h:graphicImage value="/images/common/icons/#{notificationPanel_type}.png" style="margin-right:6px;" />
+    <h:outputText value="#{message}" />
+  </h:panelGrid>
+  </ui:composition>
+</html>
+
+</f:view>

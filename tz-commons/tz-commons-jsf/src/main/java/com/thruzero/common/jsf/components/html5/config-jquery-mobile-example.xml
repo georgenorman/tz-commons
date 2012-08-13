@@ -1,0 +1,22 @@
+<!--
+  - This is a sample config file of pass-through attributes for the "com.thruzero.common.jsf.components.html5" components for JQuery Mobile.
+  -->
+<configuration>
+
+  <!-- *************************************************************
+       JSF JQuery mobile "pass-thru" attributes
+       ************************************************************* -->
+
+  <section name="com.thruzero.common.jsf.renderer.html5.helper.TzResponseWriter">
+    <entry key="com.thruzero.common.jsf.renderer.html5.TzCheckboxRenderer" value="data-mini, data-role, data-theme" />
+    <entry key="com.thruzero.common.jsf.renderer.html5.TzCommandButtonRenderer" value="data-mini, data-role, data-theme, data-corners, data-icon, data-iconpos, data-iconshadow, data-inline, data-shadow, data-transition, data-direction" />
+    <entry key="com.thruzero.common.jsf.renderer.html5.TzCommandLinkRenderer" value="data-mini, data-role, data-theme, data-corners, data-icon, data-iconpos, data-iconshadow, data-inline, data-shadow, data-transition, data-direction" />
+    <entry key="com.thruzero.common.jsf.renderer.html5.TzFormRenderer" value="data-ajax" />
+    <entry key="com.thruzero.common.jsf.renderer.html5.TzOutputLinkRenderer" value="data-mini, data-role, data-theme, data-corners, data-icon, data-iconpos, data-iconshadow, data-inline, data-shadow, data-transition, data-direction" />
+    <entry key="com.thruzero.common.jsf.renderer.html5.TzSecretRenderer" value="data-mini, data-role, data-theme, data-highlight, data-track-theme, placeholder, pattern" />
+    <entry key="com.thruzero.common.jsf.renderer.html5.TzSelectOneMenuRenderer" value="data-mini, data-role, data-theme" />
+    <entry key="com.thruzero.common.jsf.renderer.html5.TzTextareaRenderer" value="data-mini, data-role, data-theme, maxlength, data-highlight, data-track-theme, placeholder, pattern" />
+    <entry key="com.thruzero.common.jsf.renderer.html5.TzTextRenderer" value="data-mini, data-role, data-theme, data-highlight, data-track-theme, placeholder, pattern" />
+  </section>
+
+</configuration>
