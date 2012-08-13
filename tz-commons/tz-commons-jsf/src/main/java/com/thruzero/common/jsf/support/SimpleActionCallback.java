@@ -18,6 +18,7 @@ package com.thruzero.common.jsf.support;
 import com.thruzero.common.jsf.support.beans.UrlBean;
 
 /**
+ * An ActionCallback that simply returns its given navigation outcome.
  *
  * @author George Norman
  */

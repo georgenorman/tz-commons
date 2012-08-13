@@ -17,6 +17,12 @@ package com.thruzero.common.jsf.support;
 
 import javax.faces.event.AjaxBehaviorEvent;
 
+/**
+ * Interface for an action listener which is essentially a functor called when the
+ * user clicks a particular command button.
+ *
+ * @author George Norman
+ */
 public interface ActionListenerCallback {
 
   void handleAction(AjaxBehaviorEvent event);

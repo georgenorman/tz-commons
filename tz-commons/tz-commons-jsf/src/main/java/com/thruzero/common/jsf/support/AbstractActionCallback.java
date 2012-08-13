@@ -18,6 +18,7 @@ package com.thruzero.common.jsf.support;
 import com.thruzero.common.jsf.support.beans.UrlBean;
 
 /**
+ * An abstract ActionCallback that adds a navigation outcome.
  *
  * @author George Norman
  */
@@ -31,5 +32,4 @@ public abstract class AbstractActionCallback implements ActionCallback {
   protected UrlBean getActionOutcome() {
     return actionOutcome;
   }
-
 }

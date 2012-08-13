@@ -18,6 +18,9 @@ package com.thruzero.common.jsf.support;
 import com.thruzero.common.jsf.support.beans.UrlBean;
 
 /**
+ * Interface for an action handler (or command handler) which is essentially a
+ * functor which is called when the user clicks a particular command button. For example, the
+ * ConfirmationDialogModel uses an ok and cancel ActionCallback to perform actions for the ok and cancel buttons.
  *
  * @author George Norman
  */
