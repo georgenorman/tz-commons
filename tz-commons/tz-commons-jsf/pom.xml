@@ -57,7 +57,7 @@
                 <resource>
                   <directory>src/main/java/META-INF</directory>
                   <includes>
-                    <include>**/*.xml</include>
+                    <include>**/*.*</include>
                   </includes>
                 </resource>
               </resources>
