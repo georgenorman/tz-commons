@@ -18,7 +18,7 @@ package com.thruzero.common.core.provider;
 import java.util.Locale;
 
 /**
- * A Provider interface for resource-related functions.
+ * A Provider interface for resource-related functions (e.g., Locale and bundle-related functions).
  *
  * @author George Norman
  */
@@ -27,5 +27,4 @@ public interface ResourceProvider extends Provider {
   public Locale calculateLocale();
 
   String getResource(String key);
-
 }
