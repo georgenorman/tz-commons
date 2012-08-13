@@ -22,8 +22,19 @@ import org.apache.log4j.Logger;
 import com.thruzero.common.jsf.utils.FacesUtils;
 
 /**
- * The commandLink JSF tag requires a backing bean for the action attribute - this bean satisfies that requirement. The
- * format of action attribute must be: action="#{backingBean.action}". Example - passing action value via facelet:
+ * The commandLink JSF tag requires a backing bean for the action attribute - this bean satisfies that requirement.
+ * For example, the format of an action attribute must be: action="#{backingBean.action}". If you want the
+ * outcome of the action to be "/apps/demo/dashboard?faces-redirect=true", you can't simply pass it in to
+ * the action attribute as shown below:
+ * <pre>
+ *   &lt;h:commandLink action=&quot;/apps/demo/dashboard?faces-redirect=true&quot;    ### This will not work
+ * </pre>
+ *
+ * The ActionBean class is designed to read the navigation outcome from the request. This enables a JSF page
+ * to pass in the desired outcome to a particular page fragment using the standard {@code param} tag.
+ * <p>
+ *
+ * Example - passing action value via facelet:
  *
  * <pre>
  * {@code

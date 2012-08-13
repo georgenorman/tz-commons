@@ -22,6 +22,8 @@ import com.thruzero.common.core.utils.PerformanceTimerUtils;
 import com.thruzero.common.core.utils.PerformanceTimerUtils.PerformanceLogger;
 
 /**
+ * A timer that can be started from a JSF page, via #{timerBean.init}, and then retrieving the
+ * resulting elapsed time via #{timerBean.elapsedTime}.
  *
  * @author George Norman
  */

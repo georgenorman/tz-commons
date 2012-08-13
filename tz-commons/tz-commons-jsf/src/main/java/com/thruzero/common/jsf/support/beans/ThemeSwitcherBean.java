@@ -21,6 +21,7 @@ import java.util.Map;
 import com.thruzero.common.core.locator.ConfigLocator;
 
 /**
+ * Reads in a set of supported themes, from the config file, and provides them to a JSF page.
  *
  * @author George Norman
  */
@@ -43,5 +44,4 @@ public class ThemeSwitcherBean implements Serializable {
   public void setTheme(String theme) {
     this.theme = theme;
   }
-
 }
