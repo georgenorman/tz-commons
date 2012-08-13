@@ -25,7 +25,7 @@
             similar entries in the beans.xml file, since these services are equivalent to @Alternative.
        =============================================================================== -->
   <section name="com.thruzero.domain.dao.DAO">
-    <entry key="com.thruzero.domain.jpa.dao.JpaTextEnvelopeDAOs" value="com.thruzero.domain.jpa.dao.JpaTextEnvelopeDAO" />
+    <entry key="com.thruzero.domain.jpa.dao.JpaTextEnvelopeDAO" value="com.thruzero.domain.jpa.dao.JpaTextEnvelopeDAO" />
    </section>
 
 </configuration>
