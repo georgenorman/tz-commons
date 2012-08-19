@@ -36,6 +36,9 @@ import com.thruzero.domain.store.BaseStorePath;
 /**
  * A DataStoreContainer that simply manages files within a single directory; it doesn't manage sub-directories or parent
  * directories. Each parent directory and sub-directory is managed by a separate instance of FileDataStoreContainer.
+ * <p>
+ * All DataStoreContainer objects are managed by {@code GenericDscDAO}, which will flatten and resurrect the
+ * Domain Object instances automatically (passed in as instances of DataStoreEntity).
  *
  * @author George Norman
  */

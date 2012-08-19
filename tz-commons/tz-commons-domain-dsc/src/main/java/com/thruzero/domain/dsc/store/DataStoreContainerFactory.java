@@ -30,6 +30,8 @@ import com.thruzero.domain.store.BaseStorePath;
 public interface DataStoreContainerFactory extends SimpleInfoProvider {
 
   /**
+   * Initialize the factory.
+   *
    * @param daoParams param map used to init the DAO.
    * @param sourceSectionName the name of the section the param map was read from.
    */

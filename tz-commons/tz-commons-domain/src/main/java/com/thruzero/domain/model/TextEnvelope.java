@@ -29,10 +29,11 @@ import com.thruzero.domain.store.Persistent;
 public class TextEnvelope extends AbstractPersistent {
   private static final long serialVersionUID = 1L;
 
-  private EntityPath entityPath = new EntityPath();
+  private EntityPath entityPath;
   private String data;
 
   public TextEnvelope() {
+    entityPath = new EntityPath();
   }
 
   /**

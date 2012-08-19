@@ -53,6 +53,7 @@ public abstract class AbstractDataStoreContainerFactory implements DataStoreCont
 
   /**
    * Subclass initialization hook - returns the baseStorePath for the container factory.
+   *
    * @param daoInitStrategy
    * @param sourceSectionName
    * @param dscFactoryParams

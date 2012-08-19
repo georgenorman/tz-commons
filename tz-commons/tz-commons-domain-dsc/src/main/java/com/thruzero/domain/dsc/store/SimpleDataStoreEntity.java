@@ -33,6 +33,7 @@ public class SimpleDataStoreEntity implements DataStoreEntity {
 
   public SimpleDataStoreEntity(InputStream inputStream, EntityPath entityPath) {
     this.inputStream = inputStream;
+    this.entityPath = entityPath;
   }
 
   @Override

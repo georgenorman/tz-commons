@@ -16,6 +16,7 @@
 package com.thruzero.domain.dsc.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.thruzero.common.core.bookmarks.InitializationParameterKeysBookmark;
@@ -48,8 +49,22 @@ import com.thruzero.domain.store.Persistent;
  * handles persistence for a single directory in the file system (the persistence of child directories are managed by
  * separate instances of {@code FileDataStoreContainer}).
  * <p>
- * A {@code DomainObjectTransformer} is used to handle the translation from a Domain Object to a data node and back
- * again. For example, the {@code XStreamDomainObjectTransformer} uses <a
+ * The {@code DataStoreContainerFactory} is configurable for each type of DAO. For example, the {@code DscPreferenceDAO}
+ * can be configured to use the file system, and the {@code DscSettingDAO} can be configured for a Web Service, as shown below.
+ * <pre>
+ *  &lt;section name=&quot;com.thruzero.domain.dsc.dao.DscPreferenceDAO&quot;&gt;
+ *    &lt;entry key=&quot;com.thruzero.domain.dsc.store.DataStoreContainerFactory&quot; value=&quot;com.thruzero.domain.dsc.fs.FileDataStoreContainerFactory&quot; /&gt;
+ *    &lt;entry key=&quot;base&quot; value=&quot;DscPreferenceDAO&quot; /&gt;
+ *  &lt;/section&gt;
+ *
+ *  &lt;section name=&quot;com.thruzero.domain.dsc.dao.DscSettingDAO&quot;&gt;
+ *    &lt;entry key=&quot;com.thruzero.domain.dsc.store.DataStoreContainerFactory&quot; value=&quot;com.thruzero.domain.dsc.ws.WsDataStoreContainerFactory&quot; /&gt;
+ *    &lt;entry key=&quot;base&quot; value=&quot;DscSettingDAO&quot; /&gt;
+ *  &lt;/section&gt;
+ *  </pre>
+ * <p>
+ * A {@code DomainObjectTransformer} is used to handle the translation from a Domain Object to a {@code DataStoreEntity} and back
+ * again (a {@code DataStoreEntity} represents the flattened Domain Object as an {@code InputStream}). For example, the {@code XStreamDomainObjectTransformer} uses <a
  * href="http://xstream.codehaus.org/">XStream</a> to handle these translations.
  * <p>
  * The <i>baseStorePath</i> property is passed into the DAO by the locator, at initialization-time, and
@@ -71,6 +86,7 @@ import com.thruzero.domain.store.Persistent;
  * referenced by the absolute <i>data store</i> path of "/owner1@thruzero.com/context1a/name123.txt", but in the file
  * system, it's represented by the absolute <i>file system</i> path of
  * "/home/foo/bar/data-store/DscPreferenceDAO/owner1@thruzero.com/context1a/name123.txt".
+ *
  *
  * @author George Norman
  * @param <T> the type of Domain Object to be persisted.
@@ -176,8 +192,8 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
 
     // create the DSC factory
     try {
-      Class<DataStoreContainerFactory> dscfClazz = ClassUtils.classFrom(dataStoreContainerFactoryClassName);
-      dscFactory = ClassUtils.instanceFrom(dscfClazz);
+      Class<DataStoreContainerFactory> dscfClass = ClassUtils.classFrom(dataStoreContainerFactoryClassName);
+      dscFactory = ClassUtils.instanceFrom(dscfClass);
 
       dscFactory.init(daoInitStrategy, this.getClass().getName());
     } catch (ClassUtilsException e) {
@@ -185,7 +201,7 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
     }
 
     // validate the container
-    DataStoreContainer dataStoreContainer = createDataStoreContainer(new ContainerPath(), false);
+    DataStoreContainer dataStoreContainer = createDataStoreContainer(new ContainerPath(), false); // TODO-p0: shouldn't this use the path from the dscFactory?
     dataStoreContainer.validate();
   }
 
@@ -308,7 +324,19 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
 
   @Override
   public synchronized List<? extends T> getAll() {
-    return null; // TODO-p1(george) IMPLEMENT
+    List<T> result = new ArrayList<T>();
+    DataStoreContainer dataStoreContainer = createDataStoreContainer(new ContainerPath(getBaseStorePath().toString() + ContainerPath.CONTAINER_PATH_SEPARATOR), true); // TODO-p0 HACK! What are the rule for the base path? Is '/' required or optional?
+    List<? extends DataStoreEntity> allEntities = dataStoreContainer.getAllEntities(false);
+
+    for (DataStoreEntity entity : allEntities) {
+      T model = domainObjectTransformer.resurrect(entity.getEntityPath(), entity);
+
+      model.setId(entity.getEntityPath());
+
+      result.add(model);
+    }
+
+    return result;
   }
 
   @Override

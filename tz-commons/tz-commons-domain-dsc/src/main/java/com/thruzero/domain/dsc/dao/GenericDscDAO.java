@@ -16,6 +16,7 @@
 package com.thruzero.domain.dsc.dao;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.apache.commons.io.IOUtils;
 
@@ -48,7 +49,7 @@ import com.thruzero.domain.store.Persistent;
  * @author George Norman
  * @param <T> Type of Domain Object managed by this DAO.
  */
-public class GenericDscDAO<T extends Persistent> extends AbstractDataStoreDAO<T> {
+public class GenericDscDAO<T extends Persistent> extends AbstractDataStoreDAO<T> { // TODO-p1(george): Should this be GenericDscDAO or DscGenericDAO (it indirectly implements GenericDAO)?
 
   // ------------------------------------------------------
   // XStreamDomainObjectTransformer
@@ -76,15 +77,21 @@ public class GenericDscDAO<T extends Persistent> extends AbstractDataStoreDAO<T>
      */
     @Override
     public DataStoreEntity flatten(T domainObject) {
+      // flatten domain object without the ID (it's redundant, since all DSC entities store the ID in the DataStoreEntity).
+      Serializable id = domainObject.getId();
+      domainObject.setId(null);
       String serializedData = xstream.toXML(domainObject);
-      EntityPath primaryKey = null;
+      domainObject.setId(id);
 
+      // get the primaryKey (ID) and save with the DataStoreEntity
+      EntityPath primaryKey = null;
       if (domainObject.getId() instanceof EntityPath) {
         primaryKey = (EntityPath)domainObject.getId();
       } else {
         primaryKey = EntityPath.createFromString(domainObject.getIdAsString());
       }
 
+      // the DataStoreEntity is created with a domain object with a null ID and the ID is stored in the DataStoreEntity.
       return new SimpleDataStoreEntity(IOUtils.toInputStream(serializedData), primaryKey);
     }
 
@@ -102,6 +109,8 @@ public class GenericDscDAO<T extends Persistent> extends AbstractDataStoreDAO<T>
         @SuppressWarnings("unchecked")
         T temp = (T)xstream.fromXML(is);
         T result = temp;
+
+        result.setId(primaryKey);
 
         return result;
       } catch (Exception e) {
