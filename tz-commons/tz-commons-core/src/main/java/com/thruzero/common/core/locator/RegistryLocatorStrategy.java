@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.commons.lang3.StringUtils;
@@ -96,7 +97,7 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
 
   private final String targetInterfaceTypeName;
   private final InstanceCache<T> instanceCache = new InstanceCache<T>();
-  private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
+  private final ReadWriteLock rwl = new ReentrantReadWriteLock();
   private final InterfaceBindingRegistry<T> interfaceBindingRegistry = new InterfaceBindingRegistry<T>(rwl);
 
   // -----------------------------------------------------------
@@ -252,10 +253,10 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
    * The collection of registered interface-to-implementation bindings.
    */
   public static class InterfaceBindingRegistry<T> {
-    private final ReentrantReadWriteLock rwl; // TODO-p1(george) revisit need to pass this in; should be able to easily make this a non-static class and access rwl from outer.
+    private final ReadWriteLock rwl; // TODO-p1(george) revisit need to pass this in; should be able to easily make this a non-static class and access rwl from outer.
     private Map<String, InterfaceToClassBinding<T>> bindingMap;
 
-    public InterfaceBindingRegistry(ReentrantReadWriteLock rwl) {
+    public InterfaceBindingRegistry(ReadWriteLock rwl) {
       this.rwl = rwl;
     }
 
