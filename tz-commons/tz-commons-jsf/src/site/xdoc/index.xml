@@ -8,6 +8,7 @@
     <section name="Overview">
       <p>
         This module contains generic components that are useful to writing any JSF application.
+        For example, it contains a set of configurable HTML components useful for HTML5-based frameworks (e.g., JQuery Mobile) that allow for custom pass-through attributes.
       </p>
     </section>
 

@@ -15,9 +15,9 @@
           <li><b><a href="tz-commons-core/index.html">tz-commons-core</a></b>: Basic low-level components (e.g., Config, ConfigLocator, ServiceLocator, InfoNodeElement)</li>
           <li><b><a href="tz-commons-domain/index.html">tz-commons-domain</a></b>: Focuses on common Services (e.g., PreferenceService, SettingService and InfoNodeService)
               <ul style="margin-top:0px;">
-                <li><b><a href="tz-commons-domain-jpa/index.html">tz-commons-domain-jpa</a></b>: JPA-based implementations of DAOs, using Hibernate.</li>
+                <li><b><a href="tz-commons-domain-jpa/index.html">tz-commons-domain-jpa</a></b>: JPA-based implementations of DAOs (via Hibernate).</li>
                 <li><b><a href="tz-commons-domain-hibernate/index.html">tz-commons-domain-hibernate</a></b>: Hibernate-based implementations of DAOs.</li>
-                <li><b><a href="tz-commons-domain-dsc/index.html">tz-commons-domain-dsc</a></b>: DSC-based implementations of domain DAOs.</li>
+                <li><b><a href="tz-commons-domain-dsc/index.html">tz-commons-domain-dsc</a></b>: DSC-based implementations of DAOs.</li>
               </ul>
           </li>
           <li><b><a href="tz-commons-auth/index.html">tz-commons-auth</a></b>: Basic authentication and authorization services (<a href="http://shiro.apache.org/">Shiro</a> integration)
@@ -28,22 +28,22 @@
               </ul>
           </li>
           <li><b><a href="tz-commons-web/index.html">tz-commons-web</a></b>: Basic Utils and filters useful to the web tier.</li>
-          <li><b><a href="tz-commons-jsf/index.html">tz-commons-jsf</a></b>: Basic Utils useful to JSF apps</li>
+          <li><b><a href="tz-commons-jsf/index.html">tz-commons-jsf</a></b>: Configurable HTML components useful for HTML5-based frameworks (e.g., JQuery Mobile) that allow for custom pass-through attributes</li>
         </ul>
       </p>
     </section>
 
     <section name="Sample Applications">
-        There's a sample application:
+        There are sample applications:
         <ul>
-          <li><b><a href="http://www.thruzero.com/projects/pf-test-desktop/index.html">pf-test1-desktop</a></b>: A PrimeFaces web application,
-            for desktop browsers, configurable for JPA, Hibernate, DSC file system or DSC web service.
+          <li><b><a href="http://www.thruzero.com/projects/pf-test-desktop/index.html">pf-test-desktop</a></b>: A PrimeFaces web application,
+            for desktop browsers, configurable for JPA, Hibernate, DSC file system or DSC web service. A live demo can be found <a href = "http://www.thruzero.com/pf-test-desktop/">here</a>.
             It tests tz-commons using some of the following PrimeFaces components:
             <ul>
-              <li>Accordion Panel (using JPA and DSC concurrently)</li>
+              <li>Accordion Panels (one using JPA, another DSC)</li>
               <li>Carousel Panel</li>
-              <li>RSS Feed</li>
-              <li>Chart</li>
+              <li>RSS Feeds</li>
+              <li>Charts</li>
               <li>Map</li>
               <li>Galleria</li>
               <li>Image Switch</li>
@@ -52,15 +52,16 @@
             <ul>
               <li>Guest Book</li>
               <li>Escape Utility</li>
-              <li>Authentication test (Shiro integration)</li>
+              <li>Authentication and authorization (tests Shiro integration)</li>
             </ul>
           </li>
-          <li><b>jq-test-mobile</b>: Work-In-Progress. A Hybrid JQuery and JSF 2.0 test application, for mobile, configurable for JPA, Hibernate, DSC file system or DSC web service.
-              JQuery is used for the UI, JSF is used for managed beans and dependency injection and Facelets is used for templating and creating compound JQuery components as well as helper components.
-              This also tests tz-commons, using many of the same UI features as the pf-test1-desktop web application (but no PrimeFaces).
-              A semi-working live demo can be found <a href = "http://www.thruzero.com/jq-test-mobile/apps/demo/dashboard.jsf">here</a>.
+
+          <li><b><a href="http://www.thruzero.com/projects/jq-test-mobile/index.html">jq-test-mobile</a></b>: A Hybrid JQuery and JSF 2.0 test application, for mobile, configurable for JPA, Hibernate, DSC file system or DSC web service.
+              JQuery is used for the UI and JSF is used for managed beans and dependency injection. Additionally, JSF's Facelets is used for templating and creating compound JQuery components.
+              A live demo can be found <a href = "http://www.thruzero.com/jq-test-mobile/">here</a>.
           </li>
-          <li><b>pf-test-responsive</b>: TODO-p0(george) A Hybrid JQuery and JSF 2.0 web application, for desktop and mobile, configurable
+
+          <li style="margin-top:8px;"><b>tbs-test-responsive</b>: TODO-p0(george) A Hybrid Twitter Bootstrap and JSF 2.0 web application, for desktop and mobile, configurable
                for JPA, Hibernate, DSC file system or DSC web service.</li>
         </ul>
     </section>
