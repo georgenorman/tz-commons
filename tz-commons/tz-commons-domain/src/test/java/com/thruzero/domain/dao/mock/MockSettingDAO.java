@@ -30,7 +30,7 @@ import com.thruzero.domain.store.SimpleMemoryStore;
  *
  * @author George Norman
  */
-public class MockSettingDAO extends GenericMemoryDAO<Setting> implements SettingDAO {
+public final class MockSettingDAO extends GenericMemoryDAO<Setting> implements SettingDAO {
 
   // ------------------------------------------------------
   // SettingKeyGen
@@ -55,7 +55,7 @@ public class MockSettingDAO extends GenericMemoryDAO<Setting> implements Setting
   // MockSettingDAO
   // ============================================================================
 
-  public MockSettingDAO() {
+  private MockSettingDAO() {
     super(new SimpleMemoryStore<Setting>());
   }
 

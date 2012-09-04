@@ -64,7 +64,7 @@ import com.thruzero.common.core.utils.ExceptionUtilsExt;
  *
  * @author George Norman
  */
-public class JpaDatabaseTransactionMgr implements DatabaseTransactionMgr, Initializable {
+public final class JpaDatabaseTransactionMgr implements DatabaseTransactionMgr, Initializable {
   private static TransactionMgrLogHelper transactionMgrLogHelper = new TransactionMgrLogHelper(JpaDatabaseTransactionMgr.class);
 
   private static ThreadLocal<JpaTransactionState> localTransactionState = new ThreadLocal<JpaTransactionState>() {
@@ -157,7 +157,10 @@ public class JpaDatabaseTransactionMgr implements DatabaseTransactionMgr, Initia
   // JpaDatabaseTransactionMgr
   // =================================================================
 
-  protected JpaDatabaseTransactionMgr() {
+  /**
+   * Use com.thruzero.common.core.locator.TransactionMgrLocator to access a particular TransactionMgr.
+   */
+  private JpaDatabaseTransactionMgr() {
   }
 
   /**

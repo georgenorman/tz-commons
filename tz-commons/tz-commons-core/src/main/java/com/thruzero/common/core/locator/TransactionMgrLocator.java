@@ -49,7 +49,7 @@ import com.thruzero.common.core.transaction.TransactionMgr;
 public class TransactionMgrLocator {
   private static RegistryLocatorStrategy<TransactionMgr> locatorStrategy = new RegistryLocatorStrategy<TransactionMgr>(TransactionMgr.class);
 
-  /** Allow for class extensions; disallow client instantiation */
+  /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected TransactionMgrLocator() {
   }
 

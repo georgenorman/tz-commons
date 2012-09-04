@@ -28,14 +28,13 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
-import com.thruzero.common.core.support.Singleton;
 
 /**
  * A builder that uses a SAX parser to create a {@code InfoNodeElement} from an xml string.
- * 
+ *
  * <p>
  * <b>Example:</b>
- * 
+ *
  * <pre>
  * <code>
  * String subLinks =
@@ -51,14 +50,14 @@ import com.thruzero.common.core.support.Singleton;
  *   "    <href>apps/resources/index.do?tab=design&amp;res=patterns</href>"+
  *   "  </anchor>"+
  *   "</dataList>";
- * 
+ *
  * InfoNodeElement subLinks = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(subLinks);
  * </code>
  * </pre>
- * 
+ *
  * @author George Norman
  */
-public class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder implements Singleton {
+public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
   private static final Logger logger = Logger.getLogger(SaxInfoNodeBuilder.class);
 
   /** Basic builder; does not provide parent document (only relative xpath supported) and no primary key. */
@@ -68,7 +67,7 @@ public class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder implements Singl
   public static final SaxInfoNodeBuilder WITH_ROOT_NODE = new SaxInfoNodeBuilder(false, true);
 
   /** Builder without parent document (only relative xpath supported) and provides a primary key. */
-  public static final DomInfoNodeBuilder WITH_PRIMARY_KEY = new DomInfoNodeBuilder(true, false);
+  public static final DomInfoNodeBuilder WITH_PRIMARY_KEY = DomInfoNodeBuilder.WITH_PRIMARY_KEY;
 
   /** Builder providing parent document (full xpath support) and a primary key. */
   public static final SaxInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new SaxInfoNodeBuilder(true, true);
@@ -158,10 +157,9 @@ public class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder implements Singl
   // =============================================================
 
   /**
-   * Allow for class extensions; disallow client instantiation. Instead of creating a new builder, use one of the
-   * pre-configured builders (e.g., DEFAULT)
+   * Instead of creating a new builder, use one of the pre-configured builders (e.g., DEFAULT)
    */
-  protected SaxInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
+  private SaxInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
     super(primaryKeyGenerationEnabled, rootNodeGenerationEnabled);
   }
 

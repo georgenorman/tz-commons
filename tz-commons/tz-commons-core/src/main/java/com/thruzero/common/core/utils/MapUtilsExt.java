@@ -31,7 +31,7 @@ import com.thruzero.common.core.infonode.InfoNodeElement;
  */
 public class MapUtilsExt extends MapUtils {
 
-  /** Allow for class extensions; disallow client instantiation */
+  /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected MapUtilsExt() {
   }
 

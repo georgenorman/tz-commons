@@ -40,7 +40,7 @@ import com.thruzero.common.core.utils.ExceptionUtilsExt;
  * @author George Norman
  * @see {@link com.thruzero.common.core.locator.ConfigLocator ConfigLocator}
  */
-public class JFigConfig extends AbstractConfig {
+public final class JFigConfig extends AbstractConfig {
   private static final Logger logger = Logger.getLogger(AbstractConfig.class);
 
   private JFigIF jFig;
@@ -51,7 +51,7 @@ public class JFigConfig extends AbstractConfig {
    * <p>
    * Use {@link com.thruzero.common.core.locator.ConfigLocator#locate()} to get an instance of the registered Config.
    */
-  protected JFigConfig() {
+  private JFigConfig() {
   }
 
   /**

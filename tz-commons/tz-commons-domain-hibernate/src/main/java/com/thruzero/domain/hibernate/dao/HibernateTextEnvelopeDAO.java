@@ -31,7 +31,14 @@ import com.thruzero.domain.model.TextEnvelope;
  *
  * @author George Norman
  */
-public class HibernateTextEnvelopeDAO extends HibernateGenericDAO<TextEnvelope> implements TextEnvelopeDAO {
+public final class HibernateTextEnvelopeDAO extends HibernateGenericDAO<TextEnvelope> implements TextEnvelopeDAO {
+
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private HibernateTextEnvelopeDAO() {
+    super(TextEnvelope.class);
+  }
 
   @Override
   public boolean isExistingTextEnvelope(EntityPath entityPath) {
@@ -49,14 +56,6 @@ public class HibernateTextEnvelopeDAO extends HibernateGenericDAO<TextEnvelope> 
     Long result = (Long)hqlQuery.uniqueResult();
 
     return result != null && result > 0;
-  }
-
-  /**
-   * Allow for class extensions; disallow client instantiation (use {@link com.thruzero.domain.locator.DAOLocator
-   * DAOLocator} to access a particular DAO)
-   */
-  protected HibernateTextEnvelopeDAO() {
-    super(TextEnvelope.class);
   }
 
   @Override

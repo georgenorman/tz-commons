@@ -30,7 +30,7 @@ import com.thruzero.domain.store.SimpleMemoryStore;
  *
  * @author George Norman
  */
-public class MockPreferenceDAO extends GenericMemoryDAO<Preference> implements PreferenceDAO {
+public final class MockPreferenceDAO extends GenericMemoryDAO<Preference> implements PreferenceDAO {
 
   // ------------------------------------------------------
   // PreferenceKeyGen
@@ -55,7 +55,10 @@ public class MockPreferenceDAO extends GenericMemoryDAO<Preference> implements P
   // MockPreferenceDAO
   // ============================================================================
 
-  public MockPreferenceDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private MockPreferenceDAO() {
     super(new SimpleMemoryStore<Preference>());
   }
 

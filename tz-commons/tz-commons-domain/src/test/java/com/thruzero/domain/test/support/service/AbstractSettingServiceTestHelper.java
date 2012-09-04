@@ -47,8 +47,14 @@ public abstract class AbstractSettingServiceTestHelper {
   // -----------------------------------------------
 
   /** Exists solely to test the SettingDAO implementation. */
-  public static class MockSettingService extends AbstractCrudService<Setting> implements SettingService {
+  public static final class MockSettingService extends AbstractCrudService<Setting> implements SettingService {
     private SettingDAO dao = DAOLocator.locate(SettingDAO.class);
+
+    /**
+     * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
+     */
+    private MockSettingService() {
+    }
 
     @Override
     public Setting getSetting(String context, String name) {

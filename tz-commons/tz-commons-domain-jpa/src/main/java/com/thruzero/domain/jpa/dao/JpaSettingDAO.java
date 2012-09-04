@@ -30,9 +30,12 @@ import com.thruzero.domain.model.Setting;
  *
  * @author George Norman
  */
-public class JpaSettingDAO extends JpaGenericDAO<Setting> implements SettingDAO {
+public final class JpaSettingDAO extends JpaGenericDAO<Setting> implements SettingDAO {
 
-  protected JpaSettingDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private JpaSettingDAO() {
     super(Setting.class);
   }
 

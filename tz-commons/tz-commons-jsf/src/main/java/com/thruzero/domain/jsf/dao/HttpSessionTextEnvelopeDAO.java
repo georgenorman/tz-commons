@@ -30,7 +30,7 @@ import com.thruzero.domain.model.TextEnvelope;
  *
  * @author George Norman
  */
-public class HttpSessionTextEnvelopeDAO extends HttpSessionDAO<TextEnvelope> implements TextEnvelopeDAO {
+public final class HttpSessionTextEnvelopeDAO extends HttpSessionDAO<TextEnvelope> implements TextEnvelopeDAO {
 
   // ------------------------------------------------------
   // TextEnvelopeKeyGen
@@ -48,7 +48,10 @@ public class HttpSessionTextEnvelopeDAO extends HttpSessionDAO<TextEnvelope> imp
   // HttpSessionTextEnvelopeDAO
   // ============================================================================
 
-  public HttpSessionTextEnvelopeDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private HttpSessionTextEnvelopeDAO() {
     super(new HttpMemoryStore<TextEnvelope>(TextEnvelope.class));
   }
 

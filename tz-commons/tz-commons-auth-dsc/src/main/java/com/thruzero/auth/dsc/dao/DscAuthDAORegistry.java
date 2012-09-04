@@ -30,11 +30,11 @@ import com.thruzero.domain.locator.DAOLocator;
  * @author George Norman
  */
 @LocatorRegistryBookmark(comment = "DscAuthDAORegistry")
-public class DscAuthDAORegistry extends DAORegistry {
+public final class DscAuthDAORegistry extends DAORegistry {
   private static final DscAuthDAORegistry instance = new DscAuthDAORegistry();
 
-  /** Allow for class extensions; disallow client instantiation */
-  protected DscAuthDAORegistry() {
+  /** Use getInstance() to get an instance of this class. */
+  private DscAuthDAORegistry() {
   }
 
   public static DscAuthDAORegistry getInstance() {

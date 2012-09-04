@@ -24,25 +24,25 @@ import com.thruzero.common.core.support.Singleton;
 /**
  * Manually build a {@code InfoNodeElement} directly from the element name, value and attributes. The following example
  * shows how to build a {@code InfoNodeElement} that represents a list of FAQs:
- * 
+ *
  * <pre>
  * <code>
  *    // create parent (rootNode)
  *    InfoNodeElement rootNode = ExpressInfoNodeBuilder.WITH_ROOT_NODE.buildInfoNode("parent", null, null);
- * 
+ *
  *    // create the data-list, with one attribute and two faq entries
  *    ExpressInfoNodeBuilder builder = ExpressInfoNodeBuilder.DEFAULT;
  *    InfoNodeElement dataListNode = builder.buildInfoNode("dataList", null, StringUtilsExt.tokensToMap("key1=value1"));
  *    dataListNode.addChildNode(builder.buildInfoNode("faq", "one", null));
  *    dataListNode.addChildNode(builder.buildInfoNode("faq", "two", null));
- * 
+ *
  *    // add data-list to root node.
  *    rootNode.addChildNode(dataListNode);
  * </code>
  * </pre>
- * 
+ *
  * Generates the following:
- * 
+ *
  * <pre>
  * {@code
  * <parent>
@@ -53,10 +53,10 @@ import com.thruzero.common.core.support.Singleton;
  * </parent>
  * }
  * </pre>
- * 
+ *
  * @author George Norman
  */
-public class ExpressInfoNodeBuilder extends AbstractInfoNodeBuilder implements Singleton {
+public final class ExpressInfoNodeBuilder extends AbstractInfoNodeBuilder {
   /** Basic builder; does not provide parent document (only relative xpath supported) and no primary key. */
   public static final ExpressInfoNodeBuilder DEFAULT = new ExpressInfoNodeBuilder(false, false);
 
@@ -70,10 +70,9 @@ public class ExpressInfoNodeBuilder extends AbstractInfoNodeBuilder implements S
   public static final ExpressInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new ExpressInfoNodeBuilder(true, true);
 
   /**
-   * Allow for class extensions; disallow client instantiation. Instead of creating a new builder, use one of the
-   * pre-configured builders (e.g., DEFAULT)
+   * Instead of creating a new builder, use one of the pre-configured builders (e.g., DEFAULT)
    */
-  protected ExpressInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
+  private ExpressInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
     super(primaryKeyGenerationEnabled, rootNodeGenerationEnabled);
   }
 

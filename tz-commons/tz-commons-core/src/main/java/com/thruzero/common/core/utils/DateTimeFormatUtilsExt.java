@@ -26,7 +26,7 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 /**
  * Extensions to the apache {@code DateFormatUtils} utility class that adds additional Date and time formatting
  * functions.
- * 
+ *
  * @author George Norman
  */
 public class DateTimeFormatUtilsExt extends DateFormatUtils {
@@ -37,7 +37,7 @@ public class DateTimeFormatUtilsExt extends DateFormatUtils {
   /** Default time format */
   public static final String HH_MM_AMPM_TIME_FORMAT_STRING = "hh:mm a";
 
-  /** Allow for class extensions; disallow client instantiation */
+  /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected DateTimeFormatUtilsExt() {
   }
 

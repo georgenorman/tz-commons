@@ -29,9 +29,12 @@ import com.thruzero.domain.model.Setting;
  *
  * @author George Norman
  */
-public class HibernateSettingDAO extends HibernateGenericDAO<Setting> implements SettingDAO {
+public final class HibernateSettingDAO extends HibernateGenericDAO<Setting> implements SettingDAO {
 
-  protected HibernateSettingDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private HibernateSettingDAO() {
     super(Setting.class);
   }
 

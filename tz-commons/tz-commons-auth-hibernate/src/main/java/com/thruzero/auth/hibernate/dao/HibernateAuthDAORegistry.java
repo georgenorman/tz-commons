@@ -30,11 +30,11 @@ import com.thruzero.domain.locator.DAOLocator;
  * @author George Norman
  */
 @LocatorRegistryBookmark(comment = "HibernateAuthDAORegistry")
-public class HibernateAuthDAORegistry extends DAORegistry {
+public final class HibernateAuthDAORegistry extends DAORegistry {
   private static final HibernateAuthDAORegistry instance = new HibernateAuthDAORegistry();
 
-  /** Allow for class extensions; disallow client instantiation */
-  protected HibernateAuthDAORegistry() {
+  /** Use getInstance() to get an instance of this class. */
+  private HibernateAuthDAORegistry() {
   }
 
   public static HibernateAuthDAORegistry getInstance() {

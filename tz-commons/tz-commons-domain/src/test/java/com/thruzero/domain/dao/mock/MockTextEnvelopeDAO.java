@@ -30,7 +30,7 @@ import com.thruzero.domain.store.SimpleMemoryStore;
  *
  * @author George Norman
  */
-public class MockTextEnvelopeDAO extends GenericMemoryDAO<TextEnvelope> implements TextEnvelopeDAO {
+public final class MockTextEnvelopeDAO extends GenericMemoryDAO<TextEnvelope> implements TextEnvelopeDAO {
 
   // ------------------------------------------------------
   // TextEnvelopeKeyGen
@@ -48,7 +48,10 @@ public class MockTextEnvelopeDAO extends GenericMemoryDAO<TextEnvelope> implemen
   // MockTextEnvelopeDAO
   // ============================================================================
 
-  public MockTextEnvelopeDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private MockTextEnvelopeDAO() {
     super(new SimpleMemoryStore<TextEnvelope>());
   }
 

@@ -27,7 +27,7 @@ import com.thruzero.common.core.locator.ConfigLocator;
  *
  * @author George Norman
  */
-public class EnvironmentHelper implements Singleton {
+public final class EnvironmentHelper implements Singleton {
   private static final EnvironmentHelper instance = new EnvironmentHelper();
 
   /** The system-dependent new-line character. */
@@ -83,8 +83,7 @@ public class EnvironmentHelper implements Singleton {
   // EnvironmentHelper
   // ============================================================
 
-  /** Allow for class extensions; disallow client instantiation */
-  protected EnvironmentHelper() {
+  private EnvironmentHelper() {
   }
 
   /**

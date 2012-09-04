@@ -31,10 +31,13 @@ import com.thruzero.domain.hibernate.dao.HibernateGenericDAO;
  *
  * @author George Norman
  */
-public class HibernateUserDAO extends HibernateGenericDAO<User> implements UserDAO {
+public final class HibernateUserDAO extends HibernateGenericDAO<User> implements UserDAO {
   private String userClass;
 
-  public HibernateUserDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private HibernateUserDAO() {
     super(User.class);
 
     userClass = ConfigLocator.locate().getValue(UserDAOConfigKeys.SECTION_NAME, UserDAOConfigKeys.USER_CLASS);

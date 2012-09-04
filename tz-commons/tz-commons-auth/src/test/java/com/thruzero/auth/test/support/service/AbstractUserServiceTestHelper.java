@@ -46,8 +46,14 @@ public abstract class AbstractUserServiceTestHelper {
   // -----------------------------------------------
 
   /** Exists solely to test the UserDAO implementation. */
-  public static class MockUserService extends AbstractCrudService<User> implements UserService { // TODO-p1(george) not implemented
+  public static final class MockUserService extends AbstractCrudService<User> implements UserService { // TODO-p1(george) not implemented
     private UserDAO userDAO = DAOLocator.locate(UserDAO.class);
+
+    /**
+   * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
+     */
+    private MockUserService() {
+    }
 
     @Override
     public User getUserByLoginId(String loginId) {

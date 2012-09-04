@@ -33,12 +33,12 @@ import com.thruzero.common.core.locator.RegistryLocatorStrategy.LocatorException
  * Exceptions I've thrown, or maybe I'm throwing the wrong type, so it eats it. Anyway, for now, it's easier to ignore
  * duplicated/extra spweage than it is to debug with none.
  * </p>
- * 
+ *
  * @author George Norman
  */
 public class ExceptionUtilsExt extends ExceptionUtils {
 
-  /** Allow for class extensions; disallow client instantiation */
+  /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected ExceptionUtilsExt() {
   }
 

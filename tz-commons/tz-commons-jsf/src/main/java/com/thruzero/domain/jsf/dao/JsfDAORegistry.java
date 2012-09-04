@@ -30,11 +30,11 @@ import com.thruzero.domain.locator.DAOLocator;
  * @author George Norman
  */
 @LocatorRegistryBookmark(comment = "JsfDAORegistry")
-public class JsfDAORegistry extends DAORegistry {
+public final class JsfDAORegistry extends DAORegistry {
   private static final JsfDAORegistry instance = new JsfDAORegistry();
 
-  /** Allow for class extensions; disallow client instantiation */
-  protected JsfDAORegistry() {
+  /** Use getInstance() to get an instance of this class. */
+  private JsfDAORegistry() {
   }
 
   public static JsfDAORegistry getInstance() {

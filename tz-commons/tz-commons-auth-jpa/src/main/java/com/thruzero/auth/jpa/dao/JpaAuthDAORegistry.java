@@ -30,11 +30,11 @@ import com.thruzero.domain.locator.DAOLocator;
  * @author George Norman
  */
 @LocatorRegistryBookmark(comment = "JpaAuthDAORegistry")
-public class JpaAuthDAORegistry extends DAORegistry {
+public final class JpaAuthDAORegistry extends DAORegistry {
   private static final JpaAuthDAORegistry instance = new JpaAuthDAORegistry();
 
-  /** Allow for class extensions; disallow client instantiation */
-  protected JpaAuthDAORegistry() {
+  /** Use getInstance() to get an instance of this class. */
+  private JpaAuthDAORegistry() {
   }
 
   public static JpaAuthDAORegistry getInstance() {

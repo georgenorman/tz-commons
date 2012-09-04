@@ -25,18 +25,18 @@ import com.thruzero.common.core.provider.Provider;
  * its implementation is determined at runtime (the concrete {@code Provider} instance can be defined in a config file).
  * <p>
  * The following example locates the instance bound to the registered {@code ResourceProvider} API:
- * 
+ *
  * <pre>
  * ResourceProvider resourceProvider = ProviderLocator.locate(ResourceProvider.class);
  * </pre>
- * 
+ *
  * @author George Norman
  */
 @LocatorBookmark(comment = "ProviderLocator")
 public class ProviderLocator {
   private static RegistryLocatorStrategy<Provider> locatorStrategy = new RegistryLocatorStrategy<Provider>(Provider.class);
 
-  /** Allow for class extensions; disallow client instantiation */
+  /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected ProviderLocator() {
   }
 

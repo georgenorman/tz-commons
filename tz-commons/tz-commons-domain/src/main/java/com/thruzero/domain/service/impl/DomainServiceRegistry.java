@@ -32,11 +32,11 @@ import com.thruzero.domain.service.SettingService;
  * @author George Norman
  */
 @LocatorRegistryBookmark(comment = "DomainServiceRegistry")
-public class DomainServiceRegistry extends ServiceRegistry {
+public final class DomainServiceRegistry extends ServiceRegistry {
   private static final DomainServiceRegistry instance = new DomainServiceRegistry();
 
-  /** Allow for class extensions; disallow client instantiation */
-  protected DomainServiceRegistry() {
+  /** Use getInstance() to get an instance of this class. */
+  private DomainServiceRegistry() {
   }
 
   public static DomainServiceRegistry getInstance() {

@@ -30,9 +30,12 @@ import com.thruzero.domain.model.Preference;
  *
  * @author George Norman
  */
-public class JpaPreferenceDAO extends JpaGenericDAO<Preference> implements PreferenceDAO {
+public final class JpaPreferenceDAO extends JpaGenericDAO<Preference> implements PreferenceDAO {
 
-  protected JpaPreferenceDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private JpaPreferenceDAO() {
     super(Preference.class);
   }
 

@@ -26,7 +26,6 @@ import com.thruzero.common.core.locator.ProviderLocator;
 @LocatorRegistryBookmark(comment = "ProviderRegistry")
 public abstract class ProviderRegistry {
 
-  /** Allow for ProviderRegistry extensions; disallow client instantiation */
   protected ProviderRegistry() {
   }
 

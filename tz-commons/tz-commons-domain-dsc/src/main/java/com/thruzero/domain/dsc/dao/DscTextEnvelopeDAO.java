@@ -56,7 +56,7 @@ import com.thruzero.domain.model.TextEnvelope;
  *
  * @author George Norman
  */
-public class DscTextEnvelopeDAO extends AbstractDataStoreDAO<TextEnvelope> implements TextEnvelopeDAO {
+public final class DscTextEnvelopeDAO extends AbstractDataStoreDAO<TextEnvelope> implements TextEnvelopeDAO {
 
   // ------------------------------------------------------
   // DscTextEnvelopeKeyGen
@@ -74,7 +74,10 @@ public class DscTextEnvelopeDAO extends AbstractDataStoreDAO<TextEnvelope> imple
   // DscTextEnvelopeDAO
   // ============================================================================
 
-  public DscTextEnvelopeDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private DscTextEnvelopeDAO() {
     super(new DomainObjectTransformer<TextEnvelope>() {
       @Override
       public TextEnvelope resurrect(EntityPath primaryKey, DataStoreEntity data) {

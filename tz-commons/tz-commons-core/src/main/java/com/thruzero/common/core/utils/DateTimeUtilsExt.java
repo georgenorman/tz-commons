@@ -27,7 +27,7 @@ import org.apache.commons.lang3.time.DateUtils;
  */
 public class DateTimeUtilsExt extends DateUtils {
 
-  /** Allow for class extensions; disallow client instantiation */
+  /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected DateTimeUtilsExt() {
   }
 

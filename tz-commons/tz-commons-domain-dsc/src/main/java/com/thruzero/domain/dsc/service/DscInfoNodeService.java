@@ -40,9 +40,12 @@ import com.thruzero.domain.store.BaseStorePath;
  *
  * @author George Norman
  */
-public class DscInfoNodeService extends AbstractInfoNodeService {
+public final class DscInfoNodeService extends AbstractInfoNodeService {
 
-  public DscInfoNodeService() {
+  /**
+   * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
+   */
+  private DscInfoNodeService() {
     super(DAOLocator.locate(DscTextEnvelopeDAO.class));
   }
 

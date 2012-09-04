@@ -28,11 +28,11 @@ import com.thruzero.domain.locator.DAOLocator;
  *
  * @author George Norman
  */
-public class MockDomainDAORegistry extends DAORegistry {
+public final class MockDomainDAORegistry extends DAORegistry {
   private static final MockDomainDAORegistry instance = new MockDomainDAORegistry();
 
-  /** Allow for class extensions; disallow client instantiation */
-  protected MockDomainDAORegistry() {
+  /** Use getInstance() to get an instance of this class. */
+  private MockDomainDAORegistry() {
   }
 
   public static MockDomainDAORegistry getInstance() {

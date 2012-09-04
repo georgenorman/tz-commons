@@ -21,9 +21,15 @@ import com.thruzero.common.core.transaction.TransactionMgr;
  *
  * @author George Norman
  */
-public class DscTransactionMgr implements TransactionMgr {
+public final class DscTransactionMgr implements TransactionMgr {
   private boolean active;
   private boolean commitRequested;
+
+  /**
+   * Use com.thruzero.common.core.locator.TransactionMgrLocator to access a particular TransactionMgr.
+   */
+  private DscTransactionMgr() {
+  }
 
   @Override
   public boolean isTransactionActive() {

@@ -33,10 +33,13 @@ import com.thruzero.domain.jpa.utils.JpaUtils;
  *
  * @author George Norman
  */
-public class JpaUserDAO extends JpaGenericDAO<User> implements UserDAO {
+public final class JpaUserDAO extends JpaGenericDAO<User> implements UserDAO {
   private String userClass;
 
-  protected JpaUserDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private JpaUserDAO() {
     super(User.class);
 
     userClass = ConfigLocator.locate().getValue(UserDAOConfigKeys.SECTION_NAME, UserDAOConfigKeys.USER_CLASS);

@@ -46,7 +46,7 @@ import com.thruzero.domain.model.Preference;
  *
  * @author George Norman
  */
-public class DscPreferenceDAO extends GenericDscDAO<Preference> implements PreferenceDAO {
+public final class DscPreferenceDAO extends GenericDscDAO<Preference> implements PreferenceDAO {
 
   // ------------------------------------------------------
   // DscPreferenceKeyGen
@@ -73,7 +73,7 @@ public class DscPreferenceDAO extends GenericDscDAO<Preference> implements Prefe
   // DscPreferenceDAO
   // ============================================================================
 
-  public DscPreferenceDAO() {
+  private DscPreferenceDAO() {
     super(Preference.class);
   }
 

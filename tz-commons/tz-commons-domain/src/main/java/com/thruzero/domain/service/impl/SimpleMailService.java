@@ -69,7 +69,7 @@ import com.thruzero.domain.support.EmailTemplate;
  *
  * @author George Norman
  */
-public class SimpleMailService implements MailService, Initializable {
+public final class SimpleMailService implements MailService, Initializable {
   private static SimpleMailServiceLogHelper logHelper = new SimpleMailServiceLogHelper(SimpleMailService.class);
 
   private boolean emailEnabled;
@@ -250,6 +250,12 @@ public class SimpleMailService implements MailService, Initializable {
   // ===============================================
   // MailService
   // ===============================================
+
+  /**
+   * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
+   */
+  private SimpleMailService() {
+  }
 
   /**
    * @throws InitializationException if a problem is encountered with the given initParams.

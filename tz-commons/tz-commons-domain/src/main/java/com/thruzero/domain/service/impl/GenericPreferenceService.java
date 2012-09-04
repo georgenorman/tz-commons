@@ -30,23 +30,14 @@ import com.thruzero.domain.service.PreferenceService;
  * <p>
  * Note: The particular DAO configured for this service defines where the data is actually stored (e.g., file system, relational table, etc).
  */
-public class GenericPreferenceService implements PreferenceService {
+public final class GenericPreferenceService implements PreferenceService {
   private final PreferenceDAO preferenceDAO;
 
   /**
-   * Allow for class extensions; disallow client instantiation (use
-   * {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service)
+   * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
    */
-  protected GenericPreferenceService() {
+  private GenericPreferenceService() {
     this.preferenceDAO = DAOLocator.locate(PreferenceDAO.class);
-  }
-
-  /**
-   * Allow for class extensions; disallow client instantiation (use
-   * {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service)
-   */
-  protected GenericPreferenceService(PreferenceDAO preferenceDAO) {
-    this.preferenceDAO = preferenceDAO;
   }
 
   @Override

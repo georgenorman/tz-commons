@@ -26,7 +26,6 @@ import com.thruzero.common.core.locator.TransactionMgrLocator;
 @LocatorRegistryBookmark(comment = "TransactionMgrRegistry")
 public abstract class TransactionMgrRegistry {
 
-  /** Allow for class extensions; disallow client instantiation */
   protected TransactionMgrRegistry() {
   }
 

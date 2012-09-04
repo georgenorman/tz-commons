@@ -41,7 +41,7 @@ import com.thruzero.common.core.support.EnvironmentHelper;
 public class StringUtilsExt extends StringUtils {
   public static final String DEFAULT_SEPARATOR = ",";
 
-  /** Allow for class extensions; disallow client instantiation */
+  /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected StringUtilsExt() {
   }
 

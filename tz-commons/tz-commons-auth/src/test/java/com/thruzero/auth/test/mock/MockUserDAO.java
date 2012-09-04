@@ -30,7 +30,7 @@ import com.thruzero.domain.store.SimpleMemoryStore;
  *
  * @author George Norman
  */
-public class MockUserDAO extends GenericMemoryDAO<User> implements UserDAO {
+public final class MockUserDAO extends GenericMemoryDAO<User> implements UserDAO {
 
   // ------------------------------------------------------
   // UserKeyGen
@@ -55,7 +55,10 @@ public class MockUserDAO extends GenericMemoryDAO<User> implements UserDAO {
   // MockUserDAO
   // ============================================================================
 
-  public MockUserDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private MockUserDAO() {
     super(new SimpleMemoryStore<User>());
   }
 

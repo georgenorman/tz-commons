@@ -27,7 +27,7 @@ import com.thruzero.common.core.locator.ConfigLocator;
  * as element values.
  * <p>
  * An example using {@code JFigConfig}:
- * 
+ *
  * <pre>
  * {@code
  * <section name="test">
@@ -36,9 +36,9 @@ import com.thruzero.common.core.locator.ConfigLocator;
  * </section>
  * }
  * </pre>
- * 
+ *
  * Results in an InfoNodeElement representing (and capable of generating) the following XML:
- * 
+ *
  * <pre>
  * {@code
  * <test>
@@ -47,7 +47,7 @@ import com.thruzero.common.core.locator.ConfigLocator;
  * </test>
  * }
  * </pre>
- * 
+ *
  * @author George Norman
  */
 public class ConfigInfoNodeBuilder extends AbstractInfoNodeBuilder {
@@ -66,10 +66,9 @@ public class ConfigInfoNodeBuilder extends AbstractInfoNodeBuilder {
   public static final ConfigInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new ConfigInfoNodeBuilder(true, true);
 
   /**
-   * Allow for class extensions; disallow client instantiation. Instead of creating a new builder, use one of the
-   * pre-configured builders (e.g., DEFAULT)
+   * Use one of the pre-configured builders (e.g., DEFAULT)
    */
-  protected ConfigInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
+  private ConfigInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
     super(primaryKeyGenerationEnabled, rootNodeGenerationEnabled);
   }
 

@@ -29,11 +29,11 @@ import com.thruzero.common.core.transaction.TransactionMgrRegistry;
  * @author George Norman
  */
 @LocatorRegistryBookmark(comment = "JpaTransactionRegistry")
-public class JpaTransactionRegistry extends TransactionMgrRegistry {
+public final class JpaTransactionRegistry extends TransactionMgrRegistry {
   private static final JpaTransactionRegistry instance = new JpaTransactionRegistry();
 
-  /** Allow for class extensions; disallow client instantiation */
-  protected JpaTransactionRegistry() {
+  /** Use getInstance() to get an instance of this class. */
+  private JpaTransactionRegistry() {
   }
 
   public static JpaTransactionRegistry getInstance() {

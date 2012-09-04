@@ -49,7 +49,7 @@ import com.thruzero.domain.dsc.dao.GenericDscDAO;
  *
  * @author George Norman
  */
-public class DscUserDAO extends GenericDscDAO<User> implements UserDAO {
+public final class DscUserDAO extends GenericDscDAO<User> implements UserDAO {
 
   // ------------------------------------------------------
   // DscUserKeyGen
@@ -74,7 +74,10 @@ public class DscUserDAO extends GenericDscDAO<User> implements UserDAO {
   // DscUserDAO
   // ============================================================================
 
-  public DscUserDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private DscUserDAO() {
     super(User.class);
   }
 

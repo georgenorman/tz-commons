@@ -24,14 +24,13 @@ import org.xml.sax.ErrorHandler;
 
 import com.thruzero.common.core.infonode.InfoNodeDocument;
 import com.thruzero.common.core.infonode.InfoNodeElement;
-import com.thruzero.common.core.support.Singleton;
 import com.thruzero.common.core.utils.XmlUtils;
 
 /**
  * Builds a {@code InfoNodeElement} from a {@code w3c.dom.Node} or xml text string.
  * <p>
  * <b>Example:</b>
- * 
+ *
  * <pre>
  * <code>
  * String subLinks =
@@ -47,14 +46,14 @@ import com.thruzero.common.core.utils.XmlUtils;
  *   "    <href>apps/resources/index.do?tab=design&amp;res=patterns</href>"+
  *   "  </anchor>"+
  *   "</dataList>";
- * 
+ *
  * InfoNodeElement subLinks = DomInfoNodeBuilder.DEFAULT.buildInfoNode(subLinks);
  * </code>
  * </pre>
- * 
+ *
  * @author George Norman
  */
-public final class DomInfoNodeBuilder extends AbstractInfoNodeBuilder implements Singleton {
+public final class DomInfoNodeBuilder extends AbstractInfoNodeBuilder {
   /** Basic builder; does not provide parent document (only relative xpath supported) and no primary key. */
   public static final DomInfoNodeBuilder DEFAULT = new DomInfoNodeBuilder(false, false);
 
@@ -68,10 +67,9 @@ public final class DomInfoNodeBuilder extends AbstractInfoNodeBuilder implements
   public static final DomInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new DomInfoNodeBuilder(true, true);
 
   /**
-   * Allow for class extensions; disallow client instantiation. Instead of creating a new builder, use one of the
-   * pre-configured builders (e.g., DEFAULT)
+   * Instead of creating a new builder, use one of the pre-configured builders (e.g., DEFAULT)
    */
-  protected DomInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
+  private DomInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
     super(primaryKeyGenerationEnabled, rootNodeGenerationEnabled);
   }
 

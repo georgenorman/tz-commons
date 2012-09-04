@@ -29,11 +29,11 @@ import com.thruzero.common.core.transaction.TransactionMgrRegistry;
  * @author George Norman
  */
 @LocatorRegistryBookmark(comment = "HibernateTransactionRegistry")
-public class HibernateTransactionRegistry extends TransactionMgrRegistry {
+public final class HibernateTransactionRegistry extends TransactionMgrRegistry {
   private static final HibernateTransactionRegistry instance = new HibernateTransactionRegistry();
 
-  /** Allow for class extensions; disallow client instantiation */
-  protected HibernateTransactionRegistry() {
+  /** Use getInstance() to get an instance of this class. */
+  private HibernateTransactionRegistry() {
   }
 
   public static HibernateTransactionRegistry getInstance() {

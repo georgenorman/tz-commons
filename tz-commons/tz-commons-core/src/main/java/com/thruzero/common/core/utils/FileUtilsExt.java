@@ -139,7 +139,7 @@ public class FileUtilsExt extends FileUtils {
   // FileUtilsExt
   // =====================================================================================
 
-  /** Allow for class extensions; disallow client instantiation */
+  /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected FileUtilsExt() {
   }
 

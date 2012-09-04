@@ -69,7 +69,7 @@ public class AuthenticationUtils {
   // AuthenticationUtils
   // ============================================================
 
-  /** Allow for class extensions; disallow client instantiation */
+  /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected AuthenticationUtils() {
   }
 

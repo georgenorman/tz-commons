@@ -36,9 +36,12 @@ import com.thruzero.domain.locator.DAOLocator;
  *
  * @author George Norman
  */
-public class GenericInfoNodeService extends AbstractInfoNodeService {
+public final class GenericInfoNodeService extends AbstractInfoNodeService {
 
-  public GenericInfoNodeService() {
+  /**
+   * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
+   */
+  private GenericInfoNodeService() {
     super(DAOLocator.locate(TextEnvelopeDAO.class));
   }
 

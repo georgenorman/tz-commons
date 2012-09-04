@@ -32,13 +32,12 @@ import com.thruzero.domain.model.TextEnvelope;
  *
  * @author George Norman
  */
-public class JpaTextEnvelopeDAO extends JpaGenericDAO<TextEnvelope> implements TextEnvelopeDAO {
+public final class JpaTextEnvelopeDAO extends JpaGenericDAO<TextEnvelope> implements TextEnvelopeDAO {
 
   /**
-   * Allow for class extensions; disallow client instantiation (use {@link com.thruzero.domain.locator.DAOLocator
-   * DAOLocator} to access a particular DAO)
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
    */
-  protected JpaTextEnvelopeDAO() {
+  private JpaTextEnvelopeDAO() {
     super(TextEnvelope.class);
   }
 

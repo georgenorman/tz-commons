@@ -29,9 +29,12 @@ import com.thruzero.domain.model.Preference;
  *
  * @author George Norman
  */
-public class HibernatePreferenceDAO extends HibernateGenericDAO<Preference> implements PreferenceDAO {
+public final class HibernatePreferenceDAO extends HibernateGenericDAO<Preference> implements PreferenceDAO {
 
-  protected HibernatePreferenceDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private HibernatePreferenceDAO() {
     super(Preference.class);
   }
 

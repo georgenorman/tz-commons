@@ -43,8 +43,14 @@ public abstract class AbstractPreferenceServiceTestHelper {
   // -----------------------------------------------
 
   /** Exists solely to test the PreferenceDAO implementation. */
-  public static class MockPreferenceService extends AbstractCrudService<Preference> implements PreferenceService {
+  public static final class MockPreferenceService extends AbstractCrudService<Preference> implements PreferenceService {
     private PreferenceDAO dao = DAOLocator.locate(PreferenceDAO.class);
+
+    /**
+     * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
+     */
+    private MockPreferenceService() {
+    }
 
     @Override
     public Preference getPreference(String owner, String context, String name) {

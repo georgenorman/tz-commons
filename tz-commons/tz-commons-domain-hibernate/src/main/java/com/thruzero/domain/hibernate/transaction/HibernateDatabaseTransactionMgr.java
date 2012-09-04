@@ -43,7 +43,7 @@ import com.thruzero.common.core.transaction.DatabaseTransactionMgr;
  *
  * @author George Norman
  */
-public class HibernateDatabaseTransactionMgr implements DatabaseTransactionMgr, Initializable {
+public final class HibernateDatabaseTransactionMgr implements DatabaseTransactionMgr, Initializable {
   private static final Logger logger = Logger.getLogger(HibernateDatabaseTransactionMgr.class);
 
   private static Configuration hibernateConfiguration; // for lazy init
@@ -114,7 +114,10 @@ public class HibernateDatabaseTransactionMgr implements DatabaseTransactionMgr, 
   // HibernateDatabaseTransactionMgr
   // =================================================================
 
-  protected HibernateDatabaseTransactionMgr() {
+  /**
+   * Use com.thruzero.common.core.locator.TransactionMgrLocator to access a particular TransactionMgr.
+   */
+  private HibernateDatabaseTransactionMgr() {
   }
 
   /**

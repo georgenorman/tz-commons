@@ -26,7 +26,7 @@ import com.thruzero.domain.store.BaseStorePath;
  *
  * @author George Norman
  */
-public class JpaInfoNodeService extends AbstractInfoNodeService {
+public final class JpaInfoNodeService extends AbstractInfoNodeService {
 
   // ------------------------------------------------------
   // JpaBaseStorePath
@@ -40,7 +40,10 @@ public class JpaInfoNodeService extends AbstractInfoNodeService {
   // JpaInfoNodeService
   // ============================================================================
 
-  public JpaInfoNodeService() {
+  /**
+   * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
+   */
+  private JpaInfoNodeService() {
     super(DAOLocator.locate(JpaTextEnvelopeDAO.class));
   }
 

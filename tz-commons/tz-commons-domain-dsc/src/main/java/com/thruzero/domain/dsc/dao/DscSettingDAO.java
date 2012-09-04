@@ -20,7 +20,6 @@ import java.util.List;
 import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dao.SettingDAO;
-import com.thruzero.domain.dsc.dao.AbstractDataStoreDAO.DataStoreDAOInitParamKeys;
 import com.thruzero.domain.model.Setting;
 
 /**
@@ -47,7 +46,7 @@ import com.thruzero.domain.model.Setting;
  *
  * @author George Norman
  */
-public class DscSettingDAO extends GenericDscDAO<Setting> implements SettingDAO {
+public final class DscSettingDAO extends GenericDscDAO<Setting> implements SettingDAO {
 
   // ------------------------------------------------------
   // DscSettingDAO
@@ -73,7 +72,10 @@ public class DscSettingDAO extends GenericDscDAO<Setting> implements SettingDAO 
   // DscSettingDAO
   // ============================================================================
 
-  public DscSettingDAO() {
+  /**
+   * Use {@link com.thruzero.domain.locator.DAOLocator DAOLocator} to access a particular DAO.
+   */
+  private DscSettingDAO() {
     super(Setting.class);
   }
 

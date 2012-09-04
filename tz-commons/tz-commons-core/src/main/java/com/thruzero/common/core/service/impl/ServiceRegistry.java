@@ -26,7 +26,6 @@ import com.thruzero.common.core.locator.ServiceLocator;
 @LocatorRegistryBookmark(comment = "ServiceRegistry")
 public abstract class ServiceRegistry {
 
-  /** Allow for class extensions; disallow client instantiation */
   protected ServiceRegistry() {
   }
 

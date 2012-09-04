@@ -37,7 +37,7 @@ import com.thruzero.domain.store.Persistent;
  * @author George Norman
  * @param <T>
  */
-public class HibernateGenericDAO<T extends Persistent> implements GenericDAO<T> {
+public abstract class HibernateGenericDAO<T extends Persistent> implements GenericDAO<T> {
   private Class<? extends T> type;
   private String tableName;
 

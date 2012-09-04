@@ -53,7 +53,7 @@ import com.thruzero.domain.dao.DAO;
 public class DAOLocator {
   private static RegistryLocatorStrategy<DAO> locatorStrategy = new RegistryLocatorStrategy<DAO>(DAO.class);
 
-  /** Allow for class extensions; disallow client instantiation */
+  /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected DAOLocator() {
   }
 

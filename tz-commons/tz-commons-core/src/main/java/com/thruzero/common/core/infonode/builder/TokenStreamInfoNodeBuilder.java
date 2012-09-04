@@ -20,7 +20,6 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang3.StringUtils;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
-import com.thruzero.common.core.support.Singleton;
 
 /**
  * Builds a {@code InfoNodeElement} from a series of tokens in a string (e.g., "title=FAQ TITLE").
@@ -53,7 +52,7 @@ import com.thruzero.common.core.support.Singleton;
  *
  * @author George Norman
  */
-public final class TokenStreamInfoNodeBuilder extends AbstractInfoNodeBuilder implements Singleton {
+public final class TokenStreamInfoNodeBuilder extends AbstractInfoNodeBuilder {
   public static final String PIPE_SEPARATOR = "|";
   public static final String COMMA = ",";
 
@@ -90,10 +89,9 @@ public final class TokenStreamInfoNodeBuilder extends AbstractInfoNodeBuilder im
   // ===========================================================================
 
   /**
-   * Allow for class extensions; disallow client instantiation. Instead of creating a new builder, use one of the
-   * pre-configured builders (e.g., DEFAULT)
+   * Instead of creating a new builder, use one of the pre-configured builders (e.g., DEFAULT)
    */
-  protected TokenStreamInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
+  private TokenStreamInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
     super(primaryKeyGenerationEnabled, rootNodeGenerationEnabled);
   }
 

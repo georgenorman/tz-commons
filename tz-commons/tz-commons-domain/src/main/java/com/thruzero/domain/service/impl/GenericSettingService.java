@@ -37,8 +37,14 @@ import com.thruzero.domain.service.SettingService;
  *
  * TODO-p1(george) cache the settings. Add ability to force a refresh.
  */
-public class GenericSettingService implements SettingService {
+public final class GenericSettingService implements SettingService {
   private final SettingDAO settingDAO = DAOLocator.locate(SettingDAO.class);
+
+  /**
+   * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
+   */
+  private GenericSettingService() {
+  }
 
   @Override
   public Setting getSetting(String context, String name) {

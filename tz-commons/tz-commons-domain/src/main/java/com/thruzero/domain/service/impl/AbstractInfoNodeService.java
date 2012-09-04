@@ -43,10 +43,6 @@ import com.thruzero.domain.service.InfoNodeService;
 public abstract class AbstractInfoNodeService implements InfoNodeService {
   private final TextEnvelopeDAO textEnvelopeDAO;
 
-  /**
-   * Allow for class extensions; disallow client instantiation (use
-   * {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service)
-   */
   protected AbstractInfoNodeService(TextEnvelopeDAO textEnvelopeDAO) {
     this.textEnvelopeDAO = textEnvelopeDAO;
   }

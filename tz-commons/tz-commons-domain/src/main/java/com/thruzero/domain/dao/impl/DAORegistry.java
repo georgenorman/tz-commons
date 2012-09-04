@@ -26,7 +26,6 @@ import com.thruzero.domain.locator.DAOLocator;
 @LocatorRegistryBookmark(comment = "DAORegistry")
 public abstract class DAORegistry {
 
-  /** Allow for class extensions; disallow client instantiation */
   protected DAORegistry() {
   }
 

@@ -31,8 +31,14 @@ import com.thruzero.domain.locator.DAOLocator;
  *
  * @author George Norman
  */
-public class GenericUserService implements UserService {
+public final class GenericUserService implements UserService {
   private final UserDAO userDAO = DAOLocator.locate(UserDAO.class);
+
+  /**
+   * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
+   */
+  private GenericUserService() {
+  }
 
   @Override
   public User getUserByLoginId(final String loginId) {
