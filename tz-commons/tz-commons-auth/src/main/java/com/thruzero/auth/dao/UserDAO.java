@@ -36,7 +36,7 @@ public interface UserDAO extends GenericDAO<User> {
    * UserDAO.class.getName(): "com.thruzero.auth.dao.UserDAO".
    */
   @ConfigKeysBookmark(comment = "Config keys for the UserDAO.")
-  public static interface UserDAOConfigKeys extends ConfigKeys {
+  public interface UserDAOConfigKeys extends ConfigKeys { // Removed static, since it's redundant: see http://stackoverflow.com/questions/71625/
     String SECTION_NAME = UserDAO.class.getName();
 
     /** The fully qualified concrete class name for the User instance to use. */
