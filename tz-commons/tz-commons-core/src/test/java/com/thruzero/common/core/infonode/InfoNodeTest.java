@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
+import com.thruzero.common.core.infonode.builder.AbstractInfoNodeBuilder.RootNodeOption;
 import com.thruzero.common.core.infonode.builder.ExpressInfoNodeBuilder;
 import com.thruzero.common.core.infonode.builder.utils.SampleInfoNodeBuilderUtils;
 import com.thruzero.common.core.infonode.builder.utils.SampleNodeBuilderUtils;
@@ -52,7 +53,7 @@ public class InfoNodeTest extends AbstractCoreTestCase {
         <TestElementTwo TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue">TestElementTwoValue</TestElementTwo>
       </TestParentElement>
      */
-    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createSimpleNestedInfoNode(true);
+    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createSimpleNestedInfoNode(RootNodeOption.GENERATE_ROOT_NODE);
     String infoNodeAsString = infoNode.toString();
     SampleNodeBuilderUtils.assertEqualNormalizedValues(SampleNodeBuilderUtils.RESULT_AS_STRING_NESTED_INFO_NODE, infoNodeAsString);
   }
@@ -74,7 +75,7 @@ public class InfoNodeTest extends AbstractCoreTestCase {
         <Test9Element Test9AttributeOne="Test9AttributeOneValue" Test9AttributeTwo="Test9AttributeTwoValue">Test9ElementValue</Test9Element>
       </TestParentElement>
      */
-    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(true);
+    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(RootNodeOption.GENERATE_ROOT_NODE);
     Iterator<? extends InfoNodeElement> iter = infoNode.getChildNodeIterator();
     short i = 0;
     while (iter.hasNext()) {
@@ -85,7 +86,7 @@ public class InfoNodeTest extends AbstractCoreTestCase {
 
   @Test
   public void testNestedNodeNoParentValue() {
-    InfoNodeElement complexNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithoutParentValue(true);
+    InfoNodeElement complexNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithoutParentValue(RootNodeOption.GENERATE_ROOT_NODE);
 
     // verify that parent to child transition is smooth (i.e., no null printed in result)
     String partialResultStr = StringUtils.substringBetween(complexNode.toString(), "<TestParentElement", "<Test0Element");
@@ -94,7 +95,7 @@ public class InfoNodeTest extends AbstractCoreTestCase {
 
   @Test
   public void testToStringFormatted() {
-    InfoNodeElement complexNode = SampleInfoNodeBuilderUtils.createFormattableInfoNode(true);
+    InfoNodeElement complexNode = SampleInfoNodeBuilderUtils.createFormattableInfoNode(RootNodeOption.GENERATE_ROOT_NODE);
 
     logger.debug(EnvironmentHelper.NEWLINE + complexNode.toStringFormatted());
   }
@@ -152,7 +153,7 @@ public class InfoNodeTest extends AbstractCoreTestCase {
 
   @Test
   public void testFindFullXPath() throws JDOMException {
-    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createDeepNestedInfoNode(true);
+    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createDeepNestedInfoNode(RootNodeOption.GENERATE_ROOT_NODE);
     InfoNodeElement resultNode = (InfoNodeElement)infoNode.find("//TestTwoElement[@TestTwoAttributeOne='attrtwo2']");
 
     assertNotNull(resultNode);
@@ -178,7 +179,7 @@ public class InfoNodeTest extends AbstractCoreTestCase {
         </ChildElement1>
       </TestParentElement>
      */
-    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createDeepNestedInfoNode(false);
+    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createDeepNestedInfoNode(RootNodeOption.NO_ROOT_NODE);
     InfoNodeElement resultNode = (InfoNodeElement)infoNode.find("ChildElement1/TestOneElement[@TestOneAttributeOne='attrone2']");
 
     assertNotNull(resultNode);
@@ -186,8 +187,8 @@ public class InfoNodeTest extends AbstractCoreTestCase {
 
   @Test
   public void testGetFirstSimpleResultFullXPath() throws JDOMException {
-    InfoNodeElement nestedNode = SampleInfoNodeBuilderUtils.createSimpleNestedInfoNode(true);
-    InfoNodeElement simpleNode = SampleInfoNodeBuilderUtils.createSimpleChildOneInfoNode(false);
+    InfoNodeElement nestedNode = SampleInfoNodeBuilderUtils.createSimpleNestedInfoNode(RootNodeOption.GENERATE_ROOT_NODE);
+    InfoNodeElement simpleNode = SampleInfoNodeBuilderUtils.createSimpleChildOneInfoNode(RootNodeOption.NO_ROOT_NODE);
     InfoNodeElement foundNode = (InfoNodeElement)nestedNode.find("//" + SampleNodeBuilderUtils.TEST_ELEMENT_ONE_NAME);
 
     assertNotNull(foundNode);
@@ -196,8 +197,8 @@ public class InfoNodeTest extends AbstractCoreTestCase {
 
   @Test
   public void testFindMiddleResultFullXPath() throws JDOMException {
-    InfoNodeElement complexNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(true);
-    InfoNodeElement simpleNode = SampleNodeBuilderUtils.createNamedInfoNode("Test5", 2, false);
+    InfoNodeElement complexNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(RootNodeOption.GENERATE_ROOT_NODE);
+    InfoNodeElement simpleNode = SampleNodeBuilderUtils.createNamedInfoNode("Test5", 2, RootNodeOption.NO_ROOT_NODE);
     InfoNodeElement foundNode = (InfoNodeElement)complexNode.find("//Test5Element");
 
     assertNotNull(foundNode);

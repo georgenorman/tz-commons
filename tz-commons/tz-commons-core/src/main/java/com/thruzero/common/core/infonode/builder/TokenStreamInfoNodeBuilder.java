@@ -57,16 +57,16 @@ public final class TokenStreamInfoNodeBuilder extends AbstractInfoNodeBuilder {
   public static final String COMMA = ",";
 
   /** Basic builder; does not provide parent document (only relative xpath supported) and no primary key. */
-  public static final TokenStreamInfoNodeBuilder DEFAULT = new TokenStreamInfoNodeBuilder(false, false);
+  public static final TokenStreamInfoNodeBuilder DEFAULT = new TokenStreamInfoNodeBuilder(PrimaryKeyOption.NO_PRIMARY_KEY, RootNodeOption.NO_ROOT_NODE);
 
   /** Builder providing parent document (full xpath support) and no primary key. */
-  public static final TokenStreamInfoNodeBuilder WITH_ROOT_NODE = new TokenStreamInfoNodeBuilder(false, true);
+  public static final TokenStreamInfoNodeBuilder WITH_ROOT_NODE = new TokenStreamInfoNodeBuilder(PrimaryKeyOption.NO_PRIMARY_KEY, RootNodeOption.GENERATE_ROOT_NODE);
 
   /** Builder without parent document (only relative xpath supported) and provides a primary key. */
-  public static final TokenStreamInfoNodeBuilder WITH_PRIMARY_KEY = new TokenStreamInfoNodeBuilder(true, false);
+  public static final TokenStreamInfoNodeBuilder WITH_PRIMARY_KEY = new TokenStreamInfoNodeBuilder(PrimaryKeyOption.GENERATE_PRIMARY_KEY, RootNodeOption.NO_ROOT_NODE);
 
   /** Builder providing parent document (full xpath support) and a primary key. */
-  public static final TokenStreamInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new TokenStreamInfoNodeBuilder(true, true);
+  public static final TokenStreamInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new TokenStreamInfoNodeBuilder(PrimaryKeyOption.GENERATE_PRIMARY_KEY, RootNodeOption.GENERATE_ROOT_NODE);
 
   // -----------------------------------------------------------
   // TokenStreamException
@@ -91,8 +91,8 @@ public final class TokenStreamInfoNodeBuilder extends AbstractInfoNodeBuilder {
   /**
    * Instead of creating a new builder, use one of the pre-configured builders (e.g., DEFAULT)
    */
-  private TokenStreamInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
-    super(primaryKeyGenerationEnabled, rootNodeGenerationEnabled);
+  private TokenStreamInfoNodeBuilder(final PrimaryKeyOption primaryKeyOption, final RootNodeOption rootNodeOption) {
+    super(primaryKeyOption, rootNodeOption);
   }
 
   // Builder functions //////////////////////////////////////////////////////

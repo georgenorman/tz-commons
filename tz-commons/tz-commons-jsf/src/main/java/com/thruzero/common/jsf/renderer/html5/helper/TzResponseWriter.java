@@ -32,12 +32,14 @@ import com.thruzero.common.core.utils.StringUtilsExt;
  * must define their pass-through attributes in a section named "com.thruzero.common.jsf.renderer.html5.helper.TzResponseWriter".
  * Below is an example of a few JQuery mobile components:
  * <pre>
- *   &lt;section name=&quot;com.thruzero.common.jsf.renderer.html5.helper.TzResponseWriter&quot;&gt;
- *     &lt;entry key=&quot;com.thruzero.common.jsf.renderer.html5.TzCheckboxRenderer&quot; value=&quot;data-mini, data-role, data-theme&quot; /&gt;
- *     &lt;entry key=&quot;com.thruzero.common.jsf.renderer.html5.TzFormRenderer&quot; value=&quot;data-ajax&quot; /&gt;
- *     &lt;entry key=&quot;com.thruzero.common.jsf.renderer.html5.TzTextRenderer&quot; value=&quot;data-mini, data-role, data-theme, data-highlight, placeholder, ...&quot; /&gt;
+ * {@literal
+ *   <section name="com.thruzero.common.jsf.renderer.html5.helper.TzResponseWriter">
+ *     <entry key="com.thruzero.common.jsf.renderer.html5.TzCheckboxRenderer" value="data-mini, data-role, data-theme" />
+ *     <entry key="com.thruzero.common.jsf.renderer.html5.TzFormRenderer" value="data-ajax" />
+ *     <entry key="com.thruzero.common.jsf.renderer.html5.TzTextRenderer" value="data-mini, data-role, data-theme, data-highlight, placeholder, ..." />
  *     ...
- *   &lt;/section&gt;
+ *   </section>
+ * }
  * </pre>
  *
  * @author George Norman

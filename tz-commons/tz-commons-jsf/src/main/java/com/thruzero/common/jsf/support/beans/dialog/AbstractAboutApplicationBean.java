@@ -81,7 +81,7 @@ public abstract class AbstractAboutApplicationBean implements Serializable {
       if (webInfDir != null) {
         File libDir = new File(webInfDir, "lib");
         String[] extensions = { "jar" };
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked") // FileUtils isn't generic
         Collection<File> jarFiles = FileUtils.listFiles(libDir, extensions, false);
         StringMap aboutLibs = ConfigLocator.locate().getSectionAsStringMap(AboutBoxConfigKeys.ABOUT_LIBS_SECTION);
 

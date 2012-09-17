@@ -61,19 +61,13 @@ public class DAOLocator {
     return locatorStrategy.getRegistry();
   }
 
-  @SuppressWarnings("unchecked")
   public static <T extends DAO> T locate(final Class<T> type) {
-    return (T)locatorStrategy.locate(type);
+    return type.cast(locatorStrategy.locate(type)); // use dynamic cast to avoid @SuppressWarnings("unchecked")
   }
 
   /** Clears the locator registry and bindings. */
   public static void reset() {
     locatorStrategy.reset();
   }
-
-//  @SuppressWarnings("unchecked")
-//  public static <T> Map<String, ? extends DAO> locateAll(final Class<? extends DAO> type) {
-//    return (Map<String, ? extends DAO>)locatorStrategy.locateAll(type);
-//  }
 
 }

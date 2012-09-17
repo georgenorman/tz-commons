@@ -99,7 +99,7 @@ public class ClassUtils {
    *
    * @throws ClassUtilsException
    */
-  public static <T> T instanceFrom(final Class<?> clazz) throws ClassUtilsException {
+  public static <T> T instanceFrom(final Class<T> clazz) throws ClassUtilsException {
     T result = null;
 
     if (clazz != null) {
@@ -123,9 +123,7 @@ public class ClassUtils {
         }
 
         // create new instance
-        @SuppressWarnings("unchecked")
-        T newInstance = (T)constructor.newInstance((Object[])null);
-        result = newInstance;
+        result = clazz.cast(constructor.newInstance((Object[])null)); // use dynamic cast to avoid @SuppressWarnings("unchecked")
       } catch (SecurityException e) {
         throw new ClassUtilsException("ERROR: SecurityException for (" + clazz.getName() + ").", e);
       } catch (IllegalArgumentException e) {
@@ -186,13 +184,12 @@ public class ClassUtils {
   /**
    * Call the specified static method on the given class, using the given arguments.
    */
-  @SuppressWarnings("unchecked")
   public static <T> T invokeStaticMethod(final Class<T> clazz, final String methodName, final Class<?>[] parameterTypes, final Object[] arglist) throws NoSuchMethodException,
       IllegalAccessException, InvocationTargetException {
 
     Method method = clazz.getMethod(methodName, parameterTypes);
 
-    return (T)method.invoke(null, arglist);
+    return clazz.cast(method.invoke(null, arglist)); // use dynamic cast to avoid @SuppressWarnings("unchecked")
   }
 
 }

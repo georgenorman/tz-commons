@@ -97,7 +97,7 @@ public final class HibernateSettingDAO extends HibernateGenericDAO<Setting> impl
     Query hqlQuery = session.createQuery(hql.toString());
     hqlQuery.setString("context", context);
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Hibernate isn't generic
     List<? extends Setting> result = hqlQuery.list();
 
     return result;

@@ -47,6 +47,8 @@ public abstract class AbstractCoreTestCase {
   /** The name of the temporary test directory: "temp" */
   public static final String DEFAULT_TEMP_DIR_NAME = "temp";
 
+  public enum AssertOption {NONE, ASSERT_NOT_NULL};
+
   /**
    * Subclasses override this and call super and annotate with {@code Before}.
    * <p>
@@ -151,7 +153,7 @@ public abstract class AbstractCoreTestCase {
   /**
    * Returns the contents of the given file. Optionally asserts that the result is not empty.
    */
-  protected String getFileContents(final File file, final boolean assertNotNull) {
+  protected String getFileContents(final File file, final AssertOption assertOption) {
     String result = null;
 
     try {
@@ -160,7 +162,7 @@ public abstract class AbstractCoreTestCase {
       // ignore
     }
 
-    if (assertNotNull) {
+    if (assertOption == AssertOption.ASSERT_NOT_NULL) {
       assertTrue("Could not read substitution file before walk.", StringUtils.isNotEmpty(result));
     }
 

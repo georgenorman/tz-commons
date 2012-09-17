@@ -26,6 +26,7 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang3.StringUtils;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
+import com.thruzero.common.core.infonode.builder.AbstractInfoNodeBuilder.RootNodeOption;
 import com.thruzero.common.core.infonode.builder.ExpressInfoNodeBuilder;
 import com.thruzero.common.core.support.EnvironmentHelper;
 import com.thruzero.common.core.support.KeyValuePair;
@@ -114,7 +115,7 @@ public class SampleNodeBuilderUtils {
    * <Test0Element Test0AttributeOne="Test0AttributeOneValue" Test0AttributeTwo="Test0AttributeTwoValue">Test0ElementValue</Test0Element>
    * }</pre>
    */
-  public static InfoNodeElement createNamedInfoNode(final String name, final int numAttributes, final boolean enableRootNode) {
+  public static InfoNodeElement createNamedInfoNode(final String name, final int numAttributes, final RootNodeOption rootNodeOption) {
     Map<String, String> attributes = new HashMap<String, String>();
     if (numAttributes >= 1) {
       attributes.put(name + "AttributeOne", name + "AttributeOneValue");
@@ -127,7 +128,7 @@ public class SampleNodeBuilderUtils {
     if (numAttributes > 2) {
       throw new IllegalArgumentException("Max num attributes is 2");
     }
-    InfoNodeElement infoNode = getExpressInfoNodeBuilder(enableRootNode).buildInfoNode(name + "Element", name + "ElementValue", attributes);
+    InfoNodeElement infoNode = getExpressInfoNodeBuilder(rootNodeOption).buildInfoNode(name + "Element", name + "ElementValue", attributes);
 
     return infoNode;
   }
@@ -137,16 +138,16 @@ public class SampleNodeBuilderUtils {
    * <Test1Element Test1AttributeOne="attrone1">valueone1</Test1Element>
    * }</pre>
    */
-  public static InfoNodeElement createNamedInfoNode(final String name, final String value, final boolean enableRootNode) {
+  public static InfoNodeElement createNamedInfoNode(final String name, final String value, final RootNodeOption rootNodeOption) {
     Map<String, String> attributes = new HashMap<String, String>();
     attributes.put(name + "AttributeOne", "attr" + value);
-    InfoNodeElement infoNode = getExpressInfoNodeBuilder(enableRootNode).buildInfoNode(name + "Element", "value" + value, attributes);
+    InfoNodeElement infoNode = getExpressInfoNodeBuilder(rootNodeOption).buildInfoNode(name + "Element", "value" + value, attributes);
 
     return infoNode;
   }
 
-  protected static ExpressInfoNodeBuilder getExpressInfoNodeBuilder(final boolean enableRootNode) {
-    return enableRootNode ? ExpressInfoNodeBuilder.WITH_ROOT_NODE : ExpressInfoNodeBuilder.DEFAULT;
+  protected static ExpressInfoNodeBuilder getExpressInfoNodeBuilder(final RootNodeOption rootNodeOption) {
+    return rootNodeOption == RootNodeOption.GENERATE_ROOT_NODE ? ExpressInfoNodeBuilder.WITH_ROOT_NODE : ExpressInfoNodeBuilder.DEFAULT;
   }
 
   // Validation methods ///////////////////////////////////////////////////////////////////

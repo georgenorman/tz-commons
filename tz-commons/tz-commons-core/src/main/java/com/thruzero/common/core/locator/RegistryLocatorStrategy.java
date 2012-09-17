@@ -35,7 +35,7 @@ import com.thruzero.common.core.utils.ClassUtils.ClassUtilsException;
 import com.thruzero.common.core.utils.ExceptionUtilsExt;
 
 /**
- * A location strategy, based on a registry, used to locate an implementation for a given interface (e.g., find a
+ * A locator strategy, based on a registry, used to locate an implementation for a given interface (e.g., find a
  * specific {@code DAO} or {@code Service} singleton). Concrete locators can use this strategy in their implementation.
  * For example, the {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} is implemented as follows:
  *
@@ -44,7 +44,7 @@ import com.thruzero.common.core.utils.ExceptionUtilsExt;
  *   private static RegistryLocatorStrategy<Service> locatorStrategy = new RegistryLocatorStrategy<Service>();
  *
  *   public static <T extends Service> T locate( Class<T> type ) {
- *     return (T)locatorStrategy.locate(type);
+ *     return type.cast(locatorStrategy.locate(type));
  *   }
  * </pre>
  *
@@ -429,7 +429,7 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
 
     try {
       // assert that the concrete-class is a Singleton
-      Class<?> cls = ClassUtils.classFrom(binding.getInstanceClassName());
+      Class<T> cls = ClassUtils.classFrom(binding.getInstanceClassName());
       if (!Singleton.class.isAssignableFrom(cls)) {
         throw ExceptionUtilsExt.logAndCreateLocatorException(logHelper.getLogger(), "Error attempting to locate class: " + binding.getInstanceClassName()
             + ". The class must be a Singleton (since only one instance will ever be created by the locator).");

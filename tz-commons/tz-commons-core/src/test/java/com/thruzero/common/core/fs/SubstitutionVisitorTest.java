@@ -58,7 +58,7 @@ public class SubstitutionVisitorTest extends AbstractCoreTestCase {
     File substitutionTestFile = copyFileToTemp(SUBSTITUTION_TEST_FILE_NAME);
 
     // read contents
-    String originalContents = getFileContents(substitutionTestFile, true);
+    String originalContents = getFileContents(substitutionTestFile, AssertOption.ASSERT_NOT_NULL);
 
     // walk the temp directory (substitutions only on copied test file)
     try {
@@ -79,7 +79,7 @@ public class SubstitutionVisitorTest extends AbstractCoreTestCase {
 
     // read contents
     File tempTestFile = getTempTestFile(SUBSTITUTION_TEST_FILE_NAME);
-    String originalContents = getFileContents(tempTestFile, true);
+    String originalContents = getFileContents(tempTestFile, AssertOption.ASSERT_NOT_NULL);
 
     // walk the temp directory (substitutions only on copied test file)
     try {
@@ -115,7 +115,7 @@ public class SubstitutionVisitorTest extends AbstractCoreTestCase {
 
     // read contents
     File tempTestFile = getTempTestFile(SUBSTITUTION_TEST_FILE_NAME);
-    String originalContents = getFileContents(tempTestFile, true);
+    String originalContents = getFileContents(tempTestFile, AssertOption.ASSERT_NOT_NULL);
 
     // walk the temp directory (substitutions only on copied test file)
     try {

@@ -59,9 +59,12 @@ public abstract class GenericDscDAO<T extends Persistent> extends AbstractDataSt
    * A {@code DomainObjectTransformer} implemented using {@code XStream} to marshal and unmarshal a given Domain Object to an {@code InputStream}.
    */
   public static class XStreamDomainObjectTransformer<T extends Persistent> implements DomainObjectTransformer<T> {
+    private Class<T> domainType;
     private XStream xstream;
 
     public XStreamDomainObjectTransformer(Class<T> domainType) {
+      this.domainType = domainType;
+
       //xstream = new XStream(new StaxDriver()); // does not require XPP3 library. Note: XStream is thread safe.
       xstream = new XStream();
       xstream.alias(domainType.getSimpleName(), domainType);
@@ -106,9 +109,7 @@ public abstract class GenericDscDAO<T extends Persistent> extends AbstractDataSt
       InputStream is = dataStoreEntity.getData();
 
       try {
-        @SuppressWarnings("unchecked")
-        T temp = (T)xstream.fromXML(is);
-        T result = temp;
+        T result = domainType.cast(xstream.fromXML(is));
 
         result.setId(primaryKey);
 

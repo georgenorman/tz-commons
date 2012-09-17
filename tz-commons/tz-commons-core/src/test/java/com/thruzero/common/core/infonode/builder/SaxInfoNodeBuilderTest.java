@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
+import com.thruzero.common.core.infonode.builder.AbstractInfoNodeBuilder.RootNodeOption;
 import com.thruzero.common.core.infonode.builder.utils.SampleInfoNodeBuilderUtils;
 import com.thruzero.common.core.infonode.builder.utils.SampleNodeBuilderUtils;
 import com.thruzero.test.support.AbstractCoreTestCase;
@@ -74,7 +75,7 @@ public class SaxInfoNodeBuilderTest extends AbstractCoreTestCase {
 
   @Test
   public void testCreateSimpleNestedInfoNode() throws IOException, SAXException {
-    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createSimpleNestedInfoNode(true);
+    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createSimpleNestedInfoNode(RootNodeOption.GENERATE_ROOT_NODE);
 
     //  <TestParentElement>
     //    TestParentElementValue

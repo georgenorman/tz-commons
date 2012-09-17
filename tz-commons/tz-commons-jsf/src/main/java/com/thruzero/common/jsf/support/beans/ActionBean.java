@@ -27,7 +27,7 @@ import com.thruzero.common.jsf.utils.FacesUtils;
  * outcome of the action to be "/apps/demo/dashboard?faces-redirect=true", you can't simply pass it in to
  * the action attribute as shown below:
  * <pre>
- *   &lt;h:commandLink action=&quot;/apps/demo/dashboard?faces-redirect=true&quot;    ### This will not work
+ *   {@literal <h:commandLink action="/apps/demo/dashboard?faces-redirect=true" ...    ### Redirect will not work }
  * </pre>
  *
  * The ActionBean class is designed to read the navigation outcome from the request. This enables a JSF page

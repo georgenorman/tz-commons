@@ -27,6 +27,7 @@ import org.apache.commons.io.filefilter.WildcardFilter;
 import org.junit.Test;
 
 import com.thruzero.common.core.fs.walker.visitor.FileListVisitor;
+import com.thruzero.common.core.fs.walker.visitor.FileListVisitor.DirectoryOption;
 import com.thruzero.common.core.fs.walker.visitor.FileListVisitor.FileListStatus;
 import com.thruzero.test.support.AbstractCoreTestCase;
 
@@ -47,7 +48,7 @@ public class FileListVisitorTest extends AbstractCoreTestCase {
     try {
       // find files named "*test*", using FileListVisitor
       FileAndDirectoryFilter filter = new FileAndDirectoryFilter((FileFilter)DirectoryFileFilter.INSTANCE, new WildcardFilter("*test*"));
-      FileListStatus listingStatus = (FileListStatus)new HierarchicalFileWalker(nestedTestDir, filter).accept(new FileListVisitor(false));
+      FileListStatus listingStatus = (FileListStatus)new HierarchicalFileWalker(nestedTestDir, filter).accept(new FileListVisitor(DirectoryOption.IGNORE_DIRECTORIES));
       assertEquals("Wrong number of files were renamed.", 5, listingStatus.getNumProcessed());
       assertEquals("Wrong number of files were renamed.", 5, listingStatus.getResults().size());
     } catch (IOException e) {

@@ -25,7 +25,7 @@ import com.thruzero.common.core.security.MessageDigestHelper;
 public class HashPassword {
 
   /**
-   * java -cp tz-commons-core-1.0.0.jar com.thruzero.common.core.security.tools.HashPassword &lt;plaintext-password&gt;
+   * {@literal java -cp tz-commons-core-1.0.0.jar com.thruzero.common.core.security.tools.HashPassword <plaintext-password>}
    */
   public static void main(final String[] args) {
     if (args == null || args.length != 1) {

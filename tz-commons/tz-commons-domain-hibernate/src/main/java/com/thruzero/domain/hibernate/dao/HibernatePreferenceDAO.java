@@ -103,7 +103,7 @@ public final class HibernatePreferenceDAO extends HibernateGenericDAO<Preference
     hqlQuery.setString("context", context);
     hqlQuery.setString("owner", owner);
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Hibernate isn't generic
     List<? extends Preference> result = hqlQuery.list();
 
     return result;

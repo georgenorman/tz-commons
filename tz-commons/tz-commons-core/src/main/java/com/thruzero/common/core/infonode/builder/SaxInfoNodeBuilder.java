@@ -61,16 +61,16 @@ public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
   private static final Logger logger = Logger.getLogger(SaxInfoNodeBuilder.class);
 
   /** Basic builder; does not provide parent document (only relative xpath supported) and no primary key. */
-  public static final SaxInfoNodeBuilder DEFAULT = new SaxInfoNodeBuilder(false, false);
+  public static final SaxInfoNodeBuilder DEFAULT = new SaxInfoNodeBuilder(PrimaryKeyOption.NO_PRIMARY_KEY, RootNodeOption.NO_ROOT_NODE);
 
   /** Builder providing parent document (full xpath support) and no primary key. */
-  public static final SaxInfoNodeBuilder WITH_ROOT_NODE = new SaxInfoNodeBuilder(false, true);
+  public static final SaxInfoNodeBuilder WITH_ROOT_NODE = new SaxInfoNodeBuilder(PrimaryKeyOption.NO_PRIMARY_KEY, RootNodeOption.GENERATE_ROOT_NODE);
 
   /** Builder without parent document (only relative xpath supported) and provides a primary key. */
   public static final DomInfoNodeBuilder WITH_PRIMARY_KEY = DomInfoNodeBuilder.WITH_PRIMARY_KEY;
 
   /** Builder providing parent document (full xpath support) and a primary key. */
-  public static final SaxInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new SaxInfoNodeBuilder(true, true);
+  public static final SaxInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new SaxInfoNodeBuilder(PrimaryKeyOption.GENERATE_PRIMARY_KEY, RootNodeOption.GENERATE_ROOT_NODE);
 
   // ------------------------------------------------
   // InfoNodeSaxHandler
@@ -159,8 +159,8 @@ public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
   /**
    * Instead of creating a new builder, use one of the pre-configured builders (e.g., DEFAULT)
    */
-  private SaxInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
-    super(primaryKeyGenerationEnabled, rootNodeGenerationEnabled);
+  private SaxInfoNodeBuilder(final PrimaryKeyOption primaryKeyOption, final RootNodeOption rootNodeOption) {
+    super(primaryKeyOption, rootNodeOption);
   }
 
   /** Build a complete {@code InfoNodeElement} from xml. */

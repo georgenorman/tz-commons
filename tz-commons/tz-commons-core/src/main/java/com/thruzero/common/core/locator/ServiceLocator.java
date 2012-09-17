@@ -110,9 +110,8 @@ public class ServiceLocator {
    * Returns the registered concrete implementation of the Service interface, if necessary, creating and initializing
    * the instance.
    */
-  @SuppressWarnings("unchecked")
   public static <T extends Service> T locate(final Class<T> type) {
-    return (T)locatorStrategy.locate(type);
+    return type.cast(locatorStrategy.locate(type)); // use dynamic cast to avoid @SuppressWarnings("unchecked")
   }
 
   /** Clears the locator registry and bindings. */

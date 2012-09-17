@@ -38,14 +38,16 @@ public interface InfoNodeService extends Service, SimpleInfoProvider {
    * <p/>
    * For example, consider a Service configured for a database with the TEXT_ENVELOPE table populated as follows:
    * <pre>
+   * {@literal
    *    ----------------------------------------------------------------
    *   | PATH                 | DATA                                    |
    *    ----------------------------------------------------------------
-   *   | /a/x1.xml            | &lt;x1&gt;&lt;y1&gt;D test&lt;/y1&gt;&lt;y2&gt;A test&lt;/y2&gt;&lt;/x1&gt; |
-   *   | /a/b/x2.xml          | &lt;x2&gt;&lt;y1&gt;A test&lt;/y1&gt;&lt;y2&gt;T test&lt;/y2&gt;&lt;/x2&gt; |
-   *   | /a/b/x3.xml          | &lt;x3&gt;&lt;y1&gt;T test&lt;/y1&gt;&lt;y2&gt;A test&lt;/y2&gt;&lt;/x3&gt; |
-   *   | /c/x4.xml            | &lt;x4&gt;&lt;y1&gt;A test&lt;/y1&gt;&lt;y2&gt;D test&lt;/y2&gt;&lt;/x4&gt; |
+   *   | /a/x1.xml            | <x1><y1>D test</y1><y2>A test</y2></x1> |
+   *   | /a/b/x2.xml          | <x2><y1>A test</y1><y2>T test</y2></x2> |
+   *   | /a/b/x3.xml          | <x3><y1>T test</y1><y2>A test</y2></x3> |
+   *   | /c/x4.xml            | <x4><y1>A test</y1><y2>D test</y2></x4> |
    *    ----------------------------------------------------------------
+   * }
    * </pre>
    * Then:
    * <ul>
@@ -65,11 +67,13 @@ public interface InfoNodeService extends Service, SimpleInfoProvider {
    * Return the first InfoNodeElement found at the given entityPath and xpathExpr.
    * For example, consider a Service configured for a database with the TEXT_ENVELOPE table populated as follows:
    * <pre>
+   * {@literal
    *    ----------------------------------------------------------------
    *   | PATH                 | DATA                                    |
    *    ----------------------------------------------------------------
-   *   | /a/x1.xml            | &lt;x1&gt;&lt;y1&gt;D test&lt;/y1&gt;&lt;y2&gt;A test&lt;/y2&gt;&lt;/x1&gt; |
+   *   | /a/x1.xml            | <x1><y1>D test</y1><y2>A test</y2></x1> |
    *    ----------------------------------------------------------------
+   * }
    * </pre>
    * Then:
    * <ul>

@@ -36,7 +36,9 @@ import com.thruzero.common.core.fs.HierarchicalFileWalker.FileWalkerStatus;
  * @author George Norman
  */
 public class FileListVisitor extends AbstractHierarchicalFileVisitor {
-  private final boolean includeDirectories;
+  private final DirectoryOption directoryOption;
+
+  public enum DirectoryOption {INCLUDE_DIRECTORIES, IGNORE_DIRECTORIES};
 
   // ----------------------------------------------------------
   // FileListStatus
@@ -81,8 +83,8 @@ public class FileListVisitor extends AbstractHierarchicalFileVisitor {
   /**
    * @param includeDirectories if true, then directories are included in the listing.
    */
-  public FileListVisitor(final boolean includeDirectories) {
-    this.includeDirectories = includeDirectories;
+  public FileListVisitor(final DirectoryOption directoryOption) {
+    this.directoryOption = directoryOption;
   }
 
   @Override
@@ -92,7 +94,7 @@ public class FileListVisitor extends AbstractHierarchicalFileVisitor {
 
   @Override
   public void visitDirectoryEnter(final File dir) throws IOException {
-    if (includeDirectories) {
+    if (directoryOption == DirectoryOption.INCLUDE_DIRECTORIES) {
       ((FileListStatus)getStatus()).addFileResult(dir);
     }
   }

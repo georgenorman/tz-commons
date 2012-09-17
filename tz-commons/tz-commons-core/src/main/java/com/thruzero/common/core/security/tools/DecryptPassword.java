@@ -27,7 +27,7 @@ import com.thruzero.common.core.security.SimpleCipher.SimpleCipherException;
 public class DecryptPassword {
 
   /**
-   * java -cp tz-commons-core-1.0.0.jar com.thruzero.common.core.security.tools.DecryptPassword &lt;pass-phrase&gt; &lt;encrypted-password&gt;
+   * {@code java -cp tz-commons-core-1.0.0.jar com.thruzero.common.core.security.tools.DecryptPassword <pass-phrase> <encrypted-password>}
    */
   public static void main(final String[] args) {
     if (args == null || args.length < 2) {

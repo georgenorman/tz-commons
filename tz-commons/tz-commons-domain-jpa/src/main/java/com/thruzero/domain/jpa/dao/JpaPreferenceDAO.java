@@ -104,7 +104,7 @@ public final class JpaPreferenceDAO extends JpaGenericDAO<Preference> implements
     hqlQuery.setParameter("context", context);
     hqlQuery.setParameter("owner", owner);
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Hibernate isn't generic
     List<? extends Preference> result = hqlQuery.getResultList();
 
     return result;

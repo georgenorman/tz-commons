@@ -80,7 +80,7 @@ public interface Config extends Singleton, IniMap, Initializable {
 
   /** An interface that defines keys used to lookup common values in a config file. */
   @ConfigKeysBookmark(comment = "Base interface for config keys.")
-  public interface ConfigKeys { // enums are good for type-safety; interfaces are good for API, behavior and String consts
+  public interface ConfigKeys { // enums are good for type-safety; interfaces are good for API, behavior and consts
     /**
      * The section named "environment", that contains details related to a particular deployment (e.g., the environment section
      * for DEV will differ from the environment section for PRD).

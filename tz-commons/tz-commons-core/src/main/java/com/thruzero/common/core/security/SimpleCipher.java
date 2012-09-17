@@ -124,8 +124,11 @@ public class SimpleCipher {
     private char[] passPhrase;
     private Integer iterationCount;
 
-    private final boolean allowEnvironmentVariableInit;
-    private final boolean allowConfigInit;
+    private final EnvironmentVarInitOption environmentVarInitOption;
+    private final ConfigInitOption configInitOption;
+
+    public enum EnvironmentVarInitOption {ENABLED, DISABLED};
+    public enum ConfigInitOption {ENABLED, DISABLED};
 
     /**
      * A configuration used to construct a SimpleCipher using {@code salt}, {@code passPhrase} and
@@ -134,7 +137,7 @@ public class SimpleCipher {
      * {@code passPhrase} can be read from a config file and the iteration-count may use the default value.
      */
     public SimpleCipherConfiguration() {
-      this(null, null, null, true, true);
+      this(null, null, null, EnvironmentVarInitOption.ENABLED, ConfigInitOption.ENABLED);
     }
 
     /**
@@ -142,7 +145,7 @@ public class SimpleCipher {
      * {@code iterationCount}. For any empty value, a default value will be used.
      */
     public SimpleCipherConfiguration(final byte[] salt, final char[] passPhrase, final Integer iterationCount) {
-      this(salt, passPhrase, iterationCount, false, false);
+      this(salt, passPhrase, iterationCount, EnvironmentVarInitOption.DISABLED, ConfigInitOption.DISABLED);
     }
 
     /**
@@ -151,13 +154,13 @@ public class SimpleCipher {
      * environment variable (if allowed), and if not found or allowed, will look in the configuration file for a value
      * (if allowed), and if still not found, will use a default value.
      */
-    public SimpleCipherConfiguration(final byte[] salt, final char[] passPhrase, final Integer iterationCount, final boolean allowEnvironmentVariableInit, final boolean allowConfigInit) {
+    public SimpleCipherConfiguration(final byte[] salt, final char[] passPhrase, final Integer iterationCount, final EnvironmentVarInitOption environmentVarInitOption, final ConfigInitOption configInitOption) {
       this.salt = salt == null ? null : Arrays.copyOf(salt, salt.length);
       this.passPhrase = passPhrase == null ? null : Arrays.copyOf(passPhrase, passPhrase.length);
       this.iterationCount = iterationCount;
 
-      this.allowEnvironmentVariableInit = allowEnvironmentVariableInit;
-      this.allowConfigInit = allowConfigInit;
+      this.environmentVarInitOption = environmentVarInitOption;
+      this.configInitOption = configInitOption;
     }
 
     /**
@@ -175,11 +178,11 @@ public class SimpleCipher {
       if (salt == null) {
         String saltTokenStream = null;
 
-        if (allowEnvironmentVariableInit) {
+        if (environmentVarInitOption == EnvironmentVarInitOption.ENABLED) {
           saltTokenStream = System.getenv(SimpleCipherEnvironmentVariableKeys.SALT_ENV_VAR);
         }
 
-        if (StringUtils.isEmpty(saltTokenStream) && allowConfigInit) {
+        if (StringUtils.isEmpty(saltTokenStream) && configInitOption == ConfigInitOption.ENABLED) {
           saltTokenStream = ConfigLocator.locate().getValue(SimpleCipherConfigKeys.CONFIG_SECTION, SimpleCipherConfigKeys.SALT);
         }
 
@@ -209,11 +212,11 @@ public class SimpleCipher {
       if (passPhrase == null) {
         String passPhraseStr = null;
 
-        if (allowEnvironmentVariableInit) {
+        if (environmentVarInitOption == EnvironmentVarInitOption.ENABLED) {
           passPhraseStr = System.getenv(SimpleCipherEnvironmentVariableKeys.PASS_PHRASE_ENV_VAR);
         }
 
-        if (StringUtils.isEmpty(passPhraseStr) && allowConfigInit) {
+        if (StringUtils.isEmpty(passPhraseStr) && configInitOption == ConfigInitOption.ENABLED) {
           passPhraseStr = ConfigLocator.locate().getValue(SimpleCipherConfigKeys.CONFIG_SECTION, SimpleCipherConfigKeys.PASS_PHRASE);
         }
 
@@ -243,11 +246,11 @@ public class SimpleCipher {
       if (iterationCount == null) {
         String iterationCountStr = null;
 
-        if (allowEnvironmentVariableInit) {
+        if (environmentVarInitOption == EnvironmentVarInitOption.ENABLED) {
           iterationCountStr = System.getenv(SimpleCipherEnvironmentVariableKeys.ITERATION_COUNT_ENV_VAR);
         }
 
-        if (StringUtils.isEmpty(iterationCountStr) && allowConfigInit) {
+        if (StringUtils.isEmpty(iterationCountStr) && configInitOption == ConfigInitOption.ENABLED) {
           iterationCountStr = ConfigLocator.locate().getValue(SimpleCipherConfigKeys.CONFIG_SECTION, SimpleCipherConfigKeys.ITERATION_COUNT);
         }
 

@@ -58,7 +58,7 @@ public class MailServiceTest extends AbstractMailTestCase {
 
       assertTrue(emailWasSent);
       assertTrue(getSmtpServer().getReceivedEmailSize() == 1);
-      @SuppressWarnings("unchecked")
+      @SuppressWarnings("unchecked") // dumbster isn't generic
       Iterator<SmtpMessage> emailIter = getSmtpServer().getReceivedEmail();
       SmtpMessage email = emailIter.next();
       assertTrue(email.getHeaderValue("Subject").equals("Test Subject"));
@@ -81,7 +81,7 @@ public class MailServiceTest extends AbstractMailTestCase {
 
       assertTrue(emailWasSent);
       assertTrue(getSmtpServer().getReceivedEmailSize() == 1);
-      @SuppressWarnings("unchecked")
+      @SuppressWarnings("unchecked") // dumbster isn't generic
       Iterator<SmtpMessage> emailIter = getSmtpServer().getReceivedEmail();
       SmtpMessage email = emailIter.next();
       assertTrue(email.getHeaderValue("Subject").equals("Test Subject"));

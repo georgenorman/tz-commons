@@ -54,22 +54,22 @@ public class ConfigInfoNodeBuilder extends AbstractInfoNodeBuilder {
   private final Config config = ConfigLocator.locate();
 
   /** Basic builder; does not provide parent document (only relative xpath supported) and no primary key. */
-  public static final ConfigInfoNodeBuilder DEFAULT = new ConfigInfoNodeBuilder(false, false);
+  public static final ConfigInfoNodeBuilder DEFAULT = new ConfigInfoNodeBuilder(PrimaryKeyOption.NO_PRIMARY_KEY, RootNodeOption.NO_ROOT_NODE);
 
   /** Builder providing parent document (full xpath support) and no primary key. */
-  public static final ConfigInfoNodeBuilder WITH_ROOT_NODE = new ConfigInfoNodeBuilder(false, true);
+  public static final ConfigInfoNodeBuilder WITH_ROOT_NODE = new ConfigInfoNodeBuilder(PrimaryKeyOption.NO_PRIMARY_KEY, RootNodeOption.GENERATE_ROOT_NODE);
 
   /** Builder without parent document (only relative xpath supported) and provides a primary key. */
-  public static final ConfigInfoNodeBuilder WITH_PRIMARY_KEY = new ConfigInfoNodeBuilder(true, false);
+  public static final ConfigInfoNodeBuilder WITH_PRIMARY_KEY = new ConfigInfoNodeBuilder(PrimaryKeyOption.GENERATE_PRIMARY_KEY, RootNodeOption.NO_ROOT_NODE);
 
   /** Builder providing parent document (full xpath support) and a primary key. */
-  public static final ConfigInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new ConfigInfoNodeBuilder(true, true);
+  public static final ConfigInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new ConfigInfoNodeBuilder(PrimaryKeyOption.GENERATE_PRIMARY_KEY, RootNodeOption.GENERATE_ROOT_NODE);
 
   /**
    * Use one of the pre-configured builders (e.g., DEFAULT)
    */
-  private ConfigInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
-    super(primaryKeyGenerationEnabled, rootNodeGenerationEnabled);
+  private ConfigInfoNodeBuilder(final PrimaryKeyOption primaryKeyOption, final RootNodeOption rootNodeOption) {
+    super(primaryKeyOption, rootNodeOption);
   }
 
   /**

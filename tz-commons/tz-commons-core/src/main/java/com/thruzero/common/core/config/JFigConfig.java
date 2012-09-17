@@ -101,10 +101,10 @@ public final class JFigConfig extends AbstractConfig {
 
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public Map<String, String> getSection(final String sectionName) {
     Map<String, String> result = null;
+    @SuppressWarnings("unchecked")
     Map<String, String> section = jFig.getSection(sectionName);
 
     if (StringUtils.isEmpty(sectionName)) {
@@ -118,10 +118,12 @@ public final class JFigConfig extends AbstractConfig {
     return result;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public Set<String> getSectionNames() {
-    return Collections.unmodifiableSet(jFig.getConfigDictionary().getDictionaryOfSectionDictionaries().keySet());
+    @SuppressWarnings("unchecked")
+    Set<String> result = Collections.unmodifiableSet(jFig.getConfigDictionary().getDictionaryOfSectionDictionaries().keySet());
+
+    return result;
   }
 
 }

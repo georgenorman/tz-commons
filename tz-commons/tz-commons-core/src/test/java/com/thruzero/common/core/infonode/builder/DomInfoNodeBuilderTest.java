@@ -28,7 +28,9 @@ import org.xml.sax.SAXException;
 
 import com.thruzero.common.core.infonode.InfoNodeDocument;
 import com.thruzero.common.core.infonode.InfoNodeElement;
+import com.thruzero.common.core.infonode.builder.AbstractInfoNodeBuilder.RootNodeOption;
 import com.thruzero.common.core.infonode.builder.utils.SampleDomNodeBuilderUtils;
+import com.thruzero.common.core.infonode.builder.utils.SampleDomNodeBuilderUtils.PreambleOption;
 import com.thruzero.common.core.infonode.builder.utils.SampleInfoNodeBuilderUtils;
 import com.thruzero.common.core.infonode.builder.utils.SampleNodeBuilderUtils;
 import com.thruzero.common.core.utils.XmlUtils;
@@ -70,7 +72,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
 
   @Test
   public void testCreateSimpleNestedInfoNode() throws IOException, SAXException {
-    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createSimpleNestedInfoNode(true);
+    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createSimpleNestedInfoNode(RootNodeOption.GENERATE_ROOT_NODE);
     Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
 
     //  <TestParentElement>
@@ -87,7 +89,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
 
   @Test
   public void testCreateComplexNestedInfoNode() throws IOException, SAXException {
-    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(true);
+    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(RootNodeOption.GENERATE_ROOT_NODE);
     Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
     InfoNodeElement rootInfoNodeElement = infoNodeDocument.getRootInfoNodeElement();
@@ -102,7 +104,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
 
   @Test
   public void testNestedNodeNoParentValue() throws IOException, SAXException {
-    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithoutParentValue(true);
+    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithoutParentValue(RootNodeOption.GENERATE_ROOT_NODE);
     Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
     InfoNodeElement rootInfoNodeElement = infoNodeDocument.getRootInfoNodeElement();
@@ -114,7 +116,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
 
   @Test
   public void testCreateSimpleDocumentInfoNode() throws IOException, SAXException {
-    String xmlDoc = SampleDomNodeBuilderUtils.createSimpleDocuemtNoAttributes(true);
+    String xmlDoc = SampleDomNodeBuilderUtils.createSimpleDocuemtNoAttributes(PreambleOption.EXCLUDED);
     Document w3cDocument = XmlUtils.createDocument(xmlDoc, new LoggingErrorHandler("ComplexNestedInfoNode"));
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
     InfoNodeElement rootInfoNodeElement = infoNodeDocument.getRootInfoNodeElement();

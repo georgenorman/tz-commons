@@ -98,7 +98,7 @@ public final class JpaSettingDAO extends JpaGenericDAO<Setting> implements Setti
     Query hqlQuery = entityManager.createQuery(hql.toString());
     hqlQuery.setParameter("context", context);
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Hibernate isn't generic
     List<? extends Setting> result = hqlQuery.getResultList();
 
     return result;

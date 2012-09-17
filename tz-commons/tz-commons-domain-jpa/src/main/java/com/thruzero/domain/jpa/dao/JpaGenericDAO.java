@@ -89,7 +89,7 @@ public abstract class JpaGenericDAO<T extends Persistent> implements GenericDAO<
 
     Query hqlQuery = entityManager.createQuery(hql);
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Hibernate isn't generic
     List<? extends T> result = hqlQuery.getResultList();
 
     return result;

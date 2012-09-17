@@ -125,9 +125,11 @@ public class InfoNodeElement extends Element {
     return (InfoNodeElement)addContent(child);
   }
 
-  @SuppressWarnings("unchecked")
   public Iterator<? extends InfoNodeElement> getChildNodeIterator() {
-    return getChildren().iterator();
+    @SuppressWarnings("unchecked")
+    Iterator<? extends InfoNodeElement> result = getChildren().iterator();
+
+    return result;
   }
 
   @Override

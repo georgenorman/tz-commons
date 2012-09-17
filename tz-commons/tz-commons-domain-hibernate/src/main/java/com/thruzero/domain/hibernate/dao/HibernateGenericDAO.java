@@ -59,8 +59,7 @@ public abstract class HibernateGenericDAO<T extends Persistent> implements Gener
   public T getByKey(Serializable primaryKey) {
     Session session = getCurrentSession();
 
-    @SuppressWarnings("unchecked")
-    T result = (T)session.load(type, primaryKey);
+    T result = type.cast(session.load(type, primaryKey)); // use dynamic cast to avoid @SuppressWarnings("unchecked")
 
     return result;
   }
@@ -75,8 +74,7 @@ public abstract class HibernateGenericDAO<T extends Persistent> implements Gener
     Query hqlQuery = session.createQuery(hql.toString());
     hqlQuery.setParameter("primaryKey", primaryKey);
 
-    @SuppressWarnings("unchecked")
-    T result = (T)hqlQuery.uniqueResult();
+    T result = type.cast(hqlQuery.uniqueResult()); // use dynamic cast to avoid @SuppressWarnings("unchecked")
 
     return result;
   }
@@ -90,7 +88,7 @@ public abstract class HibernateGenericDAO<T extends Persistent> implements Gener
 
     Query hqlQuery = session.createQuery(hql.toString());
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Hibernate isn't generic
     List<? extends T> result = hqlQuery.list();
 
     return result;

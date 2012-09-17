@@ -36,7 +36,7 @@ public class JpaUtils {
    * </pre>
    */
   public static <T> T getSingleResultHack(Query hqlQuery) {
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Hibernate isn't generic
     List<? extends T> hack = hqlQuery.getResultList();
 
     T result = null;

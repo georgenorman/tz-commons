@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
-import com.thruzero.common.core.support.Singleton;
 
 /**
  * Manually build a {@code InfoNodeElement} directly from the element name, value and attributes. The following example
@@ -58,22 +57,22 @@ import com.thruzero.common.core.support.Singleton;
  */
 public final class ExpressInfoNodeBuilder extends AbstractInfoNodeBuilder {
   /** Basic builder; does not provide parent document (only relative xpath supported) and no primary key. */
-  public static final ExpressInfoNodeBuilder DEFAULT = new ExpressInfoNodeBuilder(false, false);
+  public static final ExpressInfoNodeBuilder DEFAULT = new ExpressInfoNodeBuilder(PrimaryKeyOption.NO_PRIMARY_KEY, RootNodeOption.NO_ROOT_NODE);
 
   /** Builder providing parent document (full xpath support) and no primary key. */
-  public static final ExpressInfoNodeBuilder WITH_ROOT_NODE = new ExpressInfoNodeBuilder(false, true);
+  public static final ExpressInfoNodeBuilder WITH_ROOT_NODE = new ExpressInfoNodeBuilder(PrimaryKeyOption.NO_PRIMARY_KEY, RootNodeOption.GENERATE_ROOT_NODE);
 
   /** Builder without parent document (only relative xpath supported) and provides a primary key. */
-  public static final ExpressInfoNodeBuilder WITH_PRIMARY_KEY = new ExpressInfoNodeBuilder(true, false);
+  public static final ExpressInfoNodeBuilder WITH_PRIMARY_KEY = new ExpressInfoNodeBuilder(PrimaryKeyOption.GENERATE_PRIMARY_KEY, RootNodeOption.NO_ROOT_NODE);
 
   /** Builder providing parent document (full xpath support) and a primary key. */
-  public static final ExpressInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new ExpressInfoNodeBuilder(true, true);
+  public static final ExpressInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new ExpressInfoNodeBuilder(PrimaryKeyOption.GENERATE_PRIMARY_KEY, RootNodeOption.GENERATE_ROOT_NODE);
 
   /**
    * Instead of creating a new builder, use one of the pre-configured builders (e.g., DEFAULT)
    */
-  private ExpressInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
-    super(primaryKeyGenerationEnabled, rootNodeGenerationEnabled);
+  private ExpressInfoNodeBuilder(final PrimaryKeyOption primaryKeyOption, final RootNodeOption rootNodeOption) {
+    super(primaryKeyOption, rootNodeOption);
   }
 
   /**

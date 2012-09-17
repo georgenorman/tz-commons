@@ -27,8 +27,11 @@ import com.thruzero.common.core.support.SimpleIdGenerator;
  * @author George Norman
  */
 public abstract class AbstractInfoNodeBuilder {
-  private final boolean primaryKeyGenerationEnabled;
-  private boolean rootNodeGenerationEnabled;
+  private final PrimaryKeyOption primaryKeyOption;
+  private RootNodeOption rootNodeOption;
+
+  public enum PrimaryKeyOption {GENERATE_PRIMARY_KEY, NO_PRIMARY_KEY};
+  public enum RootNodeOption {GENERATE_ROOT_NODE, NO_ROOT_NODE};
 
   /**
    * The constructor called by subclasses.
@@ -38,9 +41,9 @@ public abstract class AbstractInfoNodeBuilder {
    * InfoNodeDocument} and set it as the parent of the root node created by this builder. This is required in order for
    * xpath to work.
    */
-  protected AbstractInfoNodeBuilder(final boolean primaryKeyGenerationEnabled, final boolean rootNodeGenerationEnabled) {
-    this.primaryKeyGenerationEnabled = primaryKeyGenerationEnabled;
-    this.rootNodeGenerationEnabled = rootNodeGenerationEnabled;
+  protected AbstractInfoNodeBuilder(final PrimaryKeyOption primaryKeyOption, final RootNodeOption rootNodeOption) {
+    this.primaryKeyOption = primaryKeyOption;
+    this.rootNodeOption = rootNodeOption;
   }
 
   /**
@@ -48,30 +51,30 @@ public abstract class AbstractInfoNodeBuilder {
    * and sets it as the parent of the root node created by this builder.
    */
   protected boolean isRootNodeGenerationEnabled() {
-    return rootNodeGenerationEnabled;
+    return rootNodeOption == RootNodeOption.GENERATE_ROOT_NODE;
   }
 
   /**
-   * If {@code rootNodeGenerationEnabled} is true, then this builder will create a
+   * If {@code rootNodeOption} equals GENERATE_ROOT_NODE, then this builder will create a
    * {@link com.thruzero.common.core.infonode.InfoNodeDocument InfoNodeDocument} and set it as the parent of the root
    * node created by this builder. This is required in order for xpath to work.
    */
-  protected void setRootNodeGenerationEnabled(final boolean rootNodeGenerationEnabled) {
-    this.rootNodeGenerationEnabled = rootNodeGenerationEnabled;
+  protected void setRootNodeOption(final RootNodeOption rootNodeOption) {
+    this.rootNodeOption = rootNodeOption;
   }
 
   /**
    * Return true if primary keys will be auto-generated for each {@code InfoNodeElement} built.
    */
   protected boolean isPrimaryKeyGenerationEnabled() {
-    return primaryKeyGenerationEnabled;
+    return primaryKeyOption == PrimaryKeyOption.GENERATE_PRIMARY_KEY;
   }
 
   /**
-   * If primaryKeyGenerationEnabled is true, the given infoNode will be given an auto-generated primary-key.
+   * If primary key generation is enabled (see isPrimaryKeyGenerationEnabled), the given infoNode will be given an auto-generated primary-key.
    */
   protected void handlePrimaryKey(final InfoNodeElement infoNode) {
-    if (primaryKeyGenerationEnabled) {
+    if (isPrimaryKeyGenerationEnabled()) {
       infoNode.setEntityPath(new EntityPath(new ContainerPath(), SimpleIdGenerator.getInstance().getNextIdAsString()));
     }
   }
@@ -83,7 +86,7 @@ public abstract class AbstractInfoNodeBuilder {
    * and only for the top-most element (the root).
    */
   protected void handleRootNode(final InfoNodeElement infoNode) {
-    if (rootNodeGenerationEnabled) {
+    if (isRootNodeGenerationEnabled()) {
       infoNode.enableRootNode();
     }
   }

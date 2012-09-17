@@ -52,15 +52,17 @@ import com.thruzero.domain.store.Persistent;
  * The {@code DataStoreContainerFactory} is configurable for each type of DAO. For example, the {@code DscPreferenceDAO}
  * can be configured to use the file system, and the {@code DscSettingDAO} can be configured for a Web Service, as shown below.
  * <pre>
- *  &lt;section name=&quot;com.thruzero.domain.dsc.dao.DscPreferenceDAO&quot;&gt;
- *    &lt;entry key=&quot;com.thruzero.domain.dsc.store.DataStoreContainerFactory&quot; value=&quot;com.thruzero.domain.dsc.fs.FileDataStoreContainerFactory&quot; /&gt;
- *    &lt;entry key=&quot;base&quot; value=&quot;DscPreferenceDAO&quot; /&gt;
- *  &lt;/section&gt;
+ * {@literal
+ *  <section name="com.thruzero.domain.dsc.dao.DscPreferenceDAO">
+ *    <entry key="com.thruzero.domain.dsc.store.DataStoreContainerFactory" value="com.thruzero.domain.dsc.fs.FileDataStoreContainerFactory" />
+ *    <entry key="base" value="DscPreferenceDAO" />
+ *  </section>
  *
- *  &lt;section name=&quot;com.thruzero.domain.dsc.dao.DscSettingDAO&quot;&gt;
- *    &lt;entry key=&quot;com.thruzero.domain.dsc.store.DataStoreContainerFactory&quot; value=&quot;com.thruzero.domain.dsc.ws.WsDataStoreContainerFactory&quot; /&gt;
- *    &lt;entry key=&quot;base&quot; value=&quot;DscSettingDAO&quot; /&gt;
- *  &lt;/section&gt;
+ *  <section name="com.thruzero.domain.dsc.dao.DscSettingDAO">
+ *    <entry key="com.thruzero.domain.dsc.store.DataStoreContainerFactory" value="com.thruzero.domain.dsc.ws.WsDataStoreContainerFactory" />
+ *    <entry key="base" value="DscSettingDAO" />
+ *  </section>
+ *  }
  *  </pre>
  * <p>
  * A {@code DomainObjectTransformer} is used to handle the translation from a Domain Object to a {@code DataStoreEntity} and back

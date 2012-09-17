@@ -29,6 +29,8 @@ import org.junit.Test;
 
 import com.thruzero.common.core.security.SimpleCipher.SimpleCipherConfiguration;
 import com.thruzero.common.core.security.SimpleCipher.SimpleCipherException;
+import com.thruzero.common.core.security.SimpleCipher.SimpleCipherConfiguration.ConfigInitOption;
+import com.thruzero.common.core.security.SimpleCipher.SimpleCipherConfiguration.EnvironmentVarInitOption;
 import com.thruzero.test.support.AbstractCoreTestCase;
 
 /**
@@ -91,7 +93,7 @@ public class SimpleCipherTest extends AbstractCoreTestCase {
   public void testDecryptWithDifferentCipher() throws SimpleCipherException {
     SimpleCipher cipher1 = new SimpleCipher();
     String encryptedPw = cipher1.encrypt(PLAIN_TEXT_1);
-    SimpleCipher cipher2 = new SimpleCipher(new SimpleCipherConfiguration(null, null, null, false, false));
+    SimpleCipher cipher2 = new SimpleCipher(new SimpleCipherConfiguration(null, null, null, EnvironmentVarInitOption.DISABLED, ConfigInitOption.DISABLED));
 
     try {
       cipher2.decrypt(encryptedPw);
@@ -128,14 +130,14 @@ public class SimpleCipherTest extends AbstractCoreTestCase {
     assertNotDefaultCipherValues(salt, passPhrase, iterationCount);
 
     // test configuration constructed using config file
-    SimpleCipherConfiguration simpleCipherConfiguration = new SimpleCipherConfiguration(null, null, null, false, true);
+    SimpleCipherConfiguration simpleCipherConfiguration = new SimpleCipherConfiguration(null, null, null, EnvironmentVarInitOption.DISABLED, ConfigInitOption.ENABLED);
     assertTrue("Configuration salt must equal given salt", Arrays.equals(salt, simpleCipherConfiguration.getSalt()));
     assertTrue("Configuration pass-phrase must equal given pass-phrase", Arrays.equals(passPhrase.toCharArray(), simpleCipherConfiguration.getPassPhrase()));
     assertEquals("Configuration iteration count must equal given iteration count", UNIQUE_ITERATION_COUNT, simpleCipherConfiguration.getIterationCount());
   }
 
   private void assertNotDefaultCipherValues(final byte[] salt, final String passPhrase, final int iterationCount) {
-    SimpleCipherConfiguration defaultConfiguration = new SimpleCipherConfiguration(null, null, null, false, false);
+    SimpleCipherConfiguration defaultConfiguration = new SimpleCipherConfiguration(null, null, null, EnvironmentVarInitOption.DISABLED, ConfigInitOption.DISABLED);
     assertFalse("Test salt must NOT equal default salt", Arrays.equals(salt, defaultConfiguration.getSalt()));
     assertFalse("Test pass-phrase must NOT equal default pass-phrase", Arrays.equals(passPhrase.toCharArray(), defaultConfiguration.getPassPhrase()));
     assertFalse("Test iteration count must NOT equal default iteration count", iterationCount == defaultConfiguration.getIterationCount());

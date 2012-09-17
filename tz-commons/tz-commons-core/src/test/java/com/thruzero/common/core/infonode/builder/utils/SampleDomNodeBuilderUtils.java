@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import org.w3c.dom.Document;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
+import com.thruzero.common.core.infonode.builder.AbstractInfoNodeBuilder.RootNodeOption;
 import com.thruzero.common.core.utils.XmlUtils;
 import com.thruzero.common.core.utils.XmlUtils.LoggingErrorHandler;
 
@@ -29,6 +30,7 @@ import com.thruzero.common.core.utils.XmlUtils.LoggingErrorHandler;
  * @author George Norman
  */
 public class SampleDomNodeBuilderUtils extends SampleNodeBuilderUtils {
+  public enum PreambleOption {INCLUDED, EXCLUDED};
 
   public static Document createSimpleTokenDomNode() {
     Document result;
@@ -72,13 +74,13 @@ public class SampleDomNodeBuilderUtils extends SampleNodeBuilderUtils {
    * }
    * </pre>
    */
-  public static String createSimpleDocuemtNoAttributes(final boolean includePreamble) {
-    InfoNodeElement infoNode = getExpressInfoNodeBuilder(false).buildInfoNode(TEST_PARENT_ELEMENT_NAME, null, null);
+  public static String createSimpleDocuemtNoAttributes(final PreambleOption preambleOption) {
+    InfoNodeElement infoNode = getExpressInfoNodeBuilder(RootNodeOption.NO_ROOT_NODE).buildInfoNode(TEST_PARENT_ELEMENT_NAME, null, null);
     for (short i = 0; i <= 1; i++) {
-      infoNode.addChildNode(createNamedInfoNode("Test" + i, 0, false));
+      infoNode.addChildNode(createNamedInfoNode("Test" + i, 0, RootNodeOption.NO_ROOT_NODE));
     }
 
-    String result = includePreamble ? TEST_XML_DECLARATION + "\n" + TEST_SIMPLE_DOCUMENT_TYPE + "\n" + infoNode.toStringFormatted() : infoNode.toStringFormatted();
+    String result = (preambleOption == PreambleOption.INCLUDED) ? TEST_XML_DECLARATION + "\n" + TEST_SIMPLE_DOCUMENT_TYPE + "\n" + infoNode.toStringFormatted() : infoNode.toStringFormatted();
 
     return result;
   }
@@ -86,7 +88,7 @@ public class SampleDomNodeBuilderUtils extends SampleNodeBuilderUtils {
   // Validation methods ///////////////////////////////////////////////////////////////////
 
   public static void verifySimpleDocumentRootElement(final InfoNodeElement rootElement) {
-    String xml = createSimpleDocuemtNoAttributes(false);
+    String xml = createSimpleDocuemtNoAttributes(PreambleOption.EXCLUDED);
 
     assertEquals(rootElement.toStringFormatted(), xml);
   }

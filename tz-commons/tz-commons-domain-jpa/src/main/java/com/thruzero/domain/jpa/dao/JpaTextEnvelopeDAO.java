@@ -70,7 +70,7 @@ public final class JpaTextEnvelopeDAO extends JpaGenericDAO<TextEnvelope> implem
     Query hqlQuery = entityManager.createQuery(hql.toString());
     hqlQuery.setParameter("path", containerPath.getPath());
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Hibernate isn't generic
     List<? extends TextEnvelope> result = hqlQuery.getResultList();
 
     return result;
