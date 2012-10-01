@@ -31,7 +31,7 @@ import com.thruzero.common.core.support.ValueTransformer;
 /**
  * A representation of a node in a data tree.
  *
- * A {@code InfoNodeElement} can be constructed manually or from a variety of builders that create nodes from XML
+ * An {@code InfoNodeElement} can be constructed manually or from a variety of builders that create nodes from XML
  * strings, XML files, property files, etc.
  * <p>
  * The following builders are currently implemented:
