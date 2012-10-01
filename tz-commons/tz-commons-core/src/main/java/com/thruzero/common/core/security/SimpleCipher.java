@@ -56,8 +56,8 @@ public class SimpleCipher {
   private static final String PBE_WITH_MD5_AND_DES = "PBEWithMD5AndDES"; // uses a set of parameters, comprising a salt and an iteration count
 
   private final Base64 base64 = new Base64();
-  private Cipher encryptionCipher;
-  private Cipher decryptionCipher;
+  private final Cipher encryptionCipher;
+  private final Cipher decryptionCipher;
 
   // ------------------------------------------------
   // SimpleCipherConfigKeys

@@ -34,7 +34,7 @@ import com.thruzero.common.core.provider.Provider;
  */
 @LocatorBookmark(comment = "ProviderLocator")
 public class ProviderLocator {
-  private static RegistryLocatorStrategy<Provider> locatorStrategy = new RegistryLocatorStrategy<Provider>(Provider.class);
+  private static final RegistryLocatorStrategy<Provider> locatorStrategy = new RegistryLocatorStrategy<Provider>(Provider.class);
 
   /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected ProviderLocator() {

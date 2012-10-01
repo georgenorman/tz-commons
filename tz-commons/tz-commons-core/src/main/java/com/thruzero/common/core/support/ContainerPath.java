@@ -34,7 +34,7 @@ public class ContainerPath implements Serializable, Cloneable {
 
   private static final PathAndNameValidator pathAndNameValidator = new PathAndNameValidator();
 
-  private String path;
+  private final String path;
 
   public ContainerPath() {
     this.path = CONTAINER_PATH_SEPARATOR;

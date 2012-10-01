@@ -32,7 +32,7 @@ import com.thruzero.common.core.support.EnvironmentHelper;
 public class PerformanceTimerUtils {
   private static final Logger logger = Logger.getLogger(PerformanceTimerUtils.class);
 
-  private static ThreadLocal<PerformanceLogger> threadLocal = new ThreadLocal<PerformanceLogger>();
+  private static final ThreadLocal<PerformanceLogger> threadLocal = new ThreadLocal<PerformanceLogger>();
 
   // ----------------------------------------------
   // PerformanceLoggerHelper

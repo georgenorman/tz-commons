@@ -26,7 +26,7 @@ import com.thruzero.common.core.map.StringMap;
  * @author George Norman
  */
 public class MapInitializationStrategy implements InitializationStrategy {
-  private Map<String,StringMap> iniMap;
+  private final Map<String,StringMap> iniMap;
 
   public MapInitializationStrategy(String sectionName, StringMap initializationParameters) {
     this.iniMap = new HashMap<String,StringMap>();

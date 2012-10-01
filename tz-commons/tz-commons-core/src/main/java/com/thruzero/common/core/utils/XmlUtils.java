@@ -47,8 +47,8 @@ import com.thruzero.common.core.support.LogHelper;
  * @author George Norman
  */
 public class XmlUtils {
-  private static Logger logger = Logger.getLogger(XmlUtils.class);
-  private static XmlUtilsLogHelper xmlUtilsLogHelper = new XmlUtilsLogHelper(XmlUtils.class);
+  private static final Logger logger = Logger.getLogger(XmlUtils.class);
+  private static final XmlUtilsLogHelper xmlUtilsLogHelper = new XmlUtilsLogHelper(XmlUtils.class);
 
   public static final String XML_HEADER = "<?xml version=\"1.0\"?>";
 

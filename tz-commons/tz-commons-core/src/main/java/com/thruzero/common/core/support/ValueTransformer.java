@@ -29,7 +29,7 @@ import com.thruzero.common.core.utils.StringUtilsExt;
  * @param <T> Type of value object to be transformed.
  */
 public class ValueTransformer<T> {
-  private T value;
+  private final T value;
 
   public ValueTransformer(T value) {
     this.value = value;

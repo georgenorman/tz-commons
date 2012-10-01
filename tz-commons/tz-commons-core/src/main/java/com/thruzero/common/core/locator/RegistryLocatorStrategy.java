@@ -93,7 +93,7 @@ import com.thruzero.common.core.utils.ExceptionUtilsExt;
  * @param <T> Type of Object located by this strategy (e.g., ServiceLocator only finds instances of type Service).
  */
 public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStrategy<T> {
-  private static LocatorLogHelper logHelper = new LocatorLogHelper(RegistryLocatorStrategy.class);
+  private static final LocatorLogHelper logHelper = new LocatorLogHelper(RegistryLocatorStrategy.class);
 
   private final String targetInterfaceTypeName;
   private final InstanceCache<T> instanceCache = new InstanceCache<T>();

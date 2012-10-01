@@ -92,7 +92,7 @@ import com.thruzero.common.core.service.Service;
  */
 @LocatorBookmark(comment = "ServiceLocator")
 public class ServiceLocator {
-  private static RegistryLocatorStrategy<Service> locatorStrategy = new RegistryLocatorStrategy<Service>(Service.class);
+  private static final RegistryLocatorStrategy<Service> locatorStrategy = new RegistryLocatorStrategy<Service>(Service.class);
 
   /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected ServiceLocator() {

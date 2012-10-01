@@ -47,7 +47,7 @@ import com.thruzero.common.core.transaction.TransactionMgr;
  */
 @LocatorBookmark(comment = "TransactionMgrLocator")
 public class TransactionMgrLocator {
-  private static RegistryLocatorStrategy<TransactionMgr> locatorStrategy = new RegistryLocatorStrategy<TransactionMgr>(TransactionMgr.class);
+  private static final RegistryLocatorStrategy<TransactionMgr> locatorStrategy = new RegistryLocatorStrategy<TransactionMgr>(TransactionMgr.class);
 
   /** This is a utility class - Allow for class extensions; disallow client instantiation */
   protected TransactionMgrLocator() {

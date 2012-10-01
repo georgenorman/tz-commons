@@ -22,8 +22,8 @@ package com.thruzero.common.core.support;
  * @author George Norman
  */
 public class SimpleInfo {
-  private String info;
-  private String compactInfo;
+  private final String info;
+  private final String compactInfo;
 
   public SimpleInfo(String info, String compactInfo) {
     this.info = info;

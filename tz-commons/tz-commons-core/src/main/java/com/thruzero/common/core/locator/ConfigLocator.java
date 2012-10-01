@@ -51,7 +51,7 @@ import com.thruzero.common.core.utils.ClassUtils.ClassUtilsException;
 public class ConfigLocator {
   private static final String DEFAULT_CONFIG_CLASS_NAME = JFigConfig.class.getName();
 
-  private static RegistryLocatorStrategy<Config> locatorStrategy = new ConfigLocatorStrategy();
+  private static final RegistryLocatorStrategy<Config> locatorStrategy = new ConfigLocatorStrategy();
 
   // ------------------------------------------
   // ConfigEnvironmentVarNames

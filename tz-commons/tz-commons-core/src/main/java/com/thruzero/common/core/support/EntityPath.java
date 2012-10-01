@@ -46,7 +46,7 @@ public class EntityPath implements Serializable, Cloneable {
 
   private static final PathAndNameValidator pathAndNameValidator = new PathAndNameValidator();
 
-  private ContainerPath containerPath;
+  private final ContainerPath containerPath;
   private String entityName;
 
   // --------------------------------------------------
