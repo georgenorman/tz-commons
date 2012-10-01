@@ -69,9 +69,8 @@ public class StringMap extends HashMap<String, String> implements Iterable<Entry
    * Constructs a {@code StringMap}, using the {@link #putAllWithConversionToString(Map)} method to convert the values
    * to strings.
    */
-  @SuppressWarnings("unchecked")
-  public StringMap(final Map<String, ?> keyValues) {
-    putAll((Map<? extends String, ? extends String>)keyValues);
+  public StringMap(final Map<String, String> keyValues) {
+    putAll(keyValues);
   }
 
   /**
