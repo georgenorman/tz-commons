@@ -45,7 +45,7 @@ public class FileRenamingVisitorTest extends AbstractCoreTestCase {
   public static final String SUBSTITUTION_ONE_VALUE = "Bass";
 
   @Test
-  public void test() {
+  public void testRenameOfSimpleDirectory() {
     // clean the temp directory
     deleteTempDirContents();
 

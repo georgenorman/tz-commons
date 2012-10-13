@@ -100,7 +100,7 @@ public final class JpaDatabaseTransactionMgr implements DatabaseTransactionMgr, 
   // TransactionMgrLogHelper
   // -----------------------------------------------------------
 
-  public static class TransactionMgrLogHelper extends LogHelper {
+  public static final class TransactionMgrLogHelper extends LogHelper {
     public TransactionMgrLogHelper(Class<?> clazz) {
       super(clazz);
     }

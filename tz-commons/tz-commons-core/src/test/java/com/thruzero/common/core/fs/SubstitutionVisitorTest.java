@@ -52,8 +52,9 @@ public class SubstitutionVisitorTest extends AbstractCoreTestCase {
   public static final String REGEX_VAR_1 = "\\$\\{substitution-var-1\\}";
   public static final String REGEX_VAR_2 = "\\$\\{substitution-var-2\\}";
 
+  /** Simple key/value pair substitution (e.g., "${foo}" substituted using key="${foo}"). */
   @Test
-  public void test1() {
+  public void testSimpleKeyValuePairSubstitution() {
     // copy test directory to a temp directory, as a substitution target
     File substitutionTestFile = copyFileToTemp(SUBSTITUTION_TEST_FILE_NAME);
 
@@ -73,7 +74,7 @@ public class SubstitutionVisitorTest extends AbstractCoreTestCase {
   }
 
   @Test
-  public void test1UsingNullValue() {
+  public void testSimpleKeyValuePairSubstitutionUsingNullValue() {
     // copy file to temp directory, so test can be run multiple times without m2 clean
     copyFileToTemp(SUBSTITUTION_TEST_FILE_NAME);
 
@@ -108,8 +109,9 @@ public class SubstitutionVisitorTest extends AbstractCoreTestCase {
     assertFalse("Substitution failed - files contain remnants of substitution variables.", StringUtils.contains(substitutedContents, "}"));
   }
 
+  /** Simple key/value pair substitution (e.g., "${foo}" substituted using regex="\$\{foo\}"). */
   @Test
-  public void test2() {
+  public void testSimpleRegExSubstitution() {
     // copy file to temp directory, so test can be run multiple times without m2 clean
     copyFileToTemp(SUBSTITUTION_TEST_FILE_NAME);
 

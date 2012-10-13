@@ -26,7 +26,7 @@ import com.thruzero.auth.test.support.dao.AbstractUserDAOTestHelper;
 import com.thruzero.domain.locator.DAOLocator;
 
 /**
- * Unit test for UserDAO.
+ * Unit test for UserDAO using a mock DAO (see JPA, Hibernate and DSC project tests for non-mock implementation tests).
  */
 public class MockUserDAOTest extends AbstractAuthTestCase {
   private static final AbstractUserDAOTestHelper testHelper = new MockUserDAOTestHelper();

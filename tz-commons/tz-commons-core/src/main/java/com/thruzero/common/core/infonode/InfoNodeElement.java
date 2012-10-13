@@ -115,6 +115,22 @@ public class InfoNodeElement extends Element {
     return xpath.selectSingleNode(this);
   }
 
+  /**
+   * Find the first child using the given {@code xpathExpr}. Examples:
+   * <pre>
+   * "ChildElement1/TestOneElement[@TestOneAttributeOne='attrone2']"
+   * </pre>
+   */
+  public InfoNodeElement findElement(final String xpathExpr) throws JDOMException {
+    Object result = find(xpathExpr);
+
+    if (result instanceof InfoNodeElement) {
+      return (InfoNodeElement)result;
+    } else {
+      throw new RuntimeException("Given XPath didn't find an InfoNodeElement: " + xpathExpr);
+    }
+  }
+
   public Object findAll(final String xpathExpr) throws JDOMException {
     XPath xpath = XPath.newInstance(xpathExpr);
 

@@ -40,7 +40,7 @@ public class FileListVisitorTest extends AbstractCoreTestCase {
   public static final String NESTED_TEST_DIR_NAME = "nested";
 
   @Test
-  public void test() {
+  public void testListOfSimpleDirectory() {
     // get test file in temp directory
     File nestedTestDir = getTestFile(NESTED_TEST_DIR_NAME);
 

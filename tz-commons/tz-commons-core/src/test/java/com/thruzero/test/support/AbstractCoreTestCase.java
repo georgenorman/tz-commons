@@ -37,6 +37,7 @@ import com.thruzero.common.core.utils.FileUtilsExt;
 import com.thruzero.common.core.utils.FileUtilsExt.FileUtilsException;
 
 /**
+ * Abstract base test class used by all thruzero test projects (shared using the maven2 "test-jar" dependency type).
  *
  * @author George Norman
  */

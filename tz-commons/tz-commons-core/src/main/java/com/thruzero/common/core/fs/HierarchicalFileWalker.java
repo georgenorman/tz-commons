@@ -117,8 +117,6 @@ public class HierarchicalFileWalker {
    * place.
    */
   public HierarchicalFileWalker(final File rootDirectory, final FileFilter filter, final SortDirection sortDirection) {
-    assertIsDirectory(rootDirectory);
-
     this.rootDirectory = rootDirectory;
     if (filter == null) {
       // default filter returns everything
@@ -137,11 +135,11 @@ public class HierarchicalFileWalker {
    * {@code visitDirectoryEnter} and {@code visitDirectoryLeave} methods will be called and for each file, the
    * {@code visitFile} method will be called.
    *
-   * @see {@link com.thruzero.common.core.fs.HierarchicalFileWalker(File, FileFilter, SortDirection)} for details on
-   * filters.
+   * @see {@link com.thruzero.common.core.fs.HierarchicalFileWalker(File, FileFilter, SortDirection)} for details on filters.
+   * @throws IllegalArgumentException if rootDirectory (given at construction time) is not a valid directory.
    */
   public FileWalkerStatus accept(final HierarchicalFileVisitor visitor) throws IOException {
-    File rootDirectory = getRootDirectory();
+    assertIsDirectory(rootDirectory);
 
     visitor.open(rootDirectory);
 

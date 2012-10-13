@@ -35,8 +35,9 @@ import com.thruzero.test.support.AbstractCoreTestCase;
 public class ZipCompressingVisitorTest extends AbstractCoreTestCase {
   public static final String ZIP_TEST_DIR_NAME = "nested";
 
+  /** Test zip compression of a some nested directories containing some files. */
   @Test
-  public void test() {
+  public void testZipCompressOfSimpleDirectory() {
     // clean the temp directory
     deleteTempDirContents();
 

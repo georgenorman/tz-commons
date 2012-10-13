@@ -33,7 +33,7 @@ import com.thruzero.test.support.AbstractCoreTestCase;
 public class PatternValuePairTest extends AbstractCoreTestCase {
 
   @Test
-  public void test1() {
+  public void testSimpleReplaceAll() {
     String source = PairTestUtils.getSourceString();
     PatternValuePair patternValuePair = new PatternValuePair(SubstitutionVisitorTest.REGEX_VAR_1, SubstitutionVisitorTest.SUBSTITUTION_VALUE_1);
     Matcher matcher = patternValuePair.getPattern().matcher(source);
@@ -43,7 +43,7 @@ public class PatternValuePairTest extends AbstractCoreTestCase {
   }
 
   @Test
-  public void test2() {
+  public void testSimpleReplaceAll2() {
     PatternValuePair patternValuePair = new PatternValuePair("\\w+@\\w+\\.\\w+", "xxxxxxx");
     Matcher matcher = patternValuePair.getPattern().matcher("The email address, foo@bar.com, should be hidden.");
     String result = matcher.replaceAll(patternValuePair.getValueAsString());

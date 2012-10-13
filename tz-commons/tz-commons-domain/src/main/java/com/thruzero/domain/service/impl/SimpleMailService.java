@@ -99,7 +99,7 @@ public final class SimpleMailService implements MailService, Initializable {
   // SimpleMailServiceLogHelper
   // -----------------------------------------------------------
 
-  public static class SimpleMailServiceLogHelper extends LogHelper {
+  public static final class SimpleMailServiceLogHelper extends LogHelper {
     public SimpleMailServiceLogHelper(Class<?> clazz) {
       super(clazz);
     }

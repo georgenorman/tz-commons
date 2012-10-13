@@ -54,7 +54,7 @@ public class ZipCompressingVisitor extends AbstractHierarchicalFileVisitor {
   // ZipCompressingVisitorLogHelper
   // -----------------------------------------------------------
 
-  public static class ZipCompressingVisitorLogHelper extends LogHelper {
+  public static final class ZipCompressingVisitorLogHelper extends LogHelper {
     public ZipCompressingVisitorLogHelper(final Class<?> clazz) {
       super(clazz);
     }

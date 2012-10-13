@@ -133,7 +133,7 @@ public class XmlUtils {
   // XmlUtilsLogHelper
   // -----------------------------------------------------------
 
-  public static class XmlUtilsLogHelper extends LogHelper {
+  public static final class XmlUtilsLogHelper extends LogHelper {
     public XmlUtilsLogHelper(final Class<?> clazz) {
       super(clazz);
     }

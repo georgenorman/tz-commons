@@ -39,7 +39,7 @@ public class DirectoryDeletingVisitor extends AbstractHierarchicalFileVisitor {
   // DirectoryDeletingVisitorLogHelper
   // -----------------------------------------------------------
 
-  public static class DirectoryDeletingVisitorLogHelper extends LogHelper {
+  public static final class DirectoryDeletingVisitorLogHelper extends LogHelper {
     public DirectoryDeletingVisitorLogHelper(final Class<?> clazz) {
       super(clazz);
     }

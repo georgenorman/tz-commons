@@ -36,7 +36,7 @@ public class ConfigInitializationStrategy implements InitializationStrategy {
   // ConfigInitializationStrategyLogHelper
   // -----------------------------------------------------------
 
-  public static class ConfigInitializationStrategyLogHelper extends LogHelper {
+  public static final class ConfigInitializationStrategyLogHelper extends LogHelper {
     public ConfigInitializationStrategyLogHelper(final Class<?> clazz) {
       super(clazz);
     }

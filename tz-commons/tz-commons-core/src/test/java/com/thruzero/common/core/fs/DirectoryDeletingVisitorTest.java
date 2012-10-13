@@ -35,8 +35,9 @@ import com.thruzero.test.support.AbstractCoreTestCase;
 public class DirectoryDeletingVisitorTest extends AbstractCoreTestCase {
   public static final String DELETING_TEST_DIR_NAME = "deleting";
 
+  /** Delete a directory and verify expected number of files were deleted. */
   @Test
-  public void test() {
+  public void testDeleteOfSimpleDirectory() {
     // clean the temp directory
     deleteTempDirContents();
 
@@ -50,7 +51,26 @@ public class DirectoryDeletingVisitorTest extends AbstractCoreTestCase {
       FileWalkerStatus status = walker.accept(new DirectoryDeletingVisitor());
       assertEquals("Wrong number of files were deleted.", 6, status.getNumProcessed());
     } catch (IOException e) {
-      fail("FileRenamingFileWalker generated exception: " + e);
+      fail("DirectoryDeletingVisitor generated exception: " + e);
+    }
+  }
+
+  /** Attempt to delete a bogus directory and verify expected IllegalArgumentException was thrown. */
+  @Test
+  public void testDeleteOfNonExistantDirectory() {
+    // clean the temp directory
+    deleteTempDirContents();
+
+    // attempt to delete a bogus directory
+    try {
+      // delete the test directory in temp
+      HierarchicalFileWalker walker = new HierarchicalFileWalker(getTempTestFile("bogus"));
+      walker.accept(new DirectoryDeletingVisitor());
+      fail("DirectoryDeletingVisitor didn't generate an IllegalArgumentException (for a bogus directory).");
+    } catch (IllegalArgumentException e) {
+      //
+    } catch (IOException e) {
+      fail("DirectoryDeletingVisitor generated IOException: " + e + ". Expected IllegalArgumentException (for a bogus directory).");
     }
   }
 

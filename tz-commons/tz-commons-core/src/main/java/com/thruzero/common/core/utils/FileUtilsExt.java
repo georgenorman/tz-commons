@@ -63,7 +63,7 @@ public class FileUtilsExt extends FileUtils {
   // FileUtilsExtLogHelper
   // -----------------------------------------------------------
 
-  public static class FileUtilsExtLogHelper extends LogHelper {
+  public static final class FileUtilsExtLogHelper extends LogHelper {
     public FileUtilsExtLogHelper(final Class<?> clazz) {
       super(clazz);
     }

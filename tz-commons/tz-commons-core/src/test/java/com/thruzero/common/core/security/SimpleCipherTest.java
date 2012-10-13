@@ -40,7 +40,6 @@ import com.thruzero.test.support.AbstractCoreTestCase;
  */
 public class SimpleCipherTest extends AbstractCoreTestCase {
   private static final String PLAIN_TEXT_1 = "pl@1nText0ne";
-  private static final String PLAIN_TEXT_2 = "pl@1nTextTwo";
 
   // differs from the default salt used by SimpleCipher
   private static final byte[] UNIQUE_SALT = new byte[] { (byte)0xc3, 0x41, 0x55, (byte)0xed, (byte)0xf4, 0x41, 0x3e, 0x61 };
@@ -52,7 +51,7 @@ public class SimpleCipherTest extends AbstractCoreTestCase {
   private static final int UNIQUE_ITERATION_COUNT = 23;
 
   @Test
-  public void testEncrypt1() throws SimpleCipherException {
+  public void testEncryptSimpleString() throws SimpleCipherException {
     SimpleCipher cipher = new SimpleCipher();
 
     String encryptedPw = cipher.encrypt(PLAIN_TEXT_1);
@@ -61,32 +60,13 @@ public class SimpleCipherTest extends AbstractCoreTestCase {
   }
 
   @Test
-  public void testDecrypt1() throws SimpleCipherException {
+  public void testDecryptSimpleString() throws SimpleCipherException {
     SimpleCipher cipher = new SimpleCipher();
     String encryptedPw = cipher.encrypt(PLAIN_TEXT_1);
 
     String decryptedPw = cipher.decrypt(encryptedPw);
     assertFalse("Decrypt must not result in empty string.", StringUtils.isEmpty(decryptedPw));
     assertEquals("Encrypt must equal original string.", PLAIN_TEXT_1, decryptedPw);
-  }
-
-  @Test
-  public void testEncrypt2() throws SimpleCipherException {
-    SimpleCipher cipher = new SimpleCipher();
-
-    String encryptedPw = cipher.encrypt(PLAIN_TEXT_2);
-    assertFalse("Encrypt must not result in empty string.", StringUtils.isEmpty(encryptedPw));
-    assertFalse("Encrypt must not equal original string.", PLAIN_TEXT_2.equals(encryptedPw));
-  }
-
-  @Test
-  public void testDecrypt2() throws SimpleCipherException {
-    SimpleCipher cipher = new SimpleCipher();
-    String encryptedPw = cipher.encrypt(PLAIN_TEXT_2);
-
-    String decryptedPw = cipher.decrypt(encryptedPw);
-    assertFalse("Decrypt must not result in empty string.", StringUtils.isEmpty(decryptedPw));
-    assertEquals("Encrypt must equal original string.", PLAIN_TEXT_2, decryptedPw);
   }
 
   @Test
