@@ -15,6 +15,8 @@
  */
 package com.thruzero.common.core.support;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * A simple generator of identifiers that contains 2^64 unique identifiers, within the lifetime of the instance. If the
  * instance is recreated (e.g., due to application restart), then the sequence begins all over again.
@@ -24,13 +26,13 @@ package com.thruzero.common.core.support;
 public final class SimpleIdGenerator {
   private static SimpleIdGenerator instance = new SimpleIdGenerator();
 
-  private long id = 1000; // starting off at 1000 (to improve reliability of tests).
+  private AtomicLong id = new AtomicLong(1000); // starting off at 1000 (to improve reliability of tests).
 
   private SimpleIdGenerator() {
   }
 
-  public synchronized long getNextId() {
-    return id++;
+  public long getNextId() {
+    return id.incrementAndGet();
   }
 
   public String getNextIdAsString() {
