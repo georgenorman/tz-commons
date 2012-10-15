@@ -121,9 +121,9 @@ public class SampleInfoNodeBuilderUtils extends SampleNodeBuilderUtils {
    *   </TestParentElement>
    * }</pre>
    */
-  public static InfoNodeElement createComplexNestedInfoNodeWithParentValue(final RootNodeOption rootNodeOption) {
+  public static InfoNodeElement createComplexNestedInfoNodeWithParentValue(final RootNodeOption rootNodeOption, final int numChildren) {
     InfoNodeElement infoNode = getExpressInfoNodeBuilder(rootNodeOption).buildInfoNode(TEST_PARENT_ELEMENT_NAME, TEST_PARENT_ELEMENT_VALUE, null);
-    for (short i = 0; i <= 9; i++) {
+    for (short i = 0; i < numChildren; i++) {
       infoNode.addChildNode(createNamedInfoNode("Test" + i, 2, RootNodeOption.NO_ROOT_NODE));
     }
 
@@ -141,9 +141,9 @@ public class SampleInfoNodeBuilderUtils extends SampleNodeBuilderUtils {
    * </TestParentElement>
    * }</pre>
    */
-  public static InfoNodeElement createComplexNestedInfoNodeWithoutParentValue(final RootNodeOption rootNodeOption) {
+  public static InfoNodeElement createComplexNestedInfoNodeWithoutParentValue(final RootNodeOption rootNodeOption, final int numChildren) {
     InfoNodeElement infoNode = getExpressInfoNodeBuilder(rootNodeOption).buildInfoNode(TEST_PARENT_ELEMENT_NAME, null, null);
-    for (short i = 0; i <= 9; i++) {
+    for (short i = 0; i < numChildren; i++) {
       infoNode.addChildNode(createNamedInfoNode("Test" + i, 2, RootNodeOption.NO_ROOT_NODE));
     }
 

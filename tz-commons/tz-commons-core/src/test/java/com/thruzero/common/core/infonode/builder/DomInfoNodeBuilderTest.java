@@ -89,7 +89,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
 
   @Test
   public void testCreateComplexNestedInfoNode() throws IOException, SAXException {
-    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(RootNodeOption.GENERATE_ROOT_NODE);
+    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(RootNodeOption.GENERATE_ROOT_NODE, 10);
     Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
     InfoNodeElement rootInfoNodeElement = infoNodeDocument.getRootInfoNodeElement();
@@ -104,7 +104,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
 
   @Test
   public void testNestedNodeNoParentValue() throws IOException, SAXException {
-    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithoutParentValue(RootNodeOption.GENERATE_ROOT_NODE);
+    InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithoutParentValue(RootNodeOption.GENERATE_ROOT_NODE, 10);
     Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
     InfoNodeElement rootInfoNodeElement = infoNodeDocument.getRootInfoNodeElement();

@@ -15,11 +15,16 @@
  */
 package com.thruzero.common.core.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 import com.thruzero.common.core.map.StringMap;
 import com.thruzero.common.core.map.StringMapTest.StringMapTestHelper;
 import com.thruzero.test.support.AbstractCoreTestCase;
+import com.thruzero.test.support.AbstractLinearGrowthPerformanceTestHelper;
 
 /**
  * Unit test for StringUtilsExt.
@@ -44,6 +49,34 @@ public class StringUtilsExtTest extends AbstractCoreTestCase {
     StringMap pd = StringUtilsExt.tokensToMap(tokenStream);
 
     testHelper.validateTestStringMap(pd);
+  }
+
+  /** Doubling the number of tokens should approximately double the time. */
+  @Test
+  public void testToTokenStreamPerformance() throws Exception {
+    AbstractLinearGrowthPerformanceTestHelper performanceHelper = new AbstractLinearGrowthPerformanceTestHelper() {
+      private Map<String, String> tokens = new HashMap<String, String>();
+      private String tokenStream;
+
+      @Override
+      protected void doSetup(int size) {
+        for (int i=0; i<size; i++) {
+          tokens.put("key"+i, "value"+i);
+        }
+      }
+
+      @Override
+      protected void doExecute() {
+        tokenStream = StringUtilsExt.toTokenStream(tokens);
+      }
+
+      @Override
+      protected void doDataValidation(int currentSize) {
+        assertTrue(tokenStream.length() > currentSize * 10);
+      }
+    };
+
+    performanceHelper.execute(100, 8, 0.1f);
   }
 
 }

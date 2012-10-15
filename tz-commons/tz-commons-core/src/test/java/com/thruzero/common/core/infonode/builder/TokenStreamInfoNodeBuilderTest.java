@@ -16,6 +16,7 @@
 package com.thruzero.common.core.infonode.builder;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -27,6 +28,7 @@ import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.infonode.builder.utils.SampleInfoNodeBuilderUtils;
 import com.thruzero.common.core.infonode.builder.utils.SampleNodeBuilderUtils;
 import com.thruzero.test.support.AbstractCoreTestCase;
+import com.thruzero.test.support.AbstractLinearGrowthPerformanceTestHelper;
 
 /**
  * Unit test for TokenStreamInfoNodeBuilder.
@@ -131,6 +133,41 @@ public class TokenStreamInfoNodeBuilderTest extends AbstractCoreTestCase {
     SampleNodeBuilderUtils.assertEqualNormalizedValues(((InfoNodeElement)contact.find("phone[@type='work']")).getText(), "555-1234");
     SampleNodeBuilderUtils.assertEqualNormalizedValues(((InfoNodeElement)contact.find("phone[@type='home']")).getText(), "555-5678");
     SampleNodeBuilderUtils.assertEqualNormalizedValues(((InfoNodeElement)contact.find("phone[@type='cell']")).getText(), "555-9012");
+  }
+
+  /** Doubling the number of children should approximately double the time to build the InfoNode. */
+  @Test
+  public void testCreateComplexNestedInfoNodePerformance() throws Exception {
+    AbstractLinearGrowthPerformanceTestHelper performanceHelper = new AbstractLinearGrowthPerformanceTestHelper() {
+      private InfoNodeElement infoNode;
+      private String parentTokenStream = "contact[@primaryKey='c1', @type='family']";
+      private String childTokenStream;
+
+      @Override
+      protected void doSetup(int size) {
+        StringBuilder childTokenStreamBuilder = new StringBuilder();
+        String separator = "";
+
+        for (int i=0; i<size; i++) {
+          childTokenStreamBuilder.append(separator + "child"+i+"=value"+i);
+          separator = "|";
+        }
+        childTokenStream = childTokenStreamBuilder.toString();
+      }
+
+      @Override
+      protected void doExecute() {
+        TokenStreamInfoNodeBuilder builder = TokenStreamInfoNodeBuilder.DEFAULT;
+        infoNode = builder.buildInfoNode(parentTokenStream, childTokenStream);
+      }
+
+      @Override
+      protected void doDataValidation(int size) {
+        assertTrue(infoNode.getChildren().size() == size);
+      }
+    };
+
+    performanceHelper.execute(50, 8, 0.1f);
   }
 
 }

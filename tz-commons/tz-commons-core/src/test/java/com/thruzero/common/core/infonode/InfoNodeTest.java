@@ -75,7 +75,7 @@ public class InfoNodeTest extends AbstractCoreTestCase {
         <Test9Element Test9AttributeOne="Test9AttributeOneValue" Test9AttributeTwo="Test9AttributeTwoValue">Test9ElementValue</Test9Element>
       </TestParentElement>
      */
-    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(RootNodeOption.GENERATE_ROOT_NODE);
+    InfoNodeElement infoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(RootNodeOption.GENERATE_ROOT_NODE, 10);
     Iterator<? extends InfoNodeElement> iter = infoNode.getChildNodeIterator();
     short i = 0;
     while (iter.hasNext()) {
@@ -86,7 +86,7 @@ public class InfoNodeTest extends AbstractCoreTestCase {
 
   @Test
   public void testNestedNodeNoParentValue() {
-    InfoNodeElement complexNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithoutParentValue(RootNodeOption.GENERATE_ROOT_NODE);
+    InfoNodeElement complexNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithoutParentValue(RootNodeOption.GENERATE_ROOT_NODE, 10);
 
     // verify that parent to child transition is smooth (i.e., no null printed in result)
     String partialResultStr = StringUtils.substringBetween(complexNode.toString(), "<TestParentElement", "<Test0Element");
@@ -197,7 +197,7 @@ public class InfoNodeTest extends AbstractCoreTestCase {
 
   @Test
   public void testFindMiddleResultFullXPath() throws JDOMException {
-    InfoNodeElement complexNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(RootNodeOption.GENERATE_ROOT_NODE);
+    InfoNodeElement complexNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(RootNodeOption.GENERATE_ROOT_NODE, 10);
     InfoNodeElement simpleNode = SampleNodeBuilderUtils.createNamedInfoNode("Test5", 2, RootNodeOption.NO_ROOT_NODE);
     InfoNodeElement foundNode = (InfoNodeElement)complexNode.find("//Test5Element");
 
