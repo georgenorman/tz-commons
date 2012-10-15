@@ -115,7 +115,7 @@ public class StringUtilsExt extends StringUtils {
    * Example: "integerOne=1,booleanTrue=true,longOne=1234567890,booleanFalse=false"
    */
   public static String toTokenStream(final Map<String, String> keyValuePairs, final String separator) {
-    StringBuilder result = new StringBuilder();
+    StringBuilder result = new StringBuilder(keyValuePairs.size()*16); // assume 16-chars for each k/v token.
     String tokenSeparator = "";
     Map<String, String> parametersToStream = keyValuePairs;
 
