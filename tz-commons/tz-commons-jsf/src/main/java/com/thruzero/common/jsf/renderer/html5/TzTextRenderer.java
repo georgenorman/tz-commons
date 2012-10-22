@@ -37,7 +37,7 @@ public class TzTextRenderer extends TextRenderer {
 
   @Override
   public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-    context.setResponseWriter(new TzInputTypeResponseWriter(context.getResponseWriter(), component, this));
+    context.setResponseWriter(new TzInputTypeResponseWriter(context.getResponseWriter(), component, this, "text"));
 
     super.encodeBegin(context, component);
   }
