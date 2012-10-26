@@ -24,7 +24,7 @@ __________________________________________________________________________
    maven repo.
 
    NOTE: The tz-commons-domain unit tests use dumbster as a dummy SMTP server.
-   Some virus protection apps may block dumbster, causing these test to fail.
+   Some virus protection apps may block dumbster, causing these tests to fail.
    By default, these tests have been disabled. They can be enabled by setting
    the DISABLE_EMAIL_TEST to false in the tz-commons-domain test config file.
 
