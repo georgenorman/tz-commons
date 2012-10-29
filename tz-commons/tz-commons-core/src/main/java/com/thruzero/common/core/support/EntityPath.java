@@ -41,7 +41,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author George Norman
  */
-public class EntityPath implements Serializable, Cloneable {
+public class EntityPath implements Serializable, Cloneable, Comparable<EntityPath> {
   private static final long serialVersionUID = 1L;
 
   private static final PathAndNameValidator pathAndNameValidator = new PathAndNameValidator();
@@ -142,6 +142,10 @@ public class EntityPath implements Serializable, Cloneable {
   public EntityPath(ContainerPath containerPath, String entityName) {
     pathAndNameValidator.validateEntityName(entityName);
 
+    if (containerPath == null) {
+      throw new IllegalArgumentException("ContainerPath is required.");
+    }
+
     this.containerPath = containerPath;
     this.entityName = entityName;
   }
@@ -198,6 +202,11 @@ public class EntityPath implements Serializable, Cloneable {
 
   public String getEntityName() {
     return entityName;
+  }
+
+  @Override
+  public int compareTo(EntityPath o) {
+    return toString().compareTo(o.toString());
   }
 
   @Override
