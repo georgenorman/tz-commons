@@ -120,11 +120,13 @@ public class InfoNodeElement extends Element {
    * <pre>
    * "ChildElement1/TestOneElement[@TestOneAttributeOne='attrone2']"
    * </pre>
+   *
+   * Returns null if the element was not found.
    */
   public InfoNodeElement findElement(final String xpathExpr) throws JDOMException {
     Object result = find(xpathExpr);
 
-    if (result instanceof InfoNodeElement) {
+    if (result == null || result instanceof InfoNodeElement) {
       return (InfoNodeElement)result;
     } else {
       throw new RuntimeException("Given XPath didn't find an InfoNodeElement: " + xpathExpr);
