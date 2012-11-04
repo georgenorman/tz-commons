@@ -30,51 +30,13 @@ public class HtmlUtils {
   public static class TableUtils {
 
     public static String createSimpleFormRow(final String label, final String value) {
-      return createSimpleFormRow(label, null, value, null);
-    }
-
-    public static String createSimpleFormRow(final String label, String labelWidth, final String value, String valueWidth) {
-      String result = "<tr><td ${LABEL_WIDTH} align=\"right\"><b>" + label + "</b></td><td ${VALUE_WIDTH}>" + value + "</td></tr>";
-
-      if (labelWidth == null) {
-        labelWidth = "";
-      } else {
-        labelWidth = "width=\"" + labelWidth + "\"";
-      }
-
-      if (valueWidth == null) {
-        valueWidth = "";
-      } else {
-        valueWidth = "width=\"" + valueWidth + "\"";
-      }
-
-      result = StringUtils.replace(result, "${LABEL_WIDTH}", labelWidth);
-      result = StringUtils.replace(result, "${VALUE_WIDTH}", valueWidth);
+      String result = "<tr><td>" + label + "</td><td>" + value + "</td></tr>";
 
       return result;
     }
 
     public static String createSimpleFormRow(final String label, final String href, final String value) {
-      return createSimpleFormRow(label, href, null, value, null);
-    }
-
-    public static String createSimpleFormRow(final String label, final String href, String labelWidth, final String value, String valueWidth) {
-      String result = "<tr><td ${LABEL_WIDTH} align=\"right\"><a href=\"" + href + "\">" + label + "</a></td><td ${VALUE_WIDTH}>" + value + "</td></tr>";
-
-      if (labelWidth == null) {
-        labelWidth = "";
-      } else {
-        labelWidth = "width=\"" + labelWidth + "\"";
-      }
-
-      if (valueWidth == null) {
-        valueWidth = "";
-      } else {
-        valueWidth = "width=\"" + valueWidth + "\"";
-      }
-
-      result = StringUtils.replace(result, "${LABEL_WIDTH}", labelWidth);
-      result = StringUtils.replace(result, "${VALUE_WIDTH}", valueWidth);
+      String result = "<tr><td><a href=\"" + href + "\">" + label + "</a></td><td>" + value + "</td></tr>";
 
       return result;
     }
