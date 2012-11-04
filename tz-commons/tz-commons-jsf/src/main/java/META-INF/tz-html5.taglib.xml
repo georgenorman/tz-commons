@@ -64,4 +64,10 @@
       <component-type>thruzero.html5.components.family.TzForm</component-type>
     </component>
   </tag>
+  <tag>
+    <tag-name>listItem</tag-name>
+    <component>
+      <component-type>thruzero.html5.components.family.TzListItem</component-type>
+    </component>
+  </tag>
 </facelet-taglib>
