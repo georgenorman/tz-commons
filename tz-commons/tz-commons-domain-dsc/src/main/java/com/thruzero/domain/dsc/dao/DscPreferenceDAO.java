@@ -61,7 +61,7 @@ public final class DscPreferenceDAO extends GenericDscDAO<Preference> implements
 
     /** Synthesize a primary key from the Preference owner, context and name. */
     public EntityPath createKey(String owner, String context, String name) {
-      // TODO-p1(george) need to escape context, owner and name, because they can include '/'
+      // TODO-p1(george) Need to escape context, owner and name, because they can include '/'
       ContainerPath parentPath = new ContainerPath(createParentPath(Preference.class), owner + ContainerPath.CONTAINER_PATH_SEPARATOR + context + ContainerPath.CONTAINER_PATH_SEPARATOR);
       EntityPath result = new EntityPath(parentPath, name);
 

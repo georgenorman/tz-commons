@@ -35,7 +35,7 @@ import com.thruzero.domain.service.SettingService;
  *
  * @author George Norman
  *
- * TODO-p1(george) cache the settings. Add ability to force a refresh.
+ * TODO-p1(george) Cache the settings. Add ability to force a refresh.
  */
 public final class GenericSettingService implements SettingService {
   private final SettingDAO settingDAO = DAOLocator.locate(SettingDAO.class);

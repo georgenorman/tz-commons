@@ -43,7 +43,7 @@ public class FlashUtils {
   // ------------------------------------------------------
 
   /**
-   * TODO-p0(george) - The JSF 2.0 "...getExternalContext().getFlash()" wasn't working for me. Not sure if there was a
+   * TODO-p0(george) The JSF 2.0 "...getExternalContext().getFlash()" wasn't working for me. Not sure if there was a
    * bug in my code or if there's an issue with flash on my platform (Stack Overflow hinted at platform issues). Anyway,
    * will get back to this later, for now using a homebrew solution.
    */

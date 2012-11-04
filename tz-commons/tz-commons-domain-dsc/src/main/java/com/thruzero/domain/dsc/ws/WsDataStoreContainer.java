@@ -35,7 +35,7 @@ import com.thruzero.domain.store.BaseStorePath;
 /**
  * Web Service based data store container
  * ### This is Work-In-Progress #### Only the readEntity function is implemented.
- * TODO-p1(george): Finish this implementation
+ * TODO-p1(george) Finish this implementation
  * <p>
  * All DataStoreContainer objects are managed by {@code GenericDscDAO}, which will flatten and resurrect the
  * Domain Object instances automatically (and passed in as instances of DataStoreEntity).

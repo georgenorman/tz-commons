@@ -100,7 +100,7 @@ public class JpaDataStoreContainer implements DataStoreContainer {
 
   @Override
   public void createNewEntity(String entityName) {
-    // TODO-p1(george): Revisit
+    // TODO-p1(george) Revisit
   }
 
   @Override

@@ -72,7 +72,7 @@ public final class JpaUserDAO extends JpaGenericDAO<User> implements UserDAO {
 
     persistenceManager.persist(domainObject.getDetails());
     if (domainObject.getPermissions() != null) {
-      // TODO-p1(george): Must be a better way to do this (check out cascade="save-update" mapping)
+      // TODO-p1(george) Must be a better way to do this (check out cascade="save-update" mapping)
       for (UserPermission permission : domainObject.getPermissions()) {
         persistenceManager.persist(permission);
       }

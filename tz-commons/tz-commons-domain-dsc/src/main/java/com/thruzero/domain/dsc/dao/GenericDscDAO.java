@@ -49,7 +49,7 @@ import com.thruzero.domain.store.Persistent;
  * @author George Norman
  * @param <T> Type of Domain Object managed by this DAO.
  */
-public abstract class GenericDscDAO<T extends Persistent> extends AbstractDataStoreDAO<T> { // TODO-p1(george): Should this be GenericDscDAO or DscGenericDAO (it indirectly implements GenericDAO)?
+public abstract class GenericDscDAO<T extends Persistent> extends AbstractDataStoreDAO<T> { // TODO-p1(george) Should this be GenericDscDAO or DscGenericDAO (it indirectly implements GenericDAO)?
 
   // ------------------------------------------------------
   // XStreamDomainObjectTransformer

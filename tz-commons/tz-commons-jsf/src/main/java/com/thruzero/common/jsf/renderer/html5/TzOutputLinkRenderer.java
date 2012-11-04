@@ -53,7 +53,7 @@ public class TzOutputLinkRenderer extends OutputLinkRenderer {
   }
 
   /**
-   * TODO-p1(george) - GROSS hack to FORCE JQuery to refresh the page.
+   * TODO-p1(george) GROSS hack to FORCE JQuery to refresh the page.
    *
    * Add the refreshHack param to the parameter list if the refresh attribute is set to true. The refreshHack
    * parameter contains a unique number, which will force JQuery to refreshHack the page.

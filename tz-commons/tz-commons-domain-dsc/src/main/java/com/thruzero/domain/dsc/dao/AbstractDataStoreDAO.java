@@ -203,7 +203,7 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
     }
 
     // validate the container
-    DataStoreContainer dataStoreContainer = createDataStoreContainer(new ContainerPath(), false); // TODO-p0: shouldn't this use the path from the dscFactory?
+    DataStoreContainer dataStoreContainer = createDataStoreContainer(new ContainerPath(), false); // TODO-p0(george) shouldn't this use the path from the dscFactory?
     dataStoreContainer.validate();
   }
 
@@ -218,7 +218,7 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
    * @throws DAOException if id is not null or Node already exists in the data store.
    */
   @Override
-  public synchronized void save(T domainObject) { // TODO-p0(george): See EJ Item 67
+  public synchronized void save(T domainObject) { // TODO-p0(george) See EJ Item 67
     if (domainObject != null) {
       if (domainObject.getId() != null) {
         throw new DAOException("ERROR: Can't save a Domain Object that already has an ID. Use update function instead. ID is: '" + domainObject.getId().toString() + "'.");
@@ -260,7 +260,7 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
    * @throws DAOException if id is null or Node does not exist in the data store.
    */
   @Override
-  public synchronized void update(T domainObject) { // TODO-p0(george): See EJ Item 67
+  public synchronized void update(T domainObject) { // TODO-p0(george) See EJ Item 67
     if (domainObject != null) {
       if (domainObject.getId() == null) {
         throw new DAOException("ERROR: Can't update a Domain Object that doesn't have an ID.");
@@ -287,7 +287,7 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
    * @throws DAOException if id is null.
    */
   @Override
-  public synchronized void delete(T domainObject) { // TODO-p0(george): See EJ Item 67
+  public synchronized void delete(T domainObject) { // TODO-p0(george) See EJ Item 67
     if (domainObject != null) {
       if (domainObject.getId() == null) {
         throw new DAOException("ERROR: Can't delete a Domain Object with an empty ID.");
@@ -301,7 +301,7 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
   }
 
   @Override
-  public synchronized T getByKey(Serializable id) { // TODO-p0(george): See EJ Item 67
+  public synchronized T getByKey(Serializable id) { // TODO-p0(george) See EJ Item 67
     T result = null;
 
     if (id != null) {
@@ -325,9 +325,9 @@ public abstract class AbstractDataStoreDAO<T extends Persistent> implements Gene
   }
 
   @Override
-  public synchronized List<? extends T> getAll() { // TODO-p0(george): See EJ Item 67
+  public synchronized List<? extends T> getAll() { // TODO-p0(george) See EJ Item 67
     List<T> result = new ArrayList<T>();
-    DataStoreContainer dataStoreContainer = createDataStoreContainer(new ContainerPath(getBaseStorePath().toString() + ContainerPath.CONTAINER_PATH_SEPARATOR), true); // TODO-p0 HACK! What are the rule for the base path? Is '/' required or optional?
+    DataStoreContainer dataStoreContainer = createDataStoreContainer(new ContainerPath(getBaseStorePath().toString() + ContainerPath.CONTAINER_PATH_SEPARATOR), true); // TODO-p0(george) HACK! What are the rules for the base path? Is '/' required or optional?
     List<? extends DataStoreEntity> allEntities = dataStoreContainer.getAllEntities(false);
 
     for (DataStoreEntity entity : allEntities) {

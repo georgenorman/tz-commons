@@ -208,7 +208,7 @@ public class StringUtilsExt extends StringUtils {
   }
 
   public static String[] splitWithTrim(final String tokenStream, final String separator) {
-    // TODO-p1(george): optimize
+    // TODO-p1(george) Optimize
     String[] result = StringUtils.split(tokenStream, separator);
 
     for (int i = 0; i < result.length; i++) {

@@ -21,6 +21,6 @@ package com.thruzero.common.jsf.components.html5;
  * @author George Norman
  */
 public interface JsfHtml5Component {
-  // TODO-p0(george): Effective Java, Item 19: Use interfaces only to define types. Don't use JsfHtml5Component as a "constant interface"
+  // TODO-p0(george) Effective Java, Item 19: Use interfaces only to define types. Don't use JsfHtml5Component as a "constant interface"
   String COMPONENT_FAMILY = "thruzero.html5.components.family";
 }

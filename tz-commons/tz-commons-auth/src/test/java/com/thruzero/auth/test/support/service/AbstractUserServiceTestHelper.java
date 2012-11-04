@@ -46,7 +46,7 @@ public abstract class AbstractUserServiceTestHelper {
   // -----------------------------------------------
 
   /** Exists solely to test the UserDAO implementation. */
-  public static final class MockUserService extends AbstractCrudService<User> implements UserService { // TODO-p1(george) not implemented
+  public static final class MockUserService extends AbstractCrudService<User> implements UserService { // TODO-p1(george) Not implemented
     private UserDAO userDAO = DAOLocator.locate(UserDAO.class);
 
     /**
