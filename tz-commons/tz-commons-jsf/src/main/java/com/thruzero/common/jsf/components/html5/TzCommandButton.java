@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.thruzero.common.jsf.components.html5;
+package com.thruzero.common.jsf.components.html5; // TODO-p0(george) Rename components to component.
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.html.HtmlCommandButton;
