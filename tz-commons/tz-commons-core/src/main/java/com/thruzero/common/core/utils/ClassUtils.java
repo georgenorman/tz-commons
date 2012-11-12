@@ -18,6 +18,7 @@ package com.thruzero.common.core.utils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import org.apache.log4j.Logger;
 
 /**
  * Static utility methods pertaining to {@code Class} objects.
@@ -38,6 +39,7 @@ import java.lang.reflect.Method;
  * @author George Norman
  */
 public class ClassUtils {
+  private static final Logger logger = Logger.getLogger(ClassUtils.class);
 
   // ------------------------------------------------
   // ClassUtilsException
@@ -124,16 +126,52 @@ public class ClassUtils {
 
         // create new instance
         result = clazz.cast(constructor.newInstance((Object[])null)); // use dynamic cast to avoid @SuppressWarnings("unchecked")
-      } catch (SecurityException e) {
-        throw new ClassUtilsException("ERROR: SecurityException for (" + clazz.getName() + ").", e);
-      } catch (IllegalArgumentException e) {
-        throw new ClassUtilsException("ERROR: IllegalArgumentException for (" + clazz.getName() + ").", e);
-      } catch (InstantiationException e) {
-        throw new ClassUtilsException("ERROR: InstantiationException for (" + clazz.getName() + ").", e);
-      } catch (IllegalAccessException e) {
-        throw new ClassUtilsException("ERROR: IllegalAccessException for (" + clazz.getName() + ").", e);
-      } catch (InvocationTargetException e) {
-        throw new ClassUtilsException("ERROR: InvocationTargetException for (" + clazz.getName() + ").", e);
+      } catch (Exception e) {
+        throw ExceptionUtilsExt.logAndCreateClassUtilsException(logger, "ERROR: " + e.getClass().getSimpleName() + " encountered attempting to create a new instance of (" + clazz.getName() + ").", e);
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Create an instance of the named class, using the constructor that takes a {@code ParameterDictionary}.
+   *
+   * @throws ClassException
+   */
+  public static <T> T instanceFrom(final Class<T> clazz, final Class<?>[] parameterTypes, Object[] initArgs) throws ClassUtilsException {
+    T result = null;
+
+    if (clazz != null) {
+      try {
+        Constructor<?> constructor = clazz.getConstructor(parameterTypes);
+
+        result = clazz.cast(constructor.newInstance(initArgs));
+      } catch (Exception e) {
+        throw ExceptionUtilsExt.logAndCreateClassUtilsException(logger, "ERROR: " + e.getClass().getSimpleName() + " encountered attempting to create a new instance of (" + clazz.getName() + ").", e);
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Create an instance of the named class, using the constructor that takes a {@code ParameterDictionary}.
+   *
+   * @throws ClassException
+   */
+  public static <T> T instanceFrom(final String fullClassName, final Class<?>[] parameterTypes, Object[] initArgs) throws ClassUtilsException {
+    T result = null;
+
+    Class<?> clazz = ClassUtils.classFrom(fullClassName);
+
+    if (clazz != null) {
+      try {
+        Constructor<?> constructor = clazz.getConstructor(parameterTypes);
+
+        result = (T)constructor.newInstance(initArgs);
+      } catch (Exception e) {
+        throw ExceptionUtilsExt.logAndCreateClassUtilsException(logger, "ERROR: " + e.getClass().getSimpleName() + " encountered attempting to create a new instance of (" + clazz.getName() + ").", e);
       }
     }
 
@@ -146,16 +184,8 @@ public class ClassUtils {
 
       m.setAccessible(true);
       m.invoke(o, arguments);
-    } catch (IllegalArgumentException e) {
-      throw new ClassUtilsException("ERROR: IllegalArgumentException for (" + clazz.getName() + ").", e);
-    } catch (IllegalAccessException e) {
-      throw new ClassUtilsException("ERROR: IllegalAccessException for (" + clazz.getName() + ").", e);
-    } catch (InvocationTargetException e) {
-      throw new ClassUtilsException("ERROR: InvocationTargetException for (" + clazz.getName() + ").", e);
-    } catch (SecurityException e) {
-      throw new ClassUtilsException("ERROR: SecurityException for (" + clazz.getName() + ").", e);
-    } catch (NoSuchMethodException e) {
-      throw new ClassUtilsException("ERROR: NoSuchMethodException for (" + clazz.getName() + ").", e);
+    } catch (Exception e) {
+      throw new ClassUtilsException("ERROR: " + e.getClass().getSimpleName() + " encountered attempting to invoke method named '" + methodName + " on class (" + clazz.getName() + ").", e);
     }
 
   }
@@ -167,16 +197,8 @@ public class ClassUtils {
 
       m.setAccessible(true);
       m.invoke(o, arguments);
-    } catch (IllegalArgumentException e) {
-      throw new ClassUtilsException("ERROR: IllegalArgumentException for (" + clazz.getName() + ").", e);
-    } catch (IllegalAccessException e) {
-      throw new ClassUtilsException("ERROR: IllegalAccessException for (" + clazz.getName() + ").", e);
-    } catch (InvocationTargetException e) {
-      throw new ClassUtilsException("ERROR: InvocationTargetException for (" + clazz.getName() + ").", e);
-    } catch (SecurityException e) {
-      throw new ClassUtilsException("ERROR: SecurityException for (" + clazz.getName() + ").", e);
-    } catch (NoSuchMethodException e) {
-      throw new ClassUtilsException("ERROR: NoSuchMethodException for (" + clazz.getName() + ").", e);
+    } catch (Exception e) {
+      throw new ClassUtilsException("ERROR: " + e.getClass().getSimpleName() + " encountered attempting to invoke declared method named '" + methodName + " on class (" + clazz.getName() + ").", e);
     }
 
   }

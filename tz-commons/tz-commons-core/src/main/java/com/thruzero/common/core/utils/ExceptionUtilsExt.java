@@ -25,6 +25,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import com.thruzero.common.core.locator.RegistryLocatorStrategy.LocatorException;
+import com.thruzero.common.core.utils.ClassUtils.ClassUtilsException;
 
 /**
  * Extensions to the apache {@code ExceptionUtils} utility class.
@@ -84,6 +85,14 @@ public class ExceptionUtilsExt extends ExceptionUtils {
     logger.error(errorMessage);
 
     return new RuntimeException(errorMessage);
+  }
+
+  public static ClassUtilsException logAndCreateClassUtilsException(final Logger logger, final String errorMessage, final Exception cause) {
+    String err = errorMessage + " - " + cause.getClass().getSimpleName();
+
+    logger.error(err, cause);
+
+    return new ClassUtilsException(err, cause);
   }
 
   /**
