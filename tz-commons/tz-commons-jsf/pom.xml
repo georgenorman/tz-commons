@@ -78,14 +78,15 @@
     </dependency>
     <dependency>
       <groupId>com.thruzero.common</groupId>
-      <artifactId>tz-commons-domain</artifactId>
+      <artifactId>tz-commons-web</artifactId>
       <version>${tz.commons.version}</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
+    <!-- Domain dependencies are for HttpSessionDAO, HttpSessionTextEnvelopeDAO, JsfDAORegistry, etc. -->
     <dependency>
       <groupId>com.thruzero.common</groupId>
-      <artifactId>tz-commons-web</artifactId>
+      <artifactId>tz-commons-domain</artifactId>
       <version>${tz.commons.version}</version>
       <type>jar</type>
       <scope>compile</scope>
