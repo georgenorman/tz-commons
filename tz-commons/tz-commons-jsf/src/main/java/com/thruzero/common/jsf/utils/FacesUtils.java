@@ -23,7 +23,6 @@ import javax.el.ValueExpression;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -118,32 +117,5 @@ public class FacesUtils {
 
   public static ExternalContext getExternalContext() {
     return FacesContext.getCurrentInstance().getExternalContext();
-  }
-
-  /**
-   * create a sequence of SelectItem's starting from the given start param, incrementing by the given increment, until
-   * the maxItems number of items has been completed.
-   *
-   * @param start first item value.
-   * @param maxItems total number of items (plus one if provideEmptyValue is true)
-   * @param increment
-   * @param provideEmptyValue if true, then an empty SelectItem will be added as the first item.
-   * @return
-   */
-  public static SelectItem[] createSelectSequence(int start, int maxItems, int increment, boolean provideEmptyValue) {
-    maxItems += provideEmptyValue ? 1 : 0;
-    SelectItem[] result = new SelectItem[maxItems];
-    int item = start;
-
-    if (provideEmptyValue) {
-      result[0] = new SelectItem("");
-    }
-
-    for (int i = provideEmptyValue ? 1 : 0; i < maxItems; i++) {
-      result[i] = new SelectItem(item + "");
-      item += increment;
-    }
-
-    return result;
   }
 }
