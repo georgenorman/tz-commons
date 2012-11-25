@@ -21,6 +21,7 @@ import javax.faces.component.html.HtmlOutputText;
 import org.apache.commons.lang3.StringUtils;
 
 import com.thruzero.common.jsf.utils.FacesUtils;
+import com.thruzero.common.web.model.css.Styles;
 
 /**
  * Builds standard JSF output components (e.g., HtmlOutputLink, HtmlOutputText).
@@ -28,58 +29,6 @@ import com.thruzero.common.jsf.utils.FacesUtils;
  * @author George Norman
  */
 public class SimpleOutputComponentBuilder {
-
-  // ------------------------------------------------------
-  // Styles
-  // ------------------------------------------------------
-
-  /** Combo inline-style and css-style. */
-  public static class Styles {
-    /** CSS style that's used by the style attribute of a tag. */
-    String inlineStyle;
-
-    /** CSS style class that's used by the class attribute of a tag. */
-    String styleClass;
-
-    public Styles(String inlineStyle, String styleClass) {
-      this.inlineStyle = inlineStyle;
-      this.styleClass = styleClass;
-    }
-
-    public String getInlineStyle() {
-      return inlineStyle;
-    }
-
-    public String getStyleClass() {
-      return styleClass;
-    }
-  }
-
-  // ------------------------------------------------------
-  // InlineStyle
-  // ------------------------------------------------------
-
-  /** CSS style that's used by the style attribute of a tag. */
-  public static class InlineStyle extends Styles {
-    public InlineStyle(String inlineStyle) {
-      super(inlineStyle, null);
-    }
-  }
-
-  // ------------------------------------------------------
-  // StyleClass
-  // ------------------------------------------------------
-
-  /** CSS style class that's used by the class attribute of a tag. */
-  public static class StyleClass extends Styles {
-    public StyleClass(String styleClass) {
-      super(null, styleClass);
-    }
-  }
-
-  // ============================================================================
-  // SimpleOutputComponentBuilder
-  // ============================================================================
 
   public HtmlOutputLink createOutputLink(String url, String linkText, String onClick, Styles styles) {
     HtmlOutputLink result = createOutputLink(url, linkText, styles);
