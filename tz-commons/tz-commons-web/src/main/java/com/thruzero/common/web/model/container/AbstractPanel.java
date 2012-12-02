@@ -57,9 +57,9 @@ public abstract class AbstractPanel {
   }
 
   /**
-   * Returns the simple class name of this instance (used to determine its renderer).
+   * Returns the type of panel this instance represents (the type is the simple class name of this instance and is used to determine its renderer).
    */
-  public String getPanelClass() {
+  public String getPanelType() {
     return getClass().getSimpleName();
   }
 }

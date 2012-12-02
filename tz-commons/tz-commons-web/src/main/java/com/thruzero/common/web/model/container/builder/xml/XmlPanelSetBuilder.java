@@ -84,6 +84,14 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
   /**
    * A registry of XML-based panel builders, that maps panel names (e.g., 'listPanel') to panel builder types (e.g.,
    * 'XmlListPanelBuilder').
+   * <p/>
+   * Clients must manually register builder types with the xregistry. Below is an example of the FAQ page bean's registry initialization:
+   * <pre>
+   * {@code
+   *    // Enable FAQ page to build FAQ and HTML panels
+   *    private static XmlPanelBuilderTypeRegistry panelBuilderRegistry = new XmlPanelBuilderTypeRegistry(XmlFaqPanelBuilder.class, XmlHtmlPanelBuilder.class);
+   * }
+   * </pre>
    *
    * @author George Norman
    */
@@ -187,7 +195,12 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
           result.addPanel(new HtmlPanel("error", "Panel ERROR - " + panelId, null, "Content not found for panel named: " + panelId));
         } else {
           PanelBuilder panelBuilder = panelBuilderTypeRegistry.createBuilder(panelNode.getName(), panelNode);
-          result.addPanel(panelBuilder.build());
+
+          if (panelBuilder == null) {
+            result.addPanel(new HtmlPanel("error", "Panel ERROR - " + panelId, null, "PanelBuilder not found for panel named: " + panelId + " and type " + panelNode.getName()));
+          } else {
+            result.addPanel(panelBuilder.build());
+          }
         }
       }
     }

@@ -31,7 +31,6 @@
   </licenses>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tz.commons.version>1.0.0-SNAPSHOT</tz.commons.version>
     <junit.version>4.8.2</junit.version>
     <commons-lang.version>3.1</commons-lang.version>
@@ -41,6 +40,8 @@
     <commons-io.version>1.1</commons-io.version>
     <commons-codec.version>1.4</commons-codec.version>
     <commons-collections.version>3.2</commons-collections.version>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <build>
