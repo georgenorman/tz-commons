@@ -17,9 +17,8 @@
 package com.thruzero.common.web.model.container.builder.xml;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
@@ -32,20 +31,14 @@ import com.thruzero.common.web.model.container.builder.PanelSetBuilder;
 import com.thruzero.common.web.model.container.builder.xml.AbstractXmlPanelBuilder.XmlPanelBuilderAnnotation;
 
 /**
- * A builder of PanelSet instances, using XML as the definition. Below is a sample with an optional table of contents
- * (used for panel filtering and ordering), followed by the panel definitions (in any order). The XmlPanelSetBuilder
- * will parse the XML, looking for specific panel definitions and then build each panel and add it to the result.
+ * A builder of PanelSet instances, using XML as the definition. Below is a sample &lt;panelSet&gt; node containing the
+ * set of panel nodes (in presentation order). The XmlPanelSetBuilder will parse the XML and build each panel and add it
+ * to the result.
  *
  * <pre>
  * {@code
  * <index>
- *   <toc>
- *     <filterOrder>
- *       <col>col1_panel1|col1_panel2</col>
- *       <col>col2_panel1|col2_panel2|col2_panel3</col>
- *     </filterOrder>
- *   </toc>
- *
+ *  <panelSet id="col1">
  *   <listPanel title="Panel-1" id="col1_panel1">
  *     <dataList>
  *       <a href="item11.html" title="Item-11"/>
@@ -60,6 +53,7 @@ import com.thruzero.common.web.model.container.builder.xml.AbstractXmlPanelBuild
  *       <a href="item22.html" title="Item-22"/>
  *     </dataList>
  *   </listPanel>
+ *  </panelSet>
  *
  *   ...
  *
@@ -70,11 +64,10 @@ import com.thruzero.common.web.model.container.builder.xml.AbstractXmlPanelBuild
  * @author George Norman
  */
 public class XmlPanelSetBuilder implements PanelSetBuilder {
-  private static final String PANEL_ID = ConfigLocator.locate().getValue(PanelSet.class.getName(), "id", "id");
-  private static final String PANEL_PATH_ID = ConfigLocator.locate().getValue(PanelSet.class.getName(), "panelId", "/index/*[ends-with(name(),'Panel')]");
+  private static final String ID = ConfigLocator.locate().getValue(PanelSet.class.getName(), "id", "id");
+  //private static final String PANEL_PATH_QUERY = ConfigLocator.locate().getValue(PanelSet.class.getName(), "panelPathQuery", "/index/panelSet/*[ends-with(name(),'Panel')]");
 
-  private String[] panelIds;
-  private InfoNodeElement contentNode;
+  private InfoNodeElement panelSetNode;
   private XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry;
 
   // ------------------------------------------------------
@@ -85,11 +78,14 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
    * A registry of XML-based panel builders, that maps panel names (e.g., 'listPanel') to panel builder types (e.g.,
    * 'XmlListPanelBuilder').
    * <p/>
-   * Clients must manually register builder types with the xregistry. Below is an example of the FAQ page bean's registry initialization:
+   * Clients must manually register builder types with the xregistry. Below is an example of the FAQ page bean's
+   * registry initialization:
+   *
    * <pre>
-   * {@code
-   *    // Enable FAQ page to build FAQ and HTML panels
-   *    private static XmlPanelBuilderTypeRegistry panelBuilderRegistry = new XmlPanelBuilderTypeRegistry(XmlFaqPanelBuilder.class, XmlHtmlPanelBuilder.class);
+   * {
+   *   &#064;code
+   *   // Enable FAQ page to build FAQ and HTML panels
+   *   private static XmlPanelBuilderTypeRegistry panelBuilderRegistry = new XmlPanelBuilderTypeRegistry(XmlFaqPanelBuilder.class, XmlHtmlPanelBuilder.class);
    * }
    * </pre>
    *
@@ -123,8 +119,8 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
     }
 
     /**
-     * Registers the given <code>builderTypes</code>, using the given <code>panelTypeName</code> as the name (ignores the
-     * <code>XmlPanelBuilderAnnotation</code> from the <code>builderType</code>).
+     * Registers the given <code>builderTypes</code>, using the given <code>panelTypeName</code> as the name (ignores
+     * the <code>XmlPanelBuilderAnnotation</code> from the <code>builderType</code>).
      *
      * @param builderTypes
      */
@@ -150,30 +146,14 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
   // ============================================================================
 
   /**
-   * Builds a <code>PanelSet</code> from the given <code>contentNode</code>, using the given <code>tocColumnNode</code>
-   * to determine which panels from the <code>contentNode</code> to include in the result.
+   * Builds a <code>PanelSet</code> from the given <code>panelSetNode</code>.
    *
-   * @param tocColumnNode column node from the table of contents (toc) node that determines the set of panels to build.
-   * @param contentNode node containing all of the panel definitions.
+   * @param panelSetNode node containing the set of panels (each child of this node will be a panel node).
    * @param panelBuilderTypeRegistry registry that specifies which builder to use for a given panel definition (based on
    * panel name - e.g., 'listPanel').
    */
-  public XmlPanelSetBuilder(InfoNodeElement tocColumnNode, InfoNodeElement contentNode, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
-    this(StringUtils.isEmpty(tocColumnNode.getValue()) ? null : tocColumnNode.getValue().split("\\|"), contentNode, panelBuilderTypeRegistry);
-  }
-
-  /**
-   * Builds a <code>PanelSet</code> from the given <code>contentNode</code>, using the given <code>panelIds</code> to
-   * determine which panels from the <code>contentNode</code> to include in the result.
-   *
-   * @param panelIds determines the set of panels to build.
-   * @param contentNode node containing all of the panel definitions.
-   * @param panelBuilderTypeRegistry registry that specifies which builder to use for a given panel definition (based on
-   * panel name - e.g., 'listPanel').
-   */
-  public XmlPanelSetBuilder(String[] panelIds, InfoNodeElement contentNode, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
-    this.panelIds = panelIds;
-    this.contentNode = contentNode;
+  public XmlPanelSetBuilder(InfoNodeElement panelSetNode, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
+    this.panelSetNode = panelSetNode;
     this.panelBuilderTypeRegistry = panelBuilderTypeRegistry;
   }
 
@@ -181,46 +161,21 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
   public PanelSet build() throws Exception {
     PanelSet result = null;
 
-    if (panelIds != null) {
-      result = new PanelSet(stringArrayToId(panelIds));
-      for (String panelId : panelIds) {
-        InfoNodeElement panelNode = null;
-        try {
-          panelNode = contentNode.findElement(PANEL_PATH_ID + "[@" + PANEL_ID + "='" + panelId + "']");
-        } catch (Exception e) {
-          // ignore (node will be null and is handled below).
-        }
+    result = new PanelSet(panelSetNode.getAttributeValue(ID));
+    @SuppressWarnings("unchecked")
+    List<InfoNodeElement> children = panelSetNode.getChildren();
 
-        if (panelNode == null) {
-          result.addPanel(new HtmlPanel("error", "Panel ERROR - " + panelId, null, "Content not found for panel named: " + panelId));
-        } else {
-          PanelBuilder panelBuilder = panelBuilderTypeRegistry.createBuilder(panelNode.getName(), panelNode);
+    for (InfoNodeElement panelNode : children) {
+      PanelBuilder panelBuilder = panelBuilderTypeRegistry.createBuilder(panelNode.getName(), panelNode);
 
-          if (panelBuilder == null) {
-            result.addPanel(new HtmlPanel("error", "Panel ERROR - " + panelId, null, "PanelBuilder not found for panel named: " + panelId + " and type " + panelNode.getName()));
-          } else {
-            result.addPanel(panelBuilder.build());
-          }
-        }
+      if (panelBuilder == null) {
+        result.addPanel(new HtmlPanel("error", "Panel ERROR", null, "PanelBuilder not found for panel type " + panelNode.getName()));
+      } else {
+        result.addPanel(panelBuilder.build());
       }
     }
 
     return result;
-  }
-
-  /**
-   * Convert the given array into a panel Id.
-   */
-  protected String stringArrayToId(String[] sa) {
-    StringBuilder sb = new StringBuilder();
-    String separator = "";
-
-    for (String string : sa) {
-      sb.append(separator).append(string);
-      separator = ".";
-    }
-
-    return sb.toString();
   }
 
 }

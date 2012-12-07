@@ -222,7 +222,7 @@ public class MenuNode implements MenuStateHolder {
 
   /** Return all of the child nodes of this instance. */
   public Collection<MenuNode> getChildren() {
-    return WebUtils.linkedHashMapUiRepeatHack(childNodes.values());
+    return WebUtils.uiRepeatHack(childNodes.values());
   }
 
   public MenuNode getFirstChild() {

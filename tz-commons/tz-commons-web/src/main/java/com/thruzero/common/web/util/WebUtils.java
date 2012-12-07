@@ -28,7 +28,8 @@ public class WebUtils {
 
   /**
    * HACK HACK HACK. TODO-p1(george) REVIST.
-   * Iterating across LinkedHashMap.values(), using {@code <ui:repeat>}, as shown below:
+   * Using LinkedHashMap.values() or Collections.unmodifiableCollection with {@code <ui:repeat>},
+   * causes exception:
    *
    * <pre>
    *   &lt;ui:repeat value=&quot;#{column.panels}&quot; var=&quot;panel&quot;&gt;
@@ -39,7 +40,7 @@ public class WebUtils {
    * <p/>
    * This hack wraps the given collection in an ArrayList.
    */
-  public static <T> Collection<T> linkedHashMapUiRepeatHack(Collection<T> srcCollection) {
+  public static <T> Collection<T> uiRepeatHack(Collection<T> srcCollection) {
     return new ArrayList<T>(srcCollection);
   }
 

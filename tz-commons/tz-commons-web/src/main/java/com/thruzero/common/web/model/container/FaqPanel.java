@@ -17,10 +17,13 @@
 package com.thruzero.common.web.model.container;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.web.model.css.StyleClass;
+import com.thruzero.common.web.util.WebUtils;
 
 /**
  * An instance represents a panel containing a list of FAQ items. Each item in the list is an InfoNodeElement, which can
@@ -64,8 +67,8 @@ public class FaqPanel extends AbstractPanel {
    *
    * @return
    */
-  public List<InfoNodeElement> getItems() {
-    return items;
+  public Collection<InfoNodeElement> getItems() {
+    return WebUtils.uiRepeatHack(Collections.unmodifiableCollection(items));
   }
 
   public void addItem(InfoNodeElement panelItem) {

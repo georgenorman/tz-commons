@@ -48,6 +48,6 @@ public class PanelSet {
   }
 
   public Collection<? extends AbstractPanel> getPanels() {
-    return WebUtils.linkedHashMapUiRepeatHack(panels.values());
+    return WebUtils.uiRepeatHack(panels.values());
   }
 }

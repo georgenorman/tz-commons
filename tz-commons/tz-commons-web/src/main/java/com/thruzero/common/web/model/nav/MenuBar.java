@@ -37,7 +37,7 @@ public class MenuBar implements MenuStateHolder {
   private Map<String, MenuNode> menus = new LinkedHashMap<String, MenuNode>();
 
   public Collection<MenuNode> getMenus() {
-    return WebUtils.linkedHashMapUiRepeatHack(menus.values());
+    return WebUtils.uiRepeatHack(menus.values());
   }
 
   /** Adds the given menu to the end of the menu list and associates it with the given id. */
