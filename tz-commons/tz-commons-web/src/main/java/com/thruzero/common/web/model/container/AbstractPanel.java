@@ -16,6 +16,9 @@
 
 package com.thruzero.common.web.model.container;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.thruzero.common.core.support.SimpleIdGenerator;
 import com.thruzero.common.web.model.css.StyleClass;
 
 
@@ -25,12 +28,12 @@ import com.thruzero.common.web.model.css.StyleClass;
  * @author George Norman
  */
 public abstract class AbstractPanel {
-  private String id;
-  private String title;
-  private StyleClass headerStyleClass;
+  private final String id;
+  private final String title;
+  private final StyleClass headerStyleClass;
 
   public AbstractPanel(String id, String title, StyleClass headerStyleClass) {
-    this.id = id;
+    this.id = StringUtils.isEmpty(id) ? SimpleIdGenerator.getInstance().getNextIdAsString() : id;
     this.title = title;
     this.headerStyleClass = headerStyleClass;
   }

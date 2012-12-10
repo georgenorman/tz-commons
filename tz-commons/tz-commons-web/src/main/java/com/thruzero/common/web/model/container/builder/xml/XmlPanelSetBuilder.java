@@ -64,10 +64,10 @@ import com.thruzero.common.web.model.container.builder.xml.AbstractXmlPanelBuild
  * @author George Norman
  */
 public class XmlPanelSetBuilder implements PanelSetBuilder {
-  private static final String ID = ConfigLocator.locate().getValue(PanelSet.class.getName(), "id", "id");
-  //private static final String PANEL_PATH_QUERY = ConfigLocator.locate().getValue(PanelSet.class.getName(), "panelPathQuery", "/index/panelSet/*[ends-with(name(),'Panel')]");
+  private static final String ID = ConfigLocator.locate().getValue(XmlPanelSetBuilder.class.getName(), "id", "id");
 
-  private InfoNodeElement panelSetNode;
+  private String panelSetId;
+  private List<InfoNodeElement> panelNodes;
   private XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry;
 
   // ------------------------------------------------------
@@ -95,12 +95,28 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
     private Map<String, Class<? extends AbstractXmlPanelBuilder>> builderRegistry = new HashMap<String, Class<? extends AbstractXmlPanelBuilder>>();
 
     /**
+     * Builds an empty registry (use <code>registerBuilderType</code> to register builder types).
+     */
+    public XmlPanelBuilderTypeRegistry() {
+    }
+
+    /**
      * Builds a registry from the given <code>builderTypes</code>, using the <code>XmlPanelBuilderAnnotation</code> of
      * each <code>builderType</code> as the panel type name.
      *
      * @param builderTypes
      */
     public XmlPanelBuilderTypeRegistry(Class<? extends AbstractXmlPanelBuilder>... builderTypes) {
+      registerBuilderTypes(builderTypes);
+    }
+
+    /**
+     * Registers all of the given <code>builderTypes</code>, using the <code>XmlPanelBuilderAnnotation</code> from the
+     * <code>builderType</code> as the panel type name.
+     *
+     * @param builderTypes
+     */
+    public final void registerBuilderTypes(Class<? extends AbstractXmlPanelBuilder>... builderTypes) {
       for (Class<? extends AbstractXmlPanelBuilder> builderType : builderTypes) {
         registerBuilderType(builderType);
       }
@@ -141,6 +157,31 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
     }
   }
 
+  // ------------------------------------------------------
+  // StandardXmlPanelBuilderTypeRegistry
+  // ------------------------------------------------------
+
+  /**
+   * Pre-configured registry that builds all standard panels. Additional panels can be passed into the constructor, allowing clients
+   * to add new panel types or replace any of the pre-registered standard types. If none of the standard builders are required, then clients
+   * should consider using the <code>XmlPanelBuilderTypeRegistry</code> class.
+   * <p>Pre configured with the following builder types:
+   * <ul>
+   *  <li>{@link com.thruzero.common.web.model.container.builder.xml.XmlFaqPanelBuilder XmlFaqPanelBuilder}</li>
+   *  <li>{@link com.thruzero.common.web.model.container.builder.xml.XmlListPanelBuilder XmlListPanelBuilder}</li>
+   *  <li>{@link com.thruzero.common.web.model.container.builder.xml.XmlHtmlPanelBuilder XmlHtmlPanelBuilder}</li>
+   * </ul>
+   */
+  public static class StandardXmlPanelBuilderTypeRegistry extends XmlPanelBuilderTypeRegistry {
+
+    @SuppressWarnings("unchecked")
+    public StandardXmlPanelBuilderTypeRegistry(Class<? extends AbstractXmlPanelBuilder>... builderTypes) {
+      registerBuilderTypes(XmlFaqPanelBuilder.class, XmlListPanelBuilder.class, XmlHtmlPanelBuilder.class);
+
+      registerBuilderTypes(builderTypes);
+    }
+  }
+
   // ============================================================================
   // XmlPanelSetBuilder
   // ============================================================================
@@ -152,20 +193,22 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
    * @param panelBuilderTypeRegistry registry that specifies which builder to use for a given panel definition (based on
    * panel name - e.g., 'listPanel').
    */
+  @SuppressWarnings("unchecked")
   public XmlPanelSetBuilder(InfoNodeElement panelSetNode, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
-    this.panelSetNode = panelSetNode;
+    this(panelSetNode.getAttributeValue(ID), panelSetNode.getChildren(), panelBuilderTypeRegistry);
+  }
+
+  public XmlPanelSetBuilder(String panelSetId, List<InfoNodeElement> panelNodes, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
+    this.panelSetId = panelSetId;
+    this.panelNodes = panelNodes;
     this.panelBuilderTypeRegistry = panelBuilderTypeRegistry;
   }
 
   @Override
   public PanelSet build() throws Exception {
-    PanelSet result = null;
+    PanelSet result = new PanelSet(panelSetId);
 
-    result = new PanelSet(panelSetNode.getAttributeValue(ID));
-    @SuppressWarnings("unchecked")
-    List<InfoNodeElement> children = panelSetNode.getChildren();
-
-    for (InfoNodeElement panelNode : children) {
+    for (InfoNodeElement panelNode : panelNodes) {
       PanelBuilder panelBuilder = panelBuilderTypeRegistry.createBuilder(panelNode.getName(), panelNode);
 
       if (panelBuilder == null) {
