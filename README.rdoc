@@ -22,7 +22,7 @@ http://www.thruzero.com/projects/tz-commons/index.html
 This will build all of the tz-commons jars and install them in your local maven repo.
 
 NOTE: The tz-commons-domain unit tests use dumbster as a dummy SMTP server.
-Some virus protection apps may block dumbster, causing these test to fail.
+Some virus protection apps may block dumbster, causing these tests to fail.
 By default, these tests have been disabled. They can be enabled by setting
 DISABLE_EMAIL_TEST to false in the tz-commons-domain test config file.
 
