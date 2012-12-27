@@ -32,7 +32,7 @@ import com.thruzero.domain.locator.DAOLocator;
  * }
  * </pre>
  * <p>
- * Note: The particular DAO configured for this service defines where the data is actually stored (e.g., file system, relational table, etc).
+ * Note: The particular TextEnvelopeDAO configured for this service defines where the data is actually stored (e.g., file system, relational table, etc).
  *
  * @author George Norman
  */

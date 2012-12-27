@@ -29,7 +29,8 @@ import com.thruzero.domain.store.Persistent;
 /**
  * A generic DAO that provides CRUD services for any Domain Object, and implemented using an instance of HttpMemoryStore,
  * which uses the current HttpSession to service each request. Hence, from a single HttpMemoryStore, each client appears to
- * have their own private data store.
+ * have their own private data store (see {@link com.thruzero.domain.jsf.dao.HttpSessionDAO.HttpMemoryStore#getEntityMap() getEntityMap()}
+ * - calls FacesUtils.getSession to retrieve the user's session).
  * <p/>
  * This DAO does not support transactions. It does not copy data from the given Domain Object to the memory
  * map (TODO-p2(george) although, it probably should). It's main purpose is for testing and demos.
@@ -80,6 +81,10 @@ public abstract class HttpSessionDAO<T extends Persistent> extends GenericMemory
       getEntityMap().clear();
     }
 
+    /**
+     * Return the Entity map from the current user's HTTP session (which ensures that each user has their
+     * own private data store).
+     */
     protected Map<Serializable, T> getEntityMap() {
       HttpSession session = FacesUtils.getSession(false);
       @SuppressWarnings("unchecked")
