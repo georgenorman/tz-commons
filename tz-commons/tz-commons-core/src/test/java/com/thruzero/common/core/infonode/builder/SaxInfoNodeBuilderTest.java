@@ -43,7 +43,7 @@ public class SaxInfoNodeBuilderTest extends AbstractCoreTestCase {
     //    <ele1 c="C">Element1 Value</ele1>
     //    T1V1 T1V2
     //  </test>
-    InfoNodeElement test = SaxInfoNodeBuilder.WITH_ROOT_NODE.buildInfoNode(xmlContent);
+    InfoNodeElement test = SaxInfoNodeBuilder.WITH_ROOT_NODE.buildInfoNode(xmlContent, null);
 
     SampleNodeBuilderUtils.assertEqualNormalizedValues("test", test.getName());
     SampleNodeBuilderUtils.assertEqualNormalizedValues("A", test.getAttributeValue("a"));
@@ -56,7 +56,7 @@ public class SaxInfoNodeBuilderTest extends AbstractCoreTestCase {
     InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createSimpleInfoNodeWithAttributes();
 
     // <TestParentElement TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue">TestParentElementValue</TestParentElement>
-    InfoNodeElement rootInfoNodeElement = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(sampleInfoNode.toStringFormatted());
+    InfoNodeElement rootInfoNodeElement = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(sampleInfoNode.toStringFormatted(), null);
 
     SampleNodeBuilderUtils.verifySimpleInfoNodeData(rootInfoNodeElement);
     SampleNodeBuilderUtils.verifySimpleInfoNodeAsString(rootInfoNodeElement);
@@ -67,7 +67,7 @@ public class SaxInfoNodeBuilderTest extends AbstractCoreTestCase {
     InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createEntityPathInfoNode();
 
     // <TestParentElement TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue" primaryKey="primaryValueOne">TestParentElementValue</TestParentElement>
-    InfoNodeElement rootInfoNodeElement = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(sampleInfoNode.toStringFormatted());
+    InfoNodeElement rootInfoNodeElement = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(sampleInfoNode.toStringFormatted(), null);
 
     assertEquals(SampleNodeBuilderUtils.ENTITY_PATH_VALUE_ONE, rootInfoNodeElement.getEntityPath().toString());
     SampleNodeBuilderUtils.verifySimpleInfoNodeData(rootInfoNodeElement);
@@ -82,7 +82,7 @@ public class SaxInfoNodeBuilderTest extends AbstractCoreTestCase {
     //    <TestElementOne TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue">TestElementOneValue</TestElementOne>
     //    <TestElementTwo TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue">TestElementTwoValue</TestElementTwo>
     //  </TestParentElement>    String infoNodeAsString = rootInfoNodeElement.toString();
-    InfoNodeElement rootInfoNodeElement = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(sampleInfoNode.toStringFormatted());
+    InfoNodeElement rootInfoNodeElement = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(sampleInfoNode.toStringFormatted(), null);
 
     SampleNodeBuilderUtils.assertEqualNormalizedValues("TestParentElement", rootInfoNodeElement.getName());
     SampleNodeBuilderUtils.assertEqualNormalizedChildValues(rootInfoNodeElement, "TestElementOne", "TestElementOneValue");

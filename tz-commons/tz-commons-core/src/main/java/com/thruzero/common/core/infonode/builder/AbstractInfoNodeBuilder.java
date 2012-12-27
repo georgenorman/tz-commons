@@ -16,6 +16,7 @@
 package com.thruzero.common.core.infonode.builder;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
+import com.thruzero.common.core.infonode.builder.filter.InfoNodeFilterChain;
 import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.SimpleIdGenerator;
@@ -71,12 +72,28 @@ public abstract class AbstractInfoNodeBuilder {
   }
 
   /**
-   * If primary key generation is enabled (see isPrimaryKeyGenerationEnabled), the given infoNode will be given an auto-generated primary-key.
+   * If primary key generation is enabled (see isPrimaryKeyGenerationEnabled), the given infoNode will be given a unique auto-generated primary-key.
    */
   protected void handlePrimaryKey(final InfoNodeElement infoNode) {
     if (isPrimaryKeyGenerationEnabled()) {
       infoNode.setEntityPath(new EntityPath(new ContainerPath(), SimpleIdGenerator.getInstance().getNextIdAsString()));
     }
+  }
+
+  /**
+   * Use the given infoNodeFilterChain to apply a series of filters to the given infoNode and return the resulting node. If infoNodeFilterChain
+   * is null, then return the given infoNode unchanged.
+   */
+  protected InfoNodeElement handleFilters(final InfoNodeElement infoNode, final InfoNodeFilterChain infoNodeFilterChain) {
+    InfoNodeElement result;
+
+    if (infoNodeFilterChain == null) {
+      result = infoNode;
+    } else {
+      result = infoNodeFilterChain.applyFilter(infoNode);
+    }
+
+    return result;
   }
 
   /**

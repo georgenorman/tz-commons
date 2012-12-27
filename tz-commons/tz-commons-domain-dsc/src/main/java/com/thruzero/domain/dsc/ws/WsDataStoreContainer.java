@@ -111,7 +111,7 @@ public class WsDataStoreContainer implements DataStoreContainer {
 
     String response = resource.path("isExistingEntity").queryParams(params).get(String.class);
 
-    InfoNodeElement responseAsNode = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(response);
+    InfoNodeElement responseAsNode = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(response, null);
 
     return responseAsNode.getAttributeTransformer("value").getBooleanValue();
   }

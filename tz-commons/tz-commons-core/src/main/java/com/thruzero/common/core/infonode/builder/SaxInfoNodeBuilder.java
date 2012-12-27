@@ -16,10 +16,13 @@
 package com.thruzero.common.core.infonode.builder;
 
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.jdom.Attribute;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -28,6 +31,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
+import com.thruzero.common.core.infonode.builder.filter.InfoNodeFilterChain;
 
 /**
  * A builder that uses a SAX parser to create a {@code InfoNodeElement} from an xml string.
@@ -67,10 +71,35 @@ public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
   public static final SaxInfoNodeBuilder WITH_ROOT_NODE = new SaxInfoNodeBuilder(PrimaryKeyOption.NO_PRIMARY_KEY, RootNodeOption.GENERATE_ROOT_NODE);
 
   /** Builder without parent document (only relative xpath supported) and provides a primary key. */
-  public static final DomInfoNodeBuilder WITH_PRIMARY_KEY = DomInfoNodeBuilder.WITH_PRIMARY_KEY;
+  public static final SaxInfoNodeBuilder WITH_PRIMARY_KEY = new SaxInfoNodeBuilder(PrimaryKeyOption.GENERATE_PRIMARY_KEY, RootNodeOption.NO_ROOT_NODE);
 
   /** Builder providing parent document (full xpath support) and a primary key. */
   public static final SaxInfoNodeBuilder WITH_PRIMARY_KEY_AND_ROOT_NODE = new SaxInfoNodeBuilder(PrimaryKeyOption.GENERATE_PRIMARY_KEY, RootNodeOption.GENERATE_ROOT_NODE);
+
+  // ------------------------------------------------
+  // NullInfoNodeElement
+  // ------------------------------------------------
+
+  /**
+   * An InfoNode used to manage elements that have been removed from the DOM via filtering.
+   */
+  public class NullInfoNodeElement extends InfoNodeElement {
+    private static final long serialVersionUID = 1L;
+
+    private int depth = 1;
+
+    public NullInfoNodeElement() {
+      setName(NullInfoNodeElement.class.getSimpleName());
+    }
+
+    public void incrementDepth() {
+      depth++;
+    }
+
+    public int decrementDepth() {
+      return --depth;
+    }
+  }
 
   // ------------------------------------------------
   // InfoNodeSaxHandler
@@ -84,8 +113,11 @@ public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
     private final ArrayStack nodeStack = new ArrayStack();
     private final StringBuffer elementValue = new StringBuffer();
 
-    protected InfoNodeSaxHandler(final InfoNodeElement targetNode) {
+    private final InfoNodeFilterChain infoNodeFilterChain;
+
+    protected InfoNodeSaxHandler(final InfoNodeElement targetNode, final InfoNodeFilterChain infoNodeFilterChain) {
       this.rootNode = targetNode;
+      this.infoNodeFilterChain = infoNodeFilterChain;
     }
 
     @Override
@@ -106,33 +138,61 @@ public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
     public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException {
       super.startElement(uri, localName, qName, attributes);
 
-      InfoNodeElement infoNode;
-      if (nodeStack.empty()) {
-        infoNode = rootNode;
-        infoNode.setName(localName);
-        addValueTo(infoNode);
-      } else {
-        infoNode = new InfoNodeElement();
-        handlePrimaryKey(infoNode);
-        infoNode.setName(localName);
-        InfoNodeElement parentNode = (InfoNodeElement)nodeStack.get();
-        parentNode.addChildNode(infoNode);
-        addValueTo(parentNode);
-      }
-      nodeStack.push(infoNode);
-
+      List<Attribute> infoNodeAttributeList = new ArrayList<Attribute>();
       int len = attributes.getLength();
       for (int i = 0; i < len; i++) {
         String name = attributes.getLocalName(i);
         String value = attributes.getValue(i);
 
-        infoNode.setAttribute(name, value);
+        infoNodeAttributeList.add(new Attribute(name, value));
+      }
+
+      // reset filter before starting a new element.
+      if (infoNodeFilterChain != null) {
+        infoNodeFilterChain.reset();
+      }
+
+      // start the element
+      InfoNodeElement infoNode;
+      if (nodeStack.empty()) {
+        infoNode = rootNode;
+        infoNode.setName(localName);
+        infoNode.setAttributes(infoNodeAttributeList);
+        infoNode = handleFilters(infoNode, infoNodeFilterChain);
+
+        if (infoNode == null) {
+          nodeStack.push(new NullInfoNodeElement());
+        } else {
+          addValueTo(infoNode);
+          nodeStack.push(infoNode);
+        }
+      } else {
+        if (isNullElement()) {
+          getNullElement().incrementDepth();
+        } else {
+          infoNode = new InfoNodeElement();
+          handlePrimaryKey(infoNode);
+          infoNode.setName(localName);
+          infoNode.setAttributes(infoNodeAttributeList);
+          infoNode = handleFilters(infoNode, infoNodeFilterChain);
+
+          if (infoNode == null) {
+            nodeStack.push(new NullInfoNodeElement());
+          } else {
+            InfoNodeElement parentNode = (InfoNodeElement)nodeStack.get();
+            parentNode.addChildNode(infoNode);
+            addValueTo(parentNode);
+            nodeStack.push(infoNode);
+          }
+        }
       }
     }
 
     @Override
     public void characters(final char[] buffer, final int start, final int length) {
-      elementValue.append(buffer, start, length);
+      if (!isNullElement()) {
+        elementValue.append(buffer, start, length);
+      }
     }
 
     @Override
@@ -141,7 +201,13 @@ public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
 
       InfoNodeElement currentNode = (InfoNodeElement)nodeStack.get();
       addValueTo(currentNode);
-      nodeStack.pop();
+      if (isNullElement()) {
+        if (getNullElement().decrementDepth() <= 0) {
+          nodeStack.pop();
+        }
+      } else {
+        nodeStack.pop();
+      }
     }
 
     protected void addValueTo(final InfoNodeElement dn) {
@@ -149,6 +215,14 @@ public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
         dn.addContent(elementValue.toString());
         elementValue.setLength(0);
       }
+    }
+
+    protected boolean isNullElement() {
+      return !nodeStack.isEmpty() && nodeStack.peek() instanceof NullInfoNodeElement;
+    }
+
+    protected NullInfoNodeElement getNullElement() {
+      return (NullInfoNodeElement)nodeStack.peek();
     }
   }
 
@@ -164,24 +238,24 @@ public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
   }
 
   /** Build a complete {@code InfoNodeElement} from xml. */
-  public InfoNodeElement buildInfoNode(final String xml) {
-    return doBuildInfoNode(xml, new InfoNodeElement());
+  public InfoNodeElement buildInfoNode(final String xml, final InfoNodeFilterChain infoNodeFilterChain) {
+    return doBuildInfoNode(xml, new InfoNodeElement(), infoNodeFilterChain);
   }
 
   /** Build a complete {@code InfoNodeElement} from xml. */
-  public InfoNodeElement buildInfoNode(final String xml, final InfoNodeElement targetNode) {
-    return doBuildInfoNode(xml, targetNode);
+  public InfoNodeElement buildInfoNode(final String xml, final InfoNodeElement targetNode, final InfoNodeFilterChain infoNodeFilterChain) {
+    return doBuildInfoNode(xml, targetNode, infoNodeFilterChain);
   }
 
   // IMPLEMENTATION //////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /** construct complete {@code InfoNodeElement} from dom. */
-  protected InfoNodeElement doBuildInfoNode(final String xml, final InfoNodeElement targetNode) {
+  protected InfoNodeElement doBuildInfoNode(final String xml, final InfoNodeElement targetNode, final InfoNodeFilterChain infoNodeFilterChain) {
     handlePrimaryKey(targetNode);
     if (StringUtils.isNotEmpty(xml)) {
       try {
         XMLReader parser = XMLReaderFactory.createXMLReader();
-        InfoNodeSaxHandler dnHandler = new InfoNodeSaxHandler(targetNode); // state for this build is kept in this InfoNode Handler instance
+        InfoNodeSaxHandler dnHandler = new InfoNodeSaxHandler(targetNode, infoNodeFilterChain); // state for this build is kept in this InfoNode Handler instance
 
         parser.setContentHandler(dnHandler);
         parser.setErrorHandler(dnHandler);
@@ -197,5 +271,4 @@ public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
 
     return targetNode;
   }
-
 }

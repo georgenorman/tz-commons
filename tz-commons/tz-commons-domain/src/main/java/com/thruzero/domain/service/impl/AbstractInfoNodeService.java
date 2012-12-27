@@ -17,15 +17,28 @@ package com.thruzero.domain.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
+import com.thruzero.common.core.bookmarks.InitializationParameterKeysBookmark;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.infonode.builder.SaxInfoNodeBuilder;
+import com.thruzero.common.core.infonode.builder.filter.InfoNodeFilter;
+import com.thruzero.common.core.infonode.builder.filter.SimpleInfoNodeFilterChain;
+import com.thruzero.common.core.locator.Initializable;
+import com.thruzero.common.core.locator.InitializationException;
+import com.thruzero.common.core.locator.InitializationStrategy;
+import com.thruzero.common.core.locator.LocatorUtils;
+import com.thruzero.common.core.map.StringMap;
 import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.SimpleInfo;
+import com.thruzero.common.core.utils.ClassUtils;
+import com.thruzero.common.core.utils.ClassUtils.ClassUtilsException;
+import com.thruzero.common.core.utils.ExceptionUtilsExt;
 import com.thruzero.domain.dao.TextEnvelopeDAO;
 import com.thruzero.domain.model.TextEnvelope;
 import com.thruzero.domain.service.InfoNodeService;
@@ -40,11 +53,65 @@ import com.thruzero.domain.service.InfoNodeService;
  *
  * @author George Norman
  */
-public abstract class AbstractInfoNodeService implements InfoNodeService {
+public abstract class AbstractInfoNodeService implements InfoNodeService, Initializable {
+  private static final Logger logger = Logger.getLogger(AbstractInfoNodeService.class);
+
   private final TextEnvelopeDAO textEnvelopeDAO;
+
+  private SimpleInfoNodeFilterChain infoNodeFilterChain;
+
+  // ------------------------------------------------
+  // InfoNodeServiceInitParamKeys
+  // ------------------------------------------------
+
+  /**
+   * Initialization parameter keys defined for InfoNodeService.
+   */
+  @InitializationParameterKeysBookmark
+  public interface InfoNodeServiceInitParamKeys extends InitializableParameterKeys {
+    String SOURCE_SECTION = InfoNodeService.class.getName();
+
+    String INFONODE_FILTER_LIST = "infoNodeFilters";
+  }
+
+  // ============================================================================
+  // AbstractInfoNodeService
+  // ============================================================================
 
   protected AbstractInfoNodeService(TextEnvelopeDAO textEnvelopeDAO) {
     this.textEnvelopeDAO = textEnvelopeDAO;
+  }
+
+  /**
+   * @throws InitializationException if a problem is encountered with the given initParams.
+   */
+  @Override
+  public void init(InitializationStrategy initStrategy) {
+    StringMap initParams = LocatorUtils.getInheritedParameters(initStrategy, this.getClass(), AbstractInfoNodeService.class);
+
+    String[] infoNodeFilters = initParams.getValueTransformer(InfoNodeServiceInitParamKeys.INFONODE_FILTER_LIST).getStringArrayValue();
+    if (infoNodeFilters != null) {
+      List<InfoNodeFilter> filterList = new ArrayList<InfoNodeFilter>();
+
+      for (String filterClassName : infoNodeFilters) {
+        try {
+          Class<InfoNodeFilter> filterClass = ClassUtils.classFrom(filterClassName);
+          filterList.add(ClassUtils.instanceFrom(filterClass));
+        } catch (ClassUtilsException e) {
+          throw ExceptionUtilsExt.logAndCreateLocatorException(logger, "Couldn't create filter named: " + filterClassName, e);
+        }
+      }
+
+      infoNodeFilterChain = new SimpleInfoNodeFilterChain(filterList);
+    }
+  }
+
+  /**
+   * @see com.thruzero.common.core.locator.Initializable#reset()
+   */
+  @Override
+  public void reset() {
+    infoNodeFilterChain = null;
   }
 
   @Override
@@ -53,7 +120,7 @@ public abstract class AbstractInfoNodeService implements InfoNodeService {
     Collection<? extends TextEnvelope> models = getTextEnvelopeDAO().getTextEnvelopes(containerPath, recursive);
 
     for (TextEnvelope infoNodeModel : models) {
-      result.add(getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData()));
+      result.add(getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData(), infoNodeFilterChain));
     }
 
     return result;
@@ -65,7 +132,7 @@ public abstract class AbstractInfoNodeService implements InfoNodeService {
     TextEnvelope infoNodeModel = getTextEnvelopeDAO().getTextEnvelope(entityPath);
 
     if (infoNodeModel != null) {
-      result = getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData());
+      result = getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData(), infoNodeFilterChain);
     }
 
     return result;
