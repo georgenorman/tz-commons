@@ -20,8 +20,9 @@ import java.util.Date;
 import java.util.Set;
 
 import com.thruzero.auth.model.User;
-import com.thruzero.auth.model.UserPermission;
+import com.thruzero.auth.model.UserDataStoreInfo;
 import com.thruzero.auth.model.UserDetails;
+import com.thruzero.auth.model.UserPermission;
 import com.thruzero.domain.store.AbstractPersistent;
 import com.thruzero.domain.store.Persistent;
 
@@ -46,6 +47,8 @@ public class BasicUser extends AbstractPersistent implements User {
   private Set<UserPermission> permissions;
   private UserDetails details = new BasicUserDetails();
 
+  private UserDataStoreInfo userDataStoreInfo;
+
   @Override
   public void clear() {
     loginId = "";
@@ -60,13 +63,15 @@ public class BasicUser extends AbstractPersistent implements User {
       permissions.clear();
     }
     permissions = null;
+
+    userDataStoreInfo = null;
   }
 
   @Override
   public void copyFrom(final Persistent source) {
     super.copyFrom(source);
-
     BasicUser basicUserSource = (BasicUser)source;
+
     loginId = basicUserSource.getLoginId();
     password = basicUserSource.getPassword();
     temporaryPassword = basicUserSource.getTemporaryPassword();
@@ -74,6 +79,7 @@ public class BasicUser extends AbstractPersistent implements User {
     invalidLoginLockoutTime = basicUserSource.getInvalidLoginLockoutTime();
     lastLoginDate = basicUserSource.getLastLoginDate();
     status = basicUserSource.getStatus();
+    userDataStoreInfo = basicUserSource.getUserDataStoreInfo();
   }
 
   /** Return the ID this user uses to login (e.g., email address). Must be unique for all users within the store. */
@@ -182,6 +188,16 @@ public class BasicUser extends AbstractPersistent implements User {
   @Override
   public void setDetails(UserDetails details) {
     this.details = details;
+  }
+
+  @Override
+  public UserDataStoreInfo getUserDataStoreInfo() {
+    return userDataStoreInfo;
+  }
+
+  @Override
+  public void setUserDataStoreInfo(UserDataStoreInfo userDataStoreInfo) {
+    this.userDataStoreInfo = userDataStoreInfo;
   }
 
   @Override

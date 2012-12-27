@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Set;
 
 import com.thruzero.domain.store.Persistent;
+import com.thruzero.auth.model.UserDataStoreInfo;
 
 /**
  * A User is an entity that can be identified by a unique name (e.g., email address) and password.
@@ -46,29 +47,29 @@ public interface User extends Persistent {
   // User
   // ============================================================================
 
-  public void clear();
+  void clear();
 
   /** Return the ID this user uses to login (e.g., email address). Must be unique for all users within the store. */
-  public String getLoginId();
+  String getLoginId();
 
-  public void setLoginId(final String loginId);
+  void setLoginId(final String loginId);
 
   /** Return the hashed password for this user. */
-  public String getPassword();
+  String getPassword();
 
-  public void setPassword(final String password);
+  void setPassword(final String password);
 
   /** Return the hashed temporary password for this user. */
-  public String getTemporaryPassword();
+  String getTemporaryPassword();
 
-  public void setTemporaryPassword(final String temporaryPassword);
+  void setTemporaryPassword(final String temporaryPassword);
 
   /** Return how many times this user has attempted to login, since the previous timeout period. */
-  public int getInvalidLoginCount();
+  int getInvalidLoginCount();
 
-  public void setInvalidLoginCount(final int invalidLoginCount);
+  void setInvalidLoginCount(final int invalidLoginCount);
 
-  public void incrementInvalidLoginCount();
+  void incrementInvalidLoginCount();
 
   /**
    * Return the time in milliseconds at which login attempts may resume. For example, if the getInvalidLoginCount()
@@ -77,26 +78,31 @@ public interface User extends Persistent {
    * the InvalidLoginLockoutTime may be reset to zero, or remain as is (either way, System.currentTimeMillis() will now
    * be greater than the InvalidLoginLockoutTime).
    */
-  public long getInvalidLoginLockoutTime();
+  long getInvalidLoginLockoutTime();
 
-  public void setInvalidLoginLockoutTime(final long invalidLoginLockoutTime);
+  void setInvalidLoginLockoutTime(final long invalidLoginLockoutTime);
 
   /** Return the date of the last successful login. */
-  public Date getLastLoginDate();
+  Date getLastLoginDate();
 
-  public void setLastLoginDate(final Date lastLoginDate);
+  void setLastLoginDate(final Date lastLoginDate);
 
   /** Return the current standing of the user's account (e.g., ACTIVE, INACTIVE, TERMINATED, etc). */
-  public String getStatus();
+  String getStatus();
 
-  public void setStatus(final String status);
+  void setStatus(final String status);
 
-  public Set<UserPermission> getPermissions();
+  Set<UserPermission> getPermissions();
 
-  public void setPermissions(Set<UserPermission> permissions);
+  void setPermissions(Set<UserPermission> permissions);
 
   /** Return personal user info (e.g., first and last name, home and work phone number, etc). */
-  public UserDetails getDetails();
+  UserDetails getDetails();
 
-  public void setDetails(UserDetails details);
+  void setDetails(UserDetails details);
+
+  /** Return info about the user's personal data store (e.g., Access Control List). */
+  UserDataStoreInfo getUserDataStoreInfo();
+
+  void setUserDataStoreInfo(UserDataStoreInfo info);
 }

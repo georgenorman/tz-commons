@@ -44,6 +44,10 @@
 
     <many-to-one name="details" class="BasicUserDetails" column="DETAILS" not-null="false" lazy="false" />
 
+    <component name="userDataStoreInfo" class="BasicUserDataStoreInfo">
+      <property name="rawDataStoreInfo" column="DATA_STORE_INFO" />
+    </component>
+
   </class>
 
 </hibernate-mapping>
