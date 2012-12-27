@@ -16,7 +16,9 @@
 package com.thruzero.common.core.support;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,6 +51,14 @@ public class ValueTransformer<T> {
     String result = getStringValue();
 
     return StringUtils.isEmpty(result) ? defaultValue : result;
+  }
+
+  public String[] getStringArrayValue() {
+    return value == null ? null : StringUtils.split(value.toString(), "|");
+  }
+
+  public List<String> getStringListValue() {
+    return value == null ? null : Arrays.asList(getStringArrayValue());
   }
 
   public int getIntValue(final int defaultValue) {
