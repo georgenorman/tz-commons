@@ -155,15 +155,15 @@ public class SampleNodeBuilderUtils {
   public static void verifySimpleInfoNodeData(final InfoNodeElement infoNode) {
     assertEqualNormalizedValues(SampleInfoNodeBuilderUtils.TEST_PARENT_ELEMENT_NAME, infoNode.getName());
     assertEqualNormalizedValues(SampleInfoNodeBuilderUtils.TEST_PARENT_ELEMENT_VALUE, infoNode.getText());
-    assertEqualNormalizedValues(SampleInfoNodeBuilderUtils.TEST_ATTRIBUTE_ONE_VALUE, infoNode.getAttribute(SampleInfoNodeBuilderUtils.TEST_ATTRIBUTE_ONE_KEY).getValue());
-    assertEqualNormalizedValues(SampleInfoNodeBuilderUtils.TEST_ATTRIBUTE_TWO_VALUE, infoNode.getAttribute(SampleInfoNodeBuilderUtils.TEST_ATTRIBUTE_TWO_KEY).getValue());
+    assertEqualNormalizedValues(SampleInfoNodeBuilderUtils.TEST_ATTRIBUTE_ONE_VALUE, infoNode.getAttributeValue(SampleInfoNodeBuilderUtils.TEST_ATTRIBUTE_ONE_KEY));
+    assertEqualNormalizedValues(SampleInfoNodeBuilderUtils.TEST_ATTRIBUTE_TWO_VALUE, infoNode.getAttributeValue(SampleInfoNodeBuilderUtils.TEST_ATTRIBUTE_TWO_KEY));
   }
 
   public static void verifyNamedInfoNodeData(final InfoNodeElement infoNode, final String name) {
     assertEqualNormalizedValues(name + "Element", infoNode.getName());
     assertEqualNormalizedValues(name + "ElementValue", infoNode.getText());
-    assertEqualNormalizedValues(name + "AttributeOneValue", infoNode.getAttribute(name + "AttributeOne").getValue());
-    assertEqualNormalizedValues(name + "AttributeTwoValue", infoNode.getAttribute(name + "AttributeTwo").getValue());
+    assertEqualNormalizedValues(name + "AttributeOneValue", infoNode.getAttributeValue(name + "AttributeOne"));
+    assertEqualNormalizedValues(name + "AttributeTwoValue", infoNode.getAttributeValue(name + "AttributeTwo"));
   }
 
   public static void verifySimpleInfoNodeAsString(final InfoNodeElement infoNode) {
