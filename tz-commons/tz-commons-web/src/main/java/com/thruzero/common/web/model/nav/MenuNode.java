@@ -75,8 +75,10 @@ public class MenuNode implements MenuStateHolder {
 
     /** Copies the parent segments to this instance and then appends the given id. */
     public MenuNodePath(MenuStateHolder parent, String id) {
-      this.segments = parent.getPath() == null ? new ArrayList<String>() : new ArrayList<String>(parent.getPath().segments.size() + 1);
-      if (parent.getPath() != null) {
+      if (parent == null || parent.getPath() == null) {
+        this.segments = new ArrayList<String>();
+      } else {
+        this.segments = new ArrayList<String>(parent.getPath().segments.size() + 1);
         this.segments.addAll(parent.getPath().segments);
       }
       this.segments.add(id);
@@ -174,7 +176,7 @@ public class MenuNode implements MenuStateHolder {
 
   @Override
   public MenuNodePath getActivePath() {
-    return parent.getActivePath();
+    return parent == null ? null : parent.getActivePath();
   }
 
   /**
