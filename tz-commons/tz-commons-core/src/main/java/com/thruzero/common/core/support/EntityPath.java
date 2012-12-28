@@ -41,13 +41,14 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author George Norman
  */
-public class EntityPath implements Serializable, Cloneable, Comparable<EntityPath> {
+public final class EntityPath implements Serializable, Cloneable, Comparable<EntityPath> {
   private static final long serialVersionUID = 1L;
 
   private static final PathAndNameValidator pathAndNameValidator = new PathAndNameValidator();
 
+  private final String rootDataStorePath;
   private final ContainerPath containerPath;
-  private String entityName;
+  private final String entityName;
 
   // --------------------------------------------------
   // PathAndNameValidator
@@ -113,7 +114,9 @@ public class EntityPath implements Serializable, Cloneable, Comparable<EntityPat
   // ===================================================================
 
   public EntityPath() {
+    rootDataStorePath = null;
     containerPath = new ContainerPath();
+    entityName = null;
   }
 
   /**
@@ -131,6 +134,7 @@ public class EntityPath implements Serializable, Cloneable, Comparable<EntityPat
 
     // split container and name
     String containerPathAsString = StringUtils.substringBeforeLast(entityPath, ContainerPath.CONTAINER_PATH_SEPARATOR);
+    rootDataStorePath = null;
     containerPath = new ContainerPath(StringUtils.isEmpty(containerPathAsString) ? ContainerPath.CONTAINER_PATH_SEPARATOR : containerPathAsString + ContainerPath.CONTAINER_PATH_SEPARATOR);
     entityName = StringUtils.substringAfterLast(entityPath, ContainerPath.CONTAINER_PATH_SEPARATOR);
   }
@@ -146,6 +150,19 @@ public class EntityPath implements Serializable, Cloneable, Comparable<EntityPat
       throw new IllegalArgumentException("ContainerPath is required.");
     }
 
+    this.rootDataStorePath = null;
+    this.containerPath = containerPath;
+    this.entityName = entityName;
+  }
+
+  public EntityPath(String rootDataStorePath, ContainerPath containerPath, String entityName) {
+    pathAndNameValidator.validateEntityName(entityName);
+
+    if (containerPath == null) {
+      throw new IllegalArgumentException("ContainerPath is required.");
+    }
+
+    this.rootDataStorePath = rootDataStorePath;
     this.containerPath = containerPath;
     this.entityName = entityName;
   }
@@ -159,6 +176,7 @@ public class EntityPath implements Serializable, Cloneable, Comparable<EntityPat
   }
 
   protected EntityPath(EntityPath copyFrom) {
+    rootDataStorePath = copyFrom.getRootDataStorePath();
     containerPath = new ContainerPath(copyFrom.getContainerPath());
     entityName = copyFrom.getEntityName();
   }
@@ -192,6 +210,10 @@ public class EntityPath implements Serializable, Cloneable, Comparable<EntityPat
     return result;
   }
 
+  public String getRootDataStorePath() {
+    return rootDataStorePath;
+  }
+
   public String getContainerPathAsString() {
     return containerPath.getPath();
   }
@@ -211,7 +233,11 @@ public class EntityPath implements Serializable, Cloneable, Comparable<EntityPat
 
   @Override
   public String toString() {
-    return getContainerPathAsString() + entityName;
+    String root = "";
+    if (rootDataStorePath != null) {
+      root = rootDataStorePath;
+    }
+    return root + getContainerPathAsString() + entityName;
   }
 
   @Override
@@ -220,6 +246,7 @@ public class EntityPath implements Serializable, Cloneable, Comparable<EntityPat
     int result = 1;
     result = prime * result + ((containerPath == null) ? 0 : containerPath.hashCode());
     result = prime * result + ((entityName == null) ? 0 : entityName.hashCode());
+    result = prime * result + ((rootDataStorePath == null) ? 0 : rootDataStorePath.hashCode());
     return result;
   }
 
@@ -242,6 +269,12 @@ public class EntityPath implements Serializable, Cloneable, Comparable<EntityPat
         return false;
     } else if (!entityName.equals(other.entityName))
       return false;
+    if (rootDataStorePath == null) {
+      if (other.rootDataStorePath != null)
+        return false;
+    } else if (!rootDataStorePath.equals(other.rootDataStorePath))
+      return false;
     return true;
   }
+
 }
