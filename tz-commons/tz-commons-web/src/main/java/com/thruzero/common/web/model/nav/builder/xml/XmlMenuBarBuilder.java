@@ -36,7 +36,7 @@ import com.thruzero.common.web.model.nav.builder.AbstractMenuBarBuilder;
  *
  * <pre>
  * {@code
- *  <menu-bar>
+ *  <menuBar>
  *    <menu>
  *      <id>design</id>
  *      <title>Design</title>
@@ -64,7 +64,7 @@ import com.thruzero.common.web.model.nav.builder.AbstractMenuBarBuilder;
  *        </item>
  *      </dataList>
  *    </menu>
- *  </menu-bar>
+ *  </menuBar>
  * }
  * </pre>
  *
