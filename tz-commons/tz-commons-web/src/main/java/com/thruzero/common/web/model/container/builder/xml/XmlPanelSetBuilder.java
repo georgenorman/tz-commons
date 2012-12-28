@@ -173,10 +173,15 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
    * </ul>
    */
   public static class StandardXmlPanelBuilderTypeRegistry extends XmlPanelBuilderTypeRegistry {
-
     @SuppressWarnings("unchecked")
+    private static final Class<? extends AbstractXmlPanelBuilder>[] STANDARD_BUILDER_TYPES = new Class[] {XmlFaqPanelBuilder.class, XmlListPanelBuilder.class, XmlHtmlPanelBuilder.class};
+
+    public StandardXmlPanelBuilderTypeRegistry() {
+      registerBuilderTypes(STANDARD_BUILDER_TYPES);
+    }
+
     public StandardXmlPanelBuilderTypeRegistry(Class<? extends AbstractXmlPanelBuilder>... builderTypes) {
-      registerBuilderTypes(XmlFaqPanelBuilder.class, XmlListPanelBuilder.class, XmlHtmlPanelBuilder.class);
+      registerBuilderTypes(STANDARD_BUILDER_TYPES);
 
       registerBuilderTypes(builderTypes);
     }
