@@ -7,21 +7,33 @@
   <body>
     <section name="Overview">
       <p>
-        ThruZero Commons (tz-commons) is a collection of Java components I've developed over the years (since about 2002) while creating various websites and services.
+        ThruZero Commons (tz-commons) is a collection of Java components (JARs) I've developed over the years (since about 2002) while creating various websites and services.
         The components are reusable and many components are extensions to or leverage existing open source components.
         <p />
-        ThruZero Commons is divided into the following modules:
+        Brief summary of features:
+        <ul>
+          <li>Multiple Persistence schemes, including Hibernate, JPA (via Hibernate), DSC (file system or web service)</li>
+          <li>Authentication and Authorization integration with Shiro
+            <ul style="margin-top:0px; margin-bottom:0px;">
+              <li>TzAuthorizingRealm integrates Shiro with the persistence layer</li>
+              <li>Use of nonce provides a one-time password, for use over non-HTTPS connections.</li>
+            </ul>
+          </li>
+          <li>HTML5 JSF tags that are compatible with Twitter Bootstrap, JQuery Mobile, etc</li>
+        </ul>
+        <p />
+        ThruZero Commons is divided into the following modules, where each module is a separate JAR file and can be selected via the build POM:
         <ul>
           <li><b><a href="tz-commons-core/index.html">tz-commons-core</a></b>: Basic low-level components (e.g., Config, ConfigLocator, ServiceLocator, InfoNodeElement)</li>
           <li><b><a href="tz-commons-domain/index.html">tz-commons-domain</a></b>: Focuses on common Services (e.g., PreferenceService, SettingService and InfoNodeService)
-              <ul style="margin-top:0px;">
-                <li><b><a href="tz-commons-domain-jpa/index.html">tz-commons-domain-jpa</a></b>: JPA-based implementations of DAOs (via Hibernate).</li>
-                <li><b><a href="tz-commons-domain-hibernate/index.html">tz-commons-domain-hibernate</a></b>: Hibernate-based implementations of DAOs.</li>
-                <li><b><a href="tz-commons-domain-dsc/index.html">tz-commons-domain-dsc</a></b>: DSC-based implementations of DAOs.</li>
+              <ul style="margin-top:0px; margin-bottom:0px;">
+                <li><a href="tz-commons-domain-jpa/index.html">tz-commons-domain-jpa</a>: JPA-based implementations of DAOs (via Hibernate).</li>
+                <li><a href="tz-commons-domain-hibernate/index.html">tz-commons-domain-hibernate</a>: Hibernate-based implementations of DAOs.</li>
+                <li><a href="tz-commons-domain-dsc/index.html">tz-commons-domain-dsc</a>: DSC-based implementations of DAOs.</li>
               </ul>
           </li>
           <li><b><a href="tz-commons-auth/index.html">tz-commons-auth</a></b>: Basic authentication and authorization services (<a href="http://shiro.apache.org/">Shiro</a> integration)
-              <ul style="margin-top:0px;">
+              <ul style="margin-top:0px; margin-bottom:0px;">
                 <li><a href="tz-commons-auth-jpa/index.html">tz-commons-auth-jpa</a>: JPA-based implementations of auth DAOs.</li>
                 <li><a href="tz-commons-auth-hibernate/index.html">tz-commons-auth-hibernate</a>: Hibernate-based implementations of auth DAOs.</li>
                 <li><a href="tz-commons-auth-dsc/index.html">tz-commons-auth-dsc</a>: DSC-based implementations of auth DAOs.</li>
@@ -39,7 +51,7 @@
           <li><b><a href="http://www.thruzero.com/projects/pf-test-desktop/index.html">pf-test-desktop</a></b>: A PrimeFaces web application,
             for desktop browsers, configurable for JPA, Hibernate, DSC file system or DSC web service. A live demo can be found <a href = "http://www.thruzero.com/pf-test-desktop/">here</a>.
             It tests tz-commons using some of the following PrimeFaces components:
-            <ul>
+            <ul style="margin-top:0px;">
               <li>Accordion Panels (one using JPA, another DSC)</li>
               <li>Carousel Panel</li>
               <li>RSS Feeds</li>
@@ -49,7 +61,7 @@
               <li>Image Switch</li>
             </ul>
             <i>Plus, some custom tools:</i>
-            <ul>
+            <ul style="margin-top:0px;">
               <li>Guest Book</li>
               <li>Escape Utility</li>
               <li>Authentication and authorization (tests Shiro integration)</li>
