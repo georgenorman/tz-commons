@@ -18,8 +18,8 @@ package com.thruzero.auth.model;
 import java.util.Date;
 import java.util.Set;
 
+import com.thruzero.domain.model.DataStoreInfo;
 import com.thruzero.domain.store.Persistent;
-import com.thruzero.auth.model.UserDataStoreInfo;
 
 /**
  * A User is an entity that can be identified by a unique name (e.g., email address) and password.
@@ -102,7 +102,7 @@ public interface User extends Persistent {
   void setDetails(UserDetails details);
 
   /** Return info about the user's personal data store (e.g., Access Control List). */
-  UserDataStoreInfo getUserDataStoreInfo();
+  DataStoreInfo getUserDataStoreInfo();
 
-  void setUserDataStoreInfo(UserDataStoreInfo info);
+  void setUserDataStoreInfo(DataStoreInfo info);
 }

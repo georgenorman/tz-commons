@@ -28,7 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
-import com.thruzero.common.web.util.WebUtils;
+import com.thruzero.common.core.utils.UiUtils;
 
 /**
  * An instance represents a menu and/or menu-item, where a menu typically contains children whereas a menu-item doesn't.
@@ -224,7 +224,7 @@ public class MenuNode implements MenuStateHolder {
 
   /** Return all of the child nodes of this instance. */
   public Collection<MenuNode> getChildren() {
-    return WebUtils.uiRepeatHack(childNodes.values());
+    return UiUtils.unmodifiableListHack(childNodes.values());
   }
 
   public MenuNode getFirstChild() {

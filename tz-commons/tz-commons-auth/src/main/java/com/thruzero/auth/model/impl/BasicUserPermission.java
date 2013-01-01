@@ -29,7 +29,7 @@ public class BasicUserPermission extends AbstractPersistent implements UserPermi
   private static final long serialVersionUID = 1L;
 
   private String domain;
-  private String actions;
+  private String actions; // TODO-p0(george) This should be a Set<String> Of Values (read from a single source).
   private String description;
 
   public BasicUserPermission() {

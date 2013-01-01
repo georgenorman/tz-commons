@@ -17,6 +17,7 @@ package com.thruzero.common.core.infonode;
 
 import java.util.Iterator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jdom.DocType;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -24,6 +25,8 @@ import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.ValueTransformer;
@@ -165,6 +168,26 @@ public class InfoNodeElement extends Element {
     XMLOutputter xmlOutputter = new XMLOutputter();
 
     return xmlOutputter.outputString(this);
+  }
+
+  public String getSafeText() {
+    String result = getText();
+
+    if (StringUtils.isNotEmpty(result)) {
+      result = Jsoup.clean(result, Whitelist.basicWithImages());
+    }
+
+    return result;
+  }
+
+  public String getSafeChildText(final String name) {
+    String result = getChildText(name);
+
+    if (StringUtils.isNotEmpty(result)) {
+      result = Jsoup.clean(result, Whitelist.basicWithImages());
+    }
+
+    return result;
   }
 
   /**

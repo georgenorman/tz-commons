@@ -21,8 +21,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.thruzero.common.core.utils.UiUtils;
 import com.thruzero.common.web.model.nav.MenuNode.MenuNodePath;
-import com.thruzero.common.web.util.WebUtils;
 
 /**
  * A model representing a series of menus (e.g., menu bar or tab bar) and maintains the path to the active menu.
@@ -37,7 +37,7 @@ public class MenuBar implements MenuStateHolder {
   private Map<String, MenuNode> menus = new LinkedHashMap<String, MenuNode>();
 
   public Collection<MenuNode> getMenus() {
-    return WebUtils.uiRepeatHack(menus.values());
+    return UiUtils.unmodifiableListHack(menus.values());
   }
 
   /** Adds the given menu to the end of the menu list and associates it with the given id. */

@@ -102,9 +102,4 @@ public class ValueTransformer<T> {
     return StringUtilsExt.stringToDate(getStringValue(), null, parsePatterns);
   }
 
-  public String getAsRichText() {
-    // TODO-p1(george) quick and dirty hack. Expand on this using RegExSubstitutionStrategy (or find a better way - e.g., xml escape)
-    return StringUtils.replace(getStringValue(), "${break}", "<br/>");
-  }
-
 }

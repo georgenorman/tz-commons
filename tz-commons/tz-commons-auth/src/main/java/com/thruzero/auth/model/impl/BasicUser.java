@@ -15,14 +15,14 @@
  */
 package com.thruzero.auth.model.impl;
 
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.thruzero.auth.model.User;
-import com.thruzero.auth.model.UserDataStoreInfo;
 import com.thruzero.auth.model.UserDetails;
 import com.thruzero.auth.model.UserPermission;
+import com.thruzero.domain.model.DataStoreInfo;
 import com.thruzero.domain.store.AbstractPersistent;
 import com.thruzero.domain.store.Persistent;
 
@@ -47,7 +47,7 @@ public class BasicUser extends AbstractPersistent implements User {
   private Set<UserPermission> permissions;
   private UserDetails details = new BasicUserDetails();
 
-  private UserDataStoreInfo userDataStoreInfo;
+  private DataStoreInfo userDataStoreInfo;
 
   @Override
   public void clear() {
@@ -172,7 +172,8 @@ public class BasicUser extends AbstractPersistent implements User {
 
   @Override
   public Set<UserPermission> getPermissions() {
-    return Collections.unmodifiableSet(permissions);
+    return permissions == null ? null : new HashSet<UserPermission>(permissions);
+    //return Collections.unmodifiableSet(permissions); TODO-p1(george) tz-commons-auth-jpa unit tests fail if this is an unmodifiable collection (testDeletePersistedUser)
   }
 
   @Override
@@ -191,12 +192,12 @@ public class BasicUser extends AbstractPersistent implements User {
   }
 
   @Override
-  public UserDataStoreInfo getUserDataStoreInfo() {
+  public DataStoreInfo getUserDataStoreInfo() {
     return userDataStoreInfo;
   }
 
   @Override
-  public void setUserDataStoreInfo(UserDataStoreInfo userDataStoreInfo) {
+  public void setUserDataStoreInfo(DataStoreInfo userDataStoreInfo) {
     this.userDataStoreInfo = userDataStoreInfo;
   }
 

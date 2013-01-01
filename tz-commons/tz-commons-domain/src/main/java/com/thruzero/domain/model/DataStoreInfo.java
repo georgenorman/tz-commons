@@ -14,8 +14,11 @@
  *   limitations under the License.
  */
 
-package com.thruzero.auth.model;
+package com.thruzero.domain.model;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,7 +29,10 @@ import java.util.Set;
  *
  * @author George Norman
  */
-public interface UserDataStoreInfo {
+public class DataStoreInfo {
+  private String dataStoreContext;
+  private String privateRootDataStorePath;
+  private Map<String, AccessControl> accessControlList;
 
   // ------------------------------------------------------
   // AccessControl
@@ -35,15 +41,31 @@ public interface UserDataStoreInfo {
   /**
    * A primitive API that defines a set of users that can perform a set of actions on a particular dataset.
    */
-  public interface AccessControl {
+  public final class AccessControl {
+    private String id;
+    private Set<String> actions;
+    private Set<String> userNames;
+
+    public AccessControl(String id, Set<String> actions, Set<String> userNames) {
+      this.id = id;
+      this.actions = new HashSet<String>(actions);
+      this.userNames = new HashSet<String>(userNames);
+    }
+
     /** The name of the access control. */
-    String getId();
+    public final String getId() {
+      return id;
+    }
 
     /** The actions that can be performed on any data associated with this particular control. */
-    Set<String> getActions();
+    public final Set<String> getActions() {
+      return actions;
+    }
 
-    /* The user names of the users that are affected by this control instance. */
-    Set<String> getUserNames();
+    /** The user names of the users that are affected by this control instance. */
+    public final Set<String> getUserNames() {
+      return userNames;
+    }
   }
 
   // ============================================================================
@@ -51,20 +73,38 @@ public interface UserDataStoreInfo {
   // ============================================================================
 
   /** Return the ID of the user's personal data store. */
-  String getDataStoreContext();
+  public final String getDataStoreContext() {
+    return dataStoreContext;
+  }
+
+  public final void setDataStoreContext(String dataStoreContext) {
+    this.dataStoreContext = dataStoreContext;
+  }
 
   /**
-   * Return the optional ROOT data-store path for this user (HTTP). Each Entity is stored within a root data-store.
+   * Return the optional ROOT data-store path for this user. Each Entity is stored within a root data-store.
    * Typically, the root data-store is the same for all entities. However, some users may require a personal
    * ROOT data-store on a separate machine or provided by a separate service (e.g., "http://dl.dropbox.com/u/012345/").
    *
    * @see com.thruzero.common.core.support.EntityPath
    */
-  String getPrivateRootDataStorePath();
+  public final String getPrivateRootDataStorePath() {
+    return privateRootDataStorePath;
+  }
+
+  public final void setPrivateRootDataStorePath(String privateRootDataStorePath) {
+    this.privateRootDataStorePath = privateRootDataStorePath;
+  }
 
   /**
    * Return the list of access controls defined by this user. The AccessControl ID
    * can be associated with multiple data-sets, to control access by external users.
    */
-  Map<String, AccessControl> getAccessControlList();
+  public final Map<String, AccessControl> getAccessControlList() {
+    return Collections.unmodifiableMap(accessControlList);
+  }
+
+  public final void setAccessControlList(Map<String, AccessControl> accessControlList) {
+    this.accessControlList = new HashMap<String, AccessControl>(accessControlList);
+  }
 }

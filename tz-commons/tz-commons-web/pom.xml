@@ -45,6 +45,14 @@
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
+    <!-- Domain dependencies are for RssFeedService, etc. -->
+    <dependency>
+      <groupId>com.thruzero.common</groupId>
+      <artifactId>tz-commons-domain</artifactId>
+      <version>${tz.commons.version}</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>

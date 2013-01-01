@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.thruzero.common.web.util.WebUtils;
+import com.thruzero.common.core.utils.UiUtils;
 
 /**
  * An instance represents an ordered set of panels (typically used to render a column of panels on a page).
@@ -48,6 +48,6 @@ public class PanelSet {
   }
 
   public Collection<? extends AbstractPanel> getPanels() {
-    return WebUtils.uiRepeatHack(panels.values());
+    return UiUtils.unmodifiableListHack(panels.values());
   }
 }

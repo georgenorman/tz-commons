@@ -26,6 +26,8 @@ import com.thruzero.common.core.support.EnvironmentHelper;
 
 /**
  * Static utility methods pertaining to logging and tracking elapsed time.
+ * Note: The results are often rendered in the UI in the form of an HTML comments, so that
+ * a simple view source on any page will reveal its performance metrics.
  *
  * @author George Norman
  */
@@ -38,6 +40,23 @@ public class PerformanceTimerUtils {
   // PerformanceLoggerHelper
   // ----------------------------------------------
 
+  /**
+   * Simple helper for logging performance metrics of code sections (to help track down performance issues with suspected code blocks).
+   * Example:
+   * <pre>
+   * {@code
+   * // start timer
+   * PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
+   *
+   * //code to be measured
+   * RootNodeCache rootNodeCache = getRootNodeCache(contentQuery.getEntityPath());
+   * InfoNodeElement result = rootNodeCache.getContentNode(contentQuery.getXPath());
+   *
+   * // log results
+   * performanceLoggerHelper.debug("loadContentNode");
+   * }
+   * </pre>
+   */
   public static class PerformanceLoggerHelper {
     public static final String ELAPSED_TIME_PARAM = "${elapsedTime}";
 
@@ -71,12 +90,16 @@ public class PerformanceTimerUtils {
       return result;
     }
 
-    public void debug(final String message) {
+    /**
+     * Format and log a timer message, using the given name for the section being timed.
+     */
+    public void debug(final String name) {
       try {
         PerformanceLogger performanceLogger = PerformanceTimerUtils.get();
         String elapsedTime = getFormattedElapsedTime();
+        String template = "  - " + name + " took " + PerformanceLoggerHelper.ELAPSED_TIME_PARAM;
 
-        performanceLogger.debug(StringUtils.replace(message, ELAPSED_TIME_PARAM, elapsedTime));
+        performanceLogger.debug(StringUtils.replace(template, ELAPSED_TIME_PARAM, elapsedTime));
       } catch (Exception e) {
         logger.error("PerformanceLoggerHelper.debug(String) generated and Exception: ", e);
       }
@@ -127,7 +150,7 @@ public class PerformanceTimerUtils {
     }
 
     public void debug(final String message) {
-      logEntries.add(message);
+      logEntries.add(message + " [" + getRunningElapsedMillis() + "ms]");
     }
 
     public String getLogEntries() {

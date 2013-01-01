@@ -16,6 +16,10 @@
 
 package com.thruzero.common.web.model.container;
 
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import com.thruzero.common.web.model.css.StyleClass;
 
 /**
@@ -39,5 +43,15 @@ public class HtmlPanel extends AbstractPanel {
 
   public String getContent() {
     return content;
+  }
+
+  public String getSafeContent() {
+    String result = content;
+
+    if (StringUtils.isNotEmpty(result)) {
+      result = Jsoup.clean(result, Whitelist.relaxed());
+    }
+
+    return result;
   }
 }

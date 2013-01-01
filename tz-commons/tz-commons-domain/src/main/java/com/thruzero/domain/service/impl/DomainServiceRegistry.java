@@ -22,6 +22,7 @@ import com.thruzero.common.core.service.Service;
 import com.thruzero.common.core.service.impl.ServiceRegistry;
 import com.thruzero.domain.service.MailService;
 import com.thruzero.domain.service.PreferenceService;
+import com.thruzero.domain.service.RssFeedService;
 import com.thruzero.domain.service.SettingService;
 
 /**
@@ -47,10 +48,12 @@ public final class DomainServiceRegistry extends ServiceRegistry {
     // this is only called once
     new LocatorLogHelper(DomainServiceRegistry.class).logBeginRegisterInterfaces(Service.class.getName(), DomainServiceRegistry.class);
 
-    ServiceLocator.getRegistry().registerInterface(GenericInfoNodeService.class, GenericInfoNodeService.class);
+    ServiceLocator.getRegistry().registerInterface(GenericInfoNodeService.class, GenericInfoNodeService.class); // no interface provided - service relies on configured DAO
     ServiceLocator.getRegistry().registerInterface(PreferenceService.class, GenericPreferenceService.class);
     ServiceLocator.getRegistry().registerInterface(SettingService.class, GenericSettingService.class);
     ServiceLocator.getRegistry().registerInterface(MailService.class, SimpleMailService.class);
+    ServiceLocator.getRegistry().registerInterface(HttpInfoNodeService.class, HttpInfoNodeService.class); // no interface provided - service is exclusive to HTTP
+    ServiceLocator.getRegistry().registerInterface(RssFeedService.class, SimpleRssFeedService.class);
   }
 
 }

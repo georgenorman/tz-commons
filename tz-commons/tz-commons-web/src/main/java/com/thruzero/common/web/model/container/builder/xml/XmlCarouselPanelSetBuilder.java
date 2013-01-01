@@ -22,13 +22,15 @@ import java.util.List;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
 import com.thruzero.common.core.support.SimpleIdGenerator;
+import com.thruzero.common.core.utils.ExceptionUtilsExt;
 import com.thruzero.common.web.model.container.PanelSet;
 import com.thruzero.common.web.model.container.builder.CarouselPanelSetBuilder;
 import com.thruzero.common.web.model.container.builder.PanelSetBuilder;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.XmlPanelBuilderTypeRegistry;
+import org.apache.log4j.Logger;
 
 /**
- * A builder of a list of PanelSet instances, using XML as the definition. Below is a sample &lt;carouselPanelSet&gt; node containing a
+ * A builder of a list of PanelSet instances, using XML as the definition. Below is a sample {@code <carouselPanelSet>} node containing a
  * set of panel nodes (in presentation order). The XmlCarouselPanelSetBuilder will parse the XML and build each panel and then add it
  * to the result list.
  *
@@ -53,6 +55,8 @@ import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.Xm
  * @author George Norman
  */
 public class XmlCarouselPanelSetBuilder implements CarouselPanelSetBuilder {
+  private static final Logger logger = Logger.getLogger(XmlCarouselPanelSetBuilder.class);
+
   private static final String PAGINATE_ATTRIBUTE_NAME = ConfigLocator.locate().getValue(XmlCarouselPanelSetBuilder.class.getName(), "paginate", "paginate");
 
   private InfoNodeElement carouselPanelSetNode;
@@ -60,11 +64,11 @@ public class XmlCarouselPanelSetBuilder implements CarouselPanelSetBuilder {
 
   /**
    * Builds a list of <code>PanelSet</code> instances from the given <code>carouselPanelSet</code>. The <code>paginate</code>
-   * attribute of the <code>carouselPanelSet</code> node, specifies how many panels will be placed in each {@code PanelSet} instance.
+   * attribute, of the <code>carouselPanelSet</code> node, specifies how many panels will be placed in each {@code PanelSet} instance.
    *
    * @param carouselPanelSetNode node containing the set of panels (each child of this node will be a panel node).
    * @param panelBuilderTypeRegistry registry that specifies which builder to use for a given panel definition (based on
-   * panel name - e.g., 'listPanel').
+   *        panel name - e.g., 'listPanel').
    */
   public XmlCarouselPanelSetBuilder(InfoNodeElement carouselPanelSetNode, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
     this.carouselPanelSetNode = carouselPanelSetNode;
@@ -78,7 +82,10 @@ public class XmlCarouselPanelSetBuilder implements CarouselPanelSetBuilder {
     // setup
     @SuppressWarnings("unchecked")
     List<InfoNodeElement> children = carouselPanelSetNode.getChildren();
-    int paginate = carouselPanelSetNode.getAttributeTransformer(PAGINATE_ATTRIBUTE_NAME).getIntValue(0);
+    int paginate = carouselPanelSetNode.getAttributeTransformer(PAGINATE_ATTRIBUTE_NAME).getIntValue(1);
+    if (paginate <= 0) {
+      throw ExceptionUtilsExt.logAndCreateIllegalArgumentException(logger, "Pagination must be greater than 0.");
+    }
     int panelCount = 0;
     List<InfoNodeElement> panelNodes = new ArrayList<InfoNodeElement>();
 

@@ -41,7 +41,7 @@ public interface Initializable {
   /**
    * This function is called by a {@code Locator} to initialize a located instance.
    */
-  void init(InitializationStrategy initParams);
+  void init(InitializationStrategy initStrategy);
 
   /**
    * This function is called by a {@code Locator} to remove a located instance from the instance pool. The instance

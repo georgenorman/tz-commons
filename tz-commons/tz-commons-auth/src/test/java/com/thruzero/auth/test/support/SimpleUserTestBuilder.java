@@ -23,6 +23,7 @@ import com.thruzero.auth.model.User;
 import com.thruzero.auth.model.User.UserStatus;
 import com.thruzero.auth.model.UserPermission;
 import com.thruzero.auth.model.impl.BasicUser;
+import com.thruzero.auth.model.impl.BasicUserDataStoreInfo;
 import com.thruzero.auth.model.impl.BasicUserPermission;
 import com.thruzero.domain.locator.DAOLocator;
 
@@ -44,6 +45,7 @@ public class SimpleUserTestBuilder {
     String TEST_ONE_LAST_NAME = "LastOne";
     String TEST_ONE_PRIMARY_EMAIL = "primary1@email.com";
     String TEST_ONE_STATUS = UserStatus.ACTIVE;
+    String TEST_ONE_DATA_STORE_INFO = "<db-info><context>wally</context></db-info>";
 
     String TEST_TWO_LOGIN_ID = "user2@thruzero.com";
     String TEST_TWO_PASSWORD = "p@ssw0rdTw0";
@@ -51,6 +53,7 @@ public class SimpleUserTestBuilder {
     String TEST_TWO_LAST_NAME = "LastTwo";
     String TEST_TWO_PRIMARY_EMAIL = "primar2y@email.com";
     String TEST_TWO_STATUS = UserStatus.IN_ACTIVE;
+    String TEST_TWO_DATA_STORE_INFO = "<db-info><context>wally</context></db-info>";
 
     String BOGUS_LOGIN_ID = "bogus"; // this user does not exist
 
@@ -67,6 +70,7 @@ public class SimpleUserTestBuilder {
     result.setLoginId(UserTestConst.TEST_ONE_LOGIN_ID);
     result.setPassword(UserTestConst.TEST_ONE_PASSWORD);
     result.setStatus(UserTestConst.TEST_ONE_STATUS);
+    result.setUserDataStoreInfo(new BasicUserDataStoreInfo(UserTestConst.TEST_ONE_DATA_STORE_INFO));
     result.getDetails().setFirstName(UserTestConst.TEST_ONE_FIRST_NAME);
     result.getDetails().setLastName(UserTestConst.TEST_ONE_LAST_NAME);
     result.getDetails().setPrimaryEmail(UserTestConst.TEST_ONE_PRIMARY_EMAIL);
@@ -90,6 +94,7 @@ public class SimpleUserTestBuilder {
     result.setLoginId(UserTestConst.TEST_TWO_LOGIN_ID);
     result.setPassword(UserTestConst.TEST_TWO_PASSWORD);
     result.setStatus(UserTestConst.TEST_TWO_STATUS);
+    result.setUserDataStoreInfo(new BasicUserDataStoreInfo(UserTestConst.TEST_TWO_DATA_STORE_INFO));
     result.getDetails().setFirstName(UserTestConst.TEST_TWO_FIRST_NAME);
     result.getDetails().setLastName(UserTestConst.TEST_TWO_LAST_NAME);
     result.getDetails().setPrimaryEmail(UserTestConst.TEST_TWO_PRIMARY_EMAIL);

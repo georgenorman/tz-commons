@@ -20,7 +20,8 @@
 
  -->
 
-<hibernate-mapping package="com.thruzero.auth.model.impl" default-access="field">
+<!-- NOTE: The default-access attribute was changed from "field" to "property", so BasicUserDataStoreInfo could be initialized from setRawDataStoreInfo() -->
+<hibernate-mapping package="com.thruzero.auth.model.impl" default-access="property">
 
   <class name="BasicUser" table="EXAMPLE_REGISTERED_USER">
 

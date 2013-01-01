@@ -24,13 +24,13 @@ import java.util.Set;
 
 import org.jdom.Element;
 
-import com.thruzero.auth.model.UserDataStoreInfo;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.infonode.builder.SaxInfoNodeBuilder;
+import com.thruzero.domain.model.DataStoreInfo;
 
 /**
- * Basic implementation of UserDataStoreInfo that constructs itself from a single XML field.
- * Following is an example:
+ * Basic implementation of UserDataStoreInfo that constructs itself from a single XML field. Following is an example:
+ *
  * <pre>
  * {@code
  * <db-info>
@@ -45,104 +45,47 @@ import com.thruzero.common.core.infonode.builder.SaxInfoNodeBuilder;
  *
  * @author George Norman
  */
-public class BasicUserDataStoreInfo implements UserDataStoreInfo {
+public class BasicUserDataStoreInfo extends DataStoreInfo {
   private String rawDataStoreInfo;
 
-  private String dataStoreContext;
-  private String privateRootDataStorePath;
-  private Map<String, AccessControl> accessControlList;
-
-  // ------------------------------------------------------
-  // BasicAccessControl
-  // ------------------------------------------------------
-
-  public class BasicAccessControl implements AccessControl {
-    private String id;
-    private Set<String> actions;
-    private Set<String> userName;
-
-    public BasicAccessControl(String id, Set<String> actions, Set<String> userName) {
-      this.id = id;
-      this.actions = actions;
-      this.userName = userName;
-    }
-
-    @Override
-    public String getId() {
-      return id;
-    }
-
-    @Override
-    public Set<String> getActions() {
-      return actions;
-    }
-
-    @Override
-    public Set<String> getUserNames() {
-      return userName;
-    }
-  }
-
-  // ============================================================================
-  // BasicUserDataStoreInfo
-  // ============================================================================
-
-  /**
-   * Default constructor, used when data is injected (e.g., Hibernate)
-   */
   public BasicUserDataStoreInfo() {
   }
 
   public BasicUserDataStoreInfo(String rawDataStoreInfo) {
     this.rawDataStoreInfo = rawDataStoreInfo;
+    initFromRawData();
   }
 
-  @Override
-  public String getDataStoreContext() {
-    ensureAllInfo();
-
-    return dataStoreContext;
+  public String getRawDataStoreInfo() {
+    // TODO-p0(george) Reconstruct XML from model (so that any modifications will be persisted)
+    return rawDataStoreInfo;
   }
 
-  @Override
-  public String getPrivateRootDataStorePath() {
-    ensureAllInfo();
-
-    return privateRootDataStorePath;
+  public void setRawDataStoreInfo(String rawDataStoreInfo) {
+    this.rawDataStoreInfo = rawDataStoreInfo;
+    initFromRawData();
   }
 
-  @Override
-  public Map<String, AccessControl> getAccessControlList() {
-    ensureAllInfo();
+  private void initFromRawData() {
+    InfoNodeElement rootNode = SaxInfoNodeBuilder.WITH_ROOT_NODE.buildInfoNode(rawDataStoreInfo, null);
 
-    return accessControlList;
-  }
+    setDataStoreContext(rootNode.getChildText("context"));
+    setPrivateRootDataStorePath(rootNode.getChildText("private-root-data-store-path"));
 
-  private void ensureAllInfo() {
-    if (rawDataStoreInfo != null) {
-      InfoNodeElement rootNode = SaxInfoNodeBuilder.WITH_ROOT_NODE.buildInfoNode(rawDataStoreInfo, null);
+    Map<String, AccessControl> acl = new HashMap<String, AccessControl>();
+    Element aclElement = rootNode.getChild("acl");
+    if (aclElement != null) {
+      @SuppressWarnings("unchecked")
+      List<InfoNodeElement> aclNode = aclElement.getChildren();
+      for (InfoNodeElement accessNode : aclNode) {
+        String key = accessNode.getAttributeValue("id");
+        Set<String> actions = new HashSet<String>(accessNode.getAttributeTransformer("actions").getStringListValue());
+        Set<String> userNames = new HashSet<String>(accessNode.getValueTransformer().getStringListValue());
+        AccessControl ac = new AccessControl(accessNode.getAttributeValue("id"), actions, userNames);
 
-      dataStoreContext = rootNode.getChildText("context");
-
-      privateRootDataStorePath = rootNode.getChildText("private-root-data-store-path");
-
-      accessControlList = new HashMap<String, AccessControl>();
-      Element aclElement = rootNode.getChild("acl");
-
-      if (aclElement != null) {
-        @SuppressWarnings("unchecked")
-        List<InfoNodeElement> aclNode = aclElement.getChildren();
-        for (InfoNodeElement accessNode : aclNode) {
-          String key = accessNode.getAttributeValue("id");
-          Set<String> actions = new HashSet<String>(accessNode.getAttributeTransformer("actions").getStringListValue());
-          Set<String> userNames = new HashSet<String>(accessNode.getValueTransformer().getStringListValue());
-          AccessControl ac = new BasicAccessControl(accessNode.getAttributeValue("id"), actions, userNames);
-
-          accessControlList.put(key, ac);
-        }
+        acl.put(key, ac);
       }
     }
-
-    rawDataStoreInfo = null;
+    setAccessControlList(acl);
   }
 }

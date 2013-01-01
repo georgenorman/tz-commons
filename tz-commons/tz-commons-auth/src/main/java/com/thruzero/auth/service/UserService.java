@@ -43,7 +43,7 @@ public interface UserService extends Service, SimpleInfoProvider {
 
   void updateUser(User user);
 
-  void deleteUser(User user); // TODO-p0(george) hmmm, may want to retire the user instead of deleting, so history is preserved.
+  void deleteUser(User user); // TODO-p1(george) hmmm, may want to retire the user instead of deleting, so history is preserved.
 
   // Authentication methods ////////////////////////////////////////
 
