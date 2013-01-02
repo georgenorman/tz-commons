@@ -45,6 +45,11 @@ public abstract class AbstractXmlPanelBuilder implements PanelBuilder {
   public static final String TITLE_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "title", "title");
 
   /**
+   * Name of the attribute representing an optional flag to render the domain for anchor list items. The default name is "renderDomain" and can be changed via config.
+   */
+  public static final String RENDER_DOMAIN_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "renderDomain", "renderDomain");
+
+  /**
    * Name of the attribute representing an optional CSS class for the panel header. The default name is "headerStyleClass" and can be changed via config.
    */
   public static final String HEADER_STYLE_CLASS_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "headerStyleClass", "headerStyleClass");
@@ -85,6 +90,10 @@ public abstract class AbstractXmlPanelBuilder implements PanelBuilder {
 
   protected String getPanelTitle() {
     return panelNode.getAttributeValue(TITLE_ID);
+  }
+
+  protected boolean getRenderDomain() {
+    return panelNode.getAttributeTransformer(RENDER_DOMAIN_ID).getBooleanValue(false);
   }
 
   protected StyleClass getPanelHeaderStyleClass() {

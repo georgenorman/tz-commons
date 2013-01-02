@@ -54,9 +54,12 @@ import com.thruzero.common.web.model.css.StyleClass;
  */
 public class ListPanel extends AbstractPanel {
   private List<InfoNodeElement> items = new ArrayList<InfoNodeElement>();
+  private boolean renderDomain;
 
-  public ListPanel(String id, String title, StyleClass headerStyleClass) {
+  public ListPanel(String id, String title, boolean renderDomain, StyleClass headerStyleClass) {
     super(id, title, headerStyleClass);
+
+    this.renderDomain = renderDomain;
   }
 
   /**
@@ -71,5 +74,9 @@ public class ListPanel extends AbstractPanel {
 
   public void addItem(InfoNodeElement panelItem) {
     items.add(panelItem);
+  }
+
+  public boolean isRenderDomain() {
+    return renderDomain;
   }
 }

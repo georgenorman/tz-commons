@@ -59,7 +59,7 @@ public class XmlListPanelBuilder extends AbstractXmlPanelBuilder {
 
   @Override
   public AbstractPanel build() throws Exception {
-    ListPanel result = new ListPanel(getPanelId(), getPanelTitle(), getPanelHeaderStyleClass());
+    ListPanel result = new ListPanel(getPanelId(), getPanelTitle(), getRenderDomain(), getPanelHeaderStyleClass());
     InfoNodeElement dataListNode = getPanelNode().findElement(CHILD_DATALIST_ID);
 
     if (dataListNode != null) {
