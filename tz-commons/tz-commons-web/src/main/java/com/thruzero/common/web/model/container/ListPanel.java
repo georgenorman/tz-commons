@@ -56,6 +56,14 @@ public class ListPanel extends AbstractPanel {
   private List<InfoNodeElement> items = new ArrayList<InfoNodeElement>();
   private boolean renderDomain;
 
+  /**
+   * Constructs a model representing a panel of list items.
+   *
+   * @param title panel title
+   * @param renderDomain if true, then all link items should render the domain of the link as an adornment.
+   * (e.g., 'This is a link to an article on Slashdot [slashdot.org]'.
+   * @param headerStyleClass css class for the panel's title.
+   */
   public ListPanel(String id, String title, boolean renderDomain, StyleClass headerStyleClass) {
     super(id, title, headerStyleClass);
 
