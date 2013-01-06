@@ -69,6 +69,10 @@ public class DynamicContentBean implements Serializable {
   public static class ContentException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
+    public ContentException(String message) {
+      super(message);
+    }
+
     public ContentException(String message, Throwable cause) {
       super(message, cause);
     }
@@ -151,6 +155,10 @@ public class DynamicContentBean implements Serializable {
     public ContentQuery buildFromQuerySpec(String querySpec, DataStoreInfo dataStoreInfo) {
       ContentQuery result;
       String[] specPaths = StringUtils.split(querySpec, "|");
+
+      if (specPaths.length != 2) {
+        throw new ContentException("ERROR with querySpec (may not be defined in resources.properties file): " + querySpec);
+      }
 
       if (querySpec.startsWith("/")) {
         // fully qualified entity path (does not consider the logged in user)
