@@ -153,7 +153,6 @@ public class FileUtilsExt extends FileUtils {
 
     for (String parentDirectory : classPathElements) {
       File temp = new File(parentDirectory, fileName);
-      System.out.println("- "+temp.getAbsolutePath());
       if (temp.exists()) {
         result = temp;
         break;

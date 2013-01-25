@@ -16,6 +16,7 @@
 
 package com.thruzero.domain.model;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,7 +30,9 @@ import java.util.Set;
  *
  * @author George Norman
  */
-public class DataStoreInfo {
+public class DataStoreInfo implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   private String dataStoreContext;
   private String privateRootDataStorePath;
   private Map<String, AccessControl> accessControlList;
@@ -41,7 +44,9 @@ public class DataStoreInfo {
   /**
    * A primitive API that defines a set of users that can perform a set of actions on a particular dataset.
    */
-  public final class AccessControl {
+  public final class AccessControl implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private Set<String> actions;
     private Set<String> userNames;

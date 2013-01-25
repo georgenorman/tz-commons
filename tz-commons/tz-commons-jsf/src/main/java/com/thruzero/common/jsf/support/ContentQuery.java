@@ -49,4 +49,9 @@ public class ContentQuery implements Serializable {
     return xPath;
   }
 
+  @Override
+  public String toString() {
+    return "ContentQuery [entityPath=" + entityPath + ", xPath=" + xPath + "]";
+  }
+
 }

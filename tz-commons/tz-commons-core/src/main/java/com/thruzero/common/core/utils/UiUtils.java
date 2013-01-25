@@ -39,20 +39,18 @@ public class UiUtils {
    * <p/>
    * Example:
    * <pre>
-   *   &lt;ui:repeat value=&quot;#{column.panels}&quot; var=&quot;panel&quot;&gt;
-   *      &lt;h:panelGroup rendered=&quot;#{panel.panelClass eq &apos;ListPanel&apos;}&quot;&gt;
+   *   &lt;ui:repeat value=&quot;#{panelSet.panels}&quot; var=&quot;panel&quot;&gt;
+   *      &lt;tbsb:rssPanel title=&quot;#{panel.title}&quot; feed=&quot;#{panel.rssFeed}&quot; /&gt;
    * </pre>
-   * Causes the following error:
+   * The {@code <ui:repeat>} tag doesn't work with collections that aren't instances of List.
+   * When a non-List collection is used, a ScalarDataModel is returned, which causes the following error
+   * (see UIRepeat.getDataModel()):
    * <pre>
-   *     The class 'java.util.HashMap$Values' does not have the property 'panelClass'.
-   *
-   * Here's a partial stack trace:
-   *
-   *     javax.faces.model.ListDataModel.<init>(ListDataModel.java:79)
-   *     com.sun.faces.facelets.component.UIRepeat.getDataModel(UIRepeat.java:257)
+   *     The class 'java.util.HashMap$Values' does not have the property 'title'.
    * </pre>
    *
-   * This hack wraps the given collection in an ArrayList, if not already a List.
+   * This hack returns an UnmodifiableList of the given collection if it is a List; otherwise, it
+   * copies the given collection into a List and returns an UnmodifiableList on that.
    */
   public static <T> Collection<T> unmodifiableListHack(Collection<T> srcCollection) {
     if (srcCollection instanceof List) {
@@ -61,5 +59,4 @@ public class UiUtils {
       return Collections.unmodifiableList(new ArrayList<T>(srcCollection));
     }
   }
-
 }

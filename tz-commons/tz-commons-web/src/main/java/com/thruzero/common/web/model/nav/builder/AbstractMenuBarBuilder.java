@@ -16,6 +16,7 @@
 
 package com.thruzero.common.web.model.nav.builder;
 
+import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.web.model.nav.MenuBar;
 import com.thruzero.common.web.model.nav.MenuNode;
 
@@ -29,6 +30,7 @@ public abstract class AbstractMenuBarBuilder {
   public MenuBar build() {
     MenuBar result = createMenuBar();
 
+    loadTitle(result);
     loadMenus(result);
 
     return result;
@@ -38,6 +40,8 @@ public abstract class AbstractMenuBarBuilder {
     return new MenuBar();
   }
 
+  protected abstract void loadTitle(MenuBar menuBar);
+
   protected abstract void loadMenus(MenuBar menuBar);
 
   /**
@@ -46,5 +50,13 @@ public abstract class AbstractMenuBarBuilder {
    */
   protected void addRootMenu(MenuBar menuBar, String id, MenuNode menu) {
     menuBar.addMenu(id, menu);
+  }
+
+  protected InfoNodeElement createSimplePayload(String content) {
+    InfoNodeElement result = new InfoNodeElement("payload");
+
+    result.setText(content);
+
+    return result;
   }
 }

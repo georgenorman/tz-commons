@@ -20,7 +20,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jdom.input.DOMBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.ErrorHandler;
 
 import com.thruzero.common.core.infonode.InfoNodeDocument;
 import com.thruzero.common.core.infonode.InfoNodeElement;
@@ -84,8 +83,8 @@ public final class DomInfoNodeBuilder extends AbstractInfoNodeBuilder {
   }
 
   /** construct complete {@code InfoNodeElement} from DOM. */
-  public InfoNodeElement buildInfoNode(final Node sourceNode, final ErrorHandler xmlErrorHandler) throws ParserConfigurationException {
-    Document w3cDocument = XmlUtils.createDocumentBuilder(xmlErrorHandler).newDocument();
+  public InfoNodeElement buildInfoNode(final Node sourceNode) throws ParserConfigurationException {
+    Document w3cDocument = XmlUtils.createNonValidatingDocumentBuilder().newDocument();
 
     w3cDocument.adoptNode(sourceNode);
 

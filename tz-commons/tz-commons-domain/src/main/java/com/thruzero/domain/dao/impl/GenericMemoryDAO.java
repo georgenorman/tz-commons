@@ -16,11 +16,11 @@
 package com.thruzero.domain.dao.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import com.thruzero.common.core.support.KeyGen;
 import com.thruzero.common.core.support.SimpleInfo;
+import com.thruzero.common.core.utils.UiUtils;
 import com.thruzero.domain.dao.GenericDAO;
 import com.thruzero.domain.store.Persistent;
 
@@ -141,7 +141,7 @@ public abstract class GenericMemoryDAO<T extends Persistent> implements GenericD
 
   @Override
   public Collection<? extends T> getAll() {
-    return new ArrayList<T>(memoryStore.getResultList()); // TODO-p1(george) JSF EL (using h:dataTable tag) can't use Collection returned by Map.
+    return UiUtils.unmodifiableListHack(memoryStore.getResultList()); // JSF EL (using h:dataTable tag) can't use Collection returned by Map.
   }
 
   // Support ////////////////////////////////////////////////

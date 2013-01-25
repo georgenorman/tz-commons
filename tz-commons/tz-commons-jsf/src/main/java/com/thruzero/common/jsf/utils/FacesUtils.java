@@ -37,7 +37,6 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class FacesUtils {
   public static final String REDIRECT_URL = "redirectUrl";
-  public static final String REDIRECT_UTIL = "/utils/redirect.xhtml"; // TODO-p1(george) make this a servlet
 
   /**
    * Calls handleNavigation on the application's current NavigationHandler.

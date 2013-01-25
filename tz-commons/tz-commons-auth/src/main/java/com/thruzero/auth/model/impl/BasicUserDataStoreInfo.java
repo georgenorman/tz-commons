@@ -46,6 +46,8 @@ import com.thruzero.domain.model.DataStoreInfo;
  * @author George Norman
  */
 public class BasicUserDataStoreInfo extends DataStoreInfo {
+  private static final long serialVersionUID = 1L;
+
   private String rawDataStoreInfo;
 
   public BasicUserDataStoreInfo() {

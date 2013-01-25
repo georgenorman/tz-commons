@@ -217,7 +217,7 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
       PanelBuilder panelBuilder = panelBuilderTypeRegistry.createBuilder(panelNode.getName(), panelNode);
 
       if (panelBuilder == null) {
-        result.addPanel(new HtmlPanel("error", "Panel ERROR", null, "PanelBuilder not found for panel type " + panelNode.getName()));
+        result.addPanel(new HtmlPanel("error", "Panel ERROR", null, null, "PanelBuilder not found for panel type " + panelNode.getName()));
       } else {
         result.addPanel(panelBuilder.build());
       }

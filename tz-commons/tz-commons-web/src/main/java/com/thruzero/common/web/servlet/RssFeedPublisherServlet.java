@@ -85,6 +85,10 @@ public class RssFeedPublisherServlet extends HttpServlet {
     EntityPath entityPath = new EntityPath("/" + userName + "/rss/" + entityName + ".xml");
     InfoNodeElement rssFeedNode = DomainUtils.getRootNode(entityPath, dataStoreInfo);
 
+    if (rssFeedNode == null) {
+      throw new IllegalArgumentException("Feed Not Found");
+    }
+
     // publish the feed
     RssFeedService rssFeedService = ServiceLocator.locate(RssFeedService.class);
     Writer writer = response.getWriter();

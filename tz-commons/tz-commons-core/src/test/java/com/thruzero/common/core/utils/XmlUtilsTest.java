@@ -43,7 +43,7 @@ public class XmlUtilsTest extends AbstractCoreTestCase {
     DocumentBuilder builder = null;
 
     try {
-      builder = XmlUtils.createDocumentBuilder();
+      builder = XmlUtils.createNonValidatingDocumentBuilder();
     } catch (ParserConfigurationException e) {
       // ignore
     }
@@ -56,7 +56,7 @@ public class XmlUtilsTest extends AbstractCoreTestCase {
     Document dom = null;
     InputStream inputStream = StringUtilsExt.stringToInputStream(SampleNodeBuilderUtils.RESULT_AS_STRING_NESTED_INFO_NODE);
     try {
-      dom = XmlUtils.createDocument(inputStream, null);
+      dom = XmlUtils.createDocument(inputStream);
     } catch (Exception e) {
       // ignore
     }

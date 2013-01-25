@@ -122,7 +122,7 @@ public class StringUtilsExt extends StringUtils {
     for (Entry<String, String> entry : parametersToStream.entrySet()) {
       result.append(tokenSeparator);
       result.append(entry.getKey());
-      result.append("=");
+      result.append('=');
       result.append(entry.getValue());
       tokenSeparator = separator;
     }

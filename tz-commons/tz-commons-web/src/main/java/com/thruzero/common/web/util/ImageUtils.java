@@ -24,19 +24,28 @@ import com.thruzero.common.core.map.StringMap;
 import com.thruzero.common.core.utils.StringUtilsExt;
 
 /**
- * Image utilities, for reading image info from a Config.
+ * Utilities to initialize the Image Registry and return instances of ImageInfo for named images.
+ * <p>
+ * Example:
+ * <pre>
+ *   &lt;section name=&quot;imageRegistry&quot;&gt;
+ *     &lt;entry key=&quot;iconEdit&quot; value=&quot;src=[imagePaths]{icons}/add.png|width=16|height=16&quot;/&gt;
+ *     &lt;entry key=&quot;iconEdit&quot; value=&quot;src=[imagePaths]{icons}/edit.png|width=16|height=16&quot;/&gt;
+ *     &lt;entry key=&quot;iconEdit&quot; value=&quot;src=[imagePaths]{icons}/delete.png|width=16|height=16&quot;/&gt;
+ *   &lt;/section&gt;
+ * </pre>
  *
  * @author George Norman
  */
 public class ImageUtils {
-  private static Map<String, ImageInfo> imagesRegistry;
+  private static final Map<String, ImageInfo> imageRegistry = initRegistry();
 
   // -----------------------------------------------
   // ImageInfo
   // -----------------------------------------------
 
-  public static class ImageInfo {
-    private StringMap imageInfo;
+  public static final class ImageInfo {
+    private final StringMap imageInfo;
 
     public ImageInfo(final String imageInfoStream) {
       imageInfo = StringUtilsExt.tokensToMap(imageInfoStream, "|");
@@ -60,21 +69,19 @@ public class ImageUtils {
   // =========================================================================
 
   public static ImageInfo getImageInfo(final String key) {
-    ensureImagesInfo();
-
-    return imagesRegistry.get(key);
+    return imageRegistry.get(key);
   }
 
-  private static void ensureImagesInfo() {
-    if (imagesRegistry == null) {
-      imagesRegistry = new HashMap<String, ImageInfo>();
+  private static Map<String, ImageInfo> initRegistry() {
+    Map<String, ImageInfo> result = new HashMap<String, ImageInfo>();
 
-      // read the image properties
-      Map<String, String> registrySection = ConfigLocator.locate().getSection("imagesRegistry");
+    // read the image properties
+    Map<String, String> registrySection = ConfigLocator.locate().getSection("imageRegistry");
 
-      for (Entry<String, String> entry : registrySection.entrySet()) {
-        imagesRegistry.put(entry.getKey(), new ImageInfo(entry.getValue()));
-      }
+    for (Entry<String, String> entry : registrySection.entrySet()) {
+      result.put(entry.getKey(), new ImageInfo(entry.getValue()));
     }
+
+    return result;
   }
 }

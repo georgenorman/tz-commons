@@ -30,12 +30,25 @@ import com.thruzero.common.web.model.nav.MenuNode.MenuNodePath;
  * @author George Norman
  */
 public class MenuBar implements MenuStateHolder {
+  /** Optional menubar title. */
+  private String title;
 
   /** Path to the active MenuNode. */
   private MenuNodePath activeMenuPath;
 
+  /** set of menus associated with this menubar. */
   private Map<String, MenuNode> menus = new LinkedHashMap<String, MenuNode>();
 
+  /** Return the optional MenuBar title. */
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  /** Return the set of menus associated with this menubar. */
   public Collection<MenuNode> getMenus() {
     return UiUtils.unmodifiableListHack(menus.values());
   }

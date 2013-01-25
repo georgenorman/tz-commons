@@ -50,7 +50,10 @@ public class DomainUtils {
       infoNodeService = ServiceLocator.locate(InfoNodeService.class);
     }
     result = infoNodeService.getInfoNode(entityPath);
-    result.enableRootNode();
+
+    if (result != null) {
+      result.enableRootNode();
+    }
 
     return result;
   }

@@ -167,7 +167,7 @@ public class TokenStreamInfoNodeBuilderTest extends AbstractCoreTestCase {
       }
     };
 
-    performanceHelper.execute(50, 8, 0.1f);
+    performanceHelper.execute(800, 8, 0.1f);
   }
 
 }

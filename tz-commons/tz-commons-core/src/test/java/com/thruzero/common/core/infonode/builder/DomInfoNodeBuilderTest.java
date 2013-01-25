@@ -34,7 +34,6 @@ import com.thruzero.common.core.infonode.builder.utils.SampleDomNodeBuilderUtils
 import com.thruzero.common.core.infonode.builder.utils.SampleInfoNodeBuilderUtils;
 import com.thruzero.common.core.infonode.builder.utils.SampleNodeBuilderUtils;
 import com.thruzero.common.core.utils.XmlUtils;
-import com.thruzero.common.core.utils.XmlUtils.LoggingErrorHandler;
 import com.thruzero.test.support.AbstractCoreTestCase;
 
 /**
@@ -47,7 +46,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
   @Test
   public void testCreateSimpleInfoNode() throws IOException, SAXException {
     InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createSimpleInfoNodeWithAttributes();
-    Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
+    Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted());
 
     // <TestParentElement TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue">TestParentElementValue</TestParentElement>
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
@@ -60,7 +59,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
   @Test
   public void testPrimaryKeyInfoNode() throws IOException, SAXException {
     InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createEntityPathInfoNode();
-    Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
+    Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted());
 
     // <TestParentElement TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue" primaryKey="primaryValueOne">TestParentElementValue</TestParentElement>
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
@@ -73,7 +72,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
   @Test
   public void testCreateSimpleNestedInfoNode() throws IOException, SAXException {
     InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createSimpleNestedInfoNode(RootNodeOption.GENERATE_ROOT_NODE);
-    Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
+    Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted());
 
     //  <TestParentElement>
     //    TestParentElementValue
@@ -90,7 +89,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
   @Test
   public void testCreateComplexNestedInfoNode() throws IOException, SAXException {
     InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithParentValue(RootNodeOption.GENERATE_ROOT_NODE, 10);
-    Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
+    Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted());
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
     InfoNodeElement rootInfoNodeElement = infoNodeDocument.getRootInfoNodeElement();
 
@@ -105,7 +104,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
   @Test
   public void testNestedNodeNoParentValue() throws IOException, SAXException {
     InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createComplexNestedInfoNodeWithoutParentValue(RootNodeOption.GENERATE_ROOT_NODE, 10);
-    Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted(), null);
+    Document w3cDocument = XmlUtils.createDocument(sampleInfoNode.toStringFormatted());
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
     InfoNodeElement rootInfoNodeElement = infoNodeDocument.getRootInfoNodeElement();
 
@@ -117,7 +116,7 @@ public class DomInfoNodeBuilderTest extends AbstractCoreTestCase {
   @Test
   public void testCreateSimpleDocumentInfoNode() throws IOException, SAXException {
     String xmlDoc = SampleDomNodeBuilderUtils.createSimpleDocuemtNoAttributes(PreambleOption.EXCLUDED);
-    Document w3cDocument = XmlUtils.createDocument(xmlDoc, new LoggingErrorHandler("ComplexNestedInfoNode"));
+    Document w3cDocument = XmlUtils.createDocument(xmlDoc);
     InfoNodeDocument infoNodeDocument = DomInfoNodeBuilder.DEFAULT.buildInfoNode(w3cDocument);
     InfoNodeElement rootInfoNodeElement = infoNodeDocument.getRootInfoNodeElement();
 

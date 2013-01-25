@@ -22,7 +22,6 @@ import org.w3c.dom.Document;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.infonode.builder.AbstractInfoNodeBuilder.RootNodeOption;
 import com.thruzero.common.core.utils.XmlUtils;
-import com.thruzero.common.core.utils.XmlUtils.LoggingErrorHandler;
 
 /**
  * Utils for testing DomInfoNodeBuilder.
@@ -37,7 +36,7 @@ public class SampleDomNodeBuilderUtils extends SampleNodeBuilderUtils {
 
     try {
       result = XmlUtils.createDocument("<" + TEST_ELEMENT_ONE_NAME + " " + TEST_ATTRIBUTE_ONE_KEY + "='" + TEST_ATTRIBUTE_ONE_VALUE + "' " + TEST_ATTRIBUTE_TWO_KEY + "='"
-          + TEST_ATTRIBUTE_TWO_VALUE + "'>" + TEST_ELEMENT_ONE_VALUE + "</" + TEST_ELEMENT_ONE_NAME + ">", new LoggingErrorHandler("SimpleTokenDomNode"));
+          + TEST_ATTRIBUTE_TWO_VALUE + "'>" + TEST_ELEMENT_ONE_VALUE + "</" + TEST_ELEMENT_ONE_NAME + ">");
     } catch (Exception e) {
       result = null;
     }
@@ -50,7 +49,7 @@ public class SampleDomNodeBuilderUtils extends SampleNodeBuilderUtils {
 
     try {
       result = XmlUtils.createDocument("<" + TEST_ELEMENT_ONE_NAME + " " + TEST_ATTRIBUTE_ONE_KEY + "='" + TEST_ATTRIBUTE_ONE_VALUE + "' " + TEST_ATTRIBUTE_TWO_KEY + "='"
-          + TEST_ATTRIBUTE_TWO_VALUE + "'>" + TEST_ELEMENT_ONE_VALUE + "</" + TEST_ELEMENT_ONE_NAME + ">", new LoggingErrorHandler("SimpleTokenDomNode2"));
+          + TEST_ATTRIBUTE_TWO_VALUE + "'>" + TEST_ELEMENT_ONE_VALUE + "</" + TEST_ELEMENT_ONE_NAME + ">");
     } catch (Exception e) {
       result = null;
     }

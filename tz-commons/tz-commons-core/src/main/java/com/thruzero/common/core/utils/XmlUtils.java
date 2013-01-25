@@ -160,35 +160,19 @@ public class XmlUtils {
   }
 
   /**
-   * Creates a DocumentBuilder with the following settings:
+   * Creates a non-validating DocumentBuilder with the following settings:
    * <ul>
-   * <li>Validating: true
+   * <li>Validating: false
    * <li>NamespaceAware: true
-   * <li>ErrorHandler: null (results in the underlying implementation using it's own default implementation and
-   * behavior)
    * </ul>
    */
-  public static DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
-    return createDocumentBuilder(null);
-  }
-
-  /**
-   * Creates a DocumentBuilder with the following settings:
-   * <ul>
-   * <li>Validating: true
-   * <li>NamespaceAware: true
-   * <li>ErrorHandler: [given xmlErrorHandler] (if null, results in the underlying implementation using it's own default
-   * implementation and behavior)
-   * </ul>
-   */
-  public static DocumentBuilder createDocumentBuilder(final ErrorHandler xmlErrorHandler) throws ParserConfigurationException {
+  public static DocumentBuilder createNonValidatingDocumentBuilder() throws ParserConfigurationException {
     DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 
-    dbFactory.setValidating(true); // if true, then need to also set an org.xml.sax.ErrorHandler on DocumentBuilder
+    dbFactory.setValidating(false); // if true, then need to also set an org.xml.sax.ErrorHandler on DocumentBuilder
     dbFactory.setNamespaceAware(true);
 
     DocumentBuilder result = dbFactory.newDocumentBuilder();
-    result.setErrorHandler(xmlErrorHandler); // Setting this to null will result in the underlying implementation using it's own default implementation and behavior.
 
     return result;
   }
@@ -221,9 +205,9 @@ public class XmlUtils {
     return parser.parse(inStream);
   }
 
-  public static Document createDocument(final URL sourceURL, final ErrorHandler xmlErrorHandler) throws IOException, SAXException {
+  public static Document createDocument(final URL sourceURL) throws IOException, SAXException {
     try {
-      return createDocument(createDocumentBuilder(xmlErrorHandler), sourceURL);
+      return createDocument(createNonValidatingDocumentBuilder(), sourceURL);
     } catch (ParserConfigurationException e) {
       logger.error("*** ParserConfigurationException: " + e);
     }
@@ -231,9 +215,9 @@ public class XmlUtils {
     return null;
   }
 
-  public static Document createDocument(final InputStream inStream, final ErrorHandler xmlErrorHandler) throws IOException, SAXException {
+  public static Document createDocument(final InputStream inStream) throws IOException, SAXException {
     try {
-      return createDocument(createDocumentBuilder(xmlErrorHandler), inStream);
+      return createDocument(createNonValidatingDocumentBuilder(), inStream);
     } catch (ParserConfigurationException e) {
       logger.error("*** ParserConfigurationException: " + e);
     }
@@ -247,10 +231,10 @@ public class XmlUtils {
     return createDocument(parser, StringUtilsExt.stringToInputStream(in));
   }
 
-  public static Document createDocument(final String in, final ErrorHandler xmlErrorHandler) throws IOException, SAXException {
+  public static Document createDocument(final String in) throws IOException, SAXException {
     xmlUtilsLogHelper.logDocumentCreatedFor(in);
 
-    return createDocument(StringUtilsExt.stringToInputStream(in), xmlErrorHandler);
+    return createDocument(StringUtilsExt.stringToInputStream(in));
   }
 
   /** return null if content text is valid; otherwise return error message. */
@@ -259,7 +243,7 @@ public class XmlUtils {
 
     // create builder
     try {
-      DocumentBuilder documentParser = XmlUtils.createDocumentBuilder(xmlErrorHandler);
+      DocumentBuilder documentParser = XmlUtils.createNonValidatingDocumentBuilder();
       XmlUtils.createDocument(documentParser, inputStream);
     } catch (SAXException e) {
       return "SAXException:" + e.getMessage(); // "SAXException:" added to guarantee that the return result will not be empty on error.

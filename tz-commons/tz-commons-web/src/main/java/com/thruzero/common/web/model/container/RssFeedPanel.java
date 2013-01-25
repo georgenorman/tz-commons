@@ -16,6 +16,9 @@
 
 package com.thruzero.common.web.model.container;
 
+import java.util.List;
+
+import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.web.model.css.StyleClass;
 import com.thruzero.domain.model.RssFeed;
 
@@ -39,8 +42,8 @@ public class RssFeedPanel extends AbstractPanel {
    * @param title panel title.
    * @param headerStyleClass CSS style class used for the header.
    */
-  public RssFeedPanel(String id, String title, StyleClass headerStyleClass, RssFeed rssFeed, String titleLink, int quoteTooltipsCount) {
-    super(id, title, headerStyleClass);
+  public RssFeedPanel(String id, String title, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, RssFeed rssFeed, String titleLink, int quoteTooltipsCount) {
+    super(id, title, headerStyleClass, toolbar);
 
     this.rssFeed = rssFeed;
     this.titleLink = titleLink;

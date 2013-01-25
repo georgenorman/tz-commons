@@ -16,10 +16,13 @@
 
 package com.thruzero.common.web.model.container;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
+import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.web.model.css.StyleClass;
 
 /**
@@ -35,8 +38,8 @@ public class HtmlPanel extends AbstractPanel {
   /**
    * @param content raw HTML used to render the panel's contents.
    */
-  public HtmlPanel(String id, String title, StyleClass headerStyleClass, String content) {
-    super(id, title, headerStyleClass);
+  public HtmlPanel(String id, String title, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, String content) {
+    super(id, title, headerStyleClass, toolbar);
 
     this.content = content;
   }

@@ -35,6 +35,9 @@ import com.thruzero.common.web.model.css.StyleClass;
  * <pre>
  * {@code
  * <listPanel title="Java Articles">
+ *   <toolbar>
+ *     <button href="http://github.com" icon="/img/github.png"/>
+ *   </toolbar>
  *   <dataList>
  *     <a href="http://www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=practice:" title="DeveloperWorks - Java theory and practice">
  *       <icon>iconStar</icon>
@@ -64,8 +67,8 @@ public class ListPanel extends AbstractPanel {
    * (e.g., 'This is a link to an article on Slashdot [slashdot.org]'.
    * @param headerStyleClass css class for the panel's title.
    */
-  public ListPanel(String id, String title, boolean renderDomain, StyleClass headerStyleClass) {
-    super(id, title, headerStyleClass);
+  public ListPanel(String id, String title, boolean renderDomain, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
+    super(id, title, headerStyleClass, toolbar);
 
     this.renderDomain = renderDomain;
   }

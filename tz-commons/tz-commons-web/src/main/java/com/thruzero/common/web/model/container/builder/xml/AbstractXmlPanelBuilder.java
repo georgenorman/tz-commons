@@ -20,6 +20,9 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
@@ -53,6 +56,11 @@ public abstract class AbstractXmlPanelBuilder implements PanelBuilder {
    * Name of the attribute representing an optional CSS class for the panel header. The default name is "headerStyleClass" and can be changed via config.
    */
   public static final String HEADER_STYLE_CLASS_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "headerStyleClass", "headerStyleClass");
+
+  /**
+   * Name of the attribute representing an optional toolbar for the panel header. The default name is "toolbar" and can be changed via config.
+   */
+  public static final String TOOLBAR_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "toolbar", "toolbar");
 
   private InfoNodeElement panelNode;
 
@@ -100,4 +108,16 @@ public abstract class AbstractXmlPanelBuilder implements PanelBuilder {
     return new StyleClass(panelNode.getAttributeValue(HEADER_STYLE_CLASS_ID));
   }
 
+  protected List<InfoNodeElement> getToolbar() throws Exception {
+    List<InfoNodeElement> result = new ArrayList<InfoNodeElement>();
+    InfoNodeElement dataListNode = getPanelNode().findElement(TOOLBAR_ID);
+
+    if (dataListNode != null) {
+      for (Iterator<? extends InfoNodeElement> iter = dataListNode.getChildNodeIterator(); iter.hasNext(); ) {
+        result.add(iter.next());
+      }
+    }
+
+    return result;
+  }
 }

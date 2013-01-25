@@ -16,8 +16,12 @@
 
 package com.thruzero.common.web.model.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 
+import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.support.SimpleIdGenerator;
 import com.thruzero.common.web.model.css.StyleClass;
 
@@ -31,11 +35,17 @@ public abstract class AbstractPanel {
   private final String id;
   private final String title;
   private final StyleClass headerStyleClass;
+  private final List<InfoNodeElement> toolbar = new ArrayList<InfoNodeElement>();
 
-  public AbstractPanel(String id, String title, StyleClass headerStyleClass) {
+
+  public AbstractPanel(String id, String title, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
     this.id = StringUtils.isEmpty(id) ? SimpleIdGenerator.getInstance().getNextIdAsString() : id;
     this.title = title;
     this.headerStyleClass = headerStyleClass;
+
+    if (toolbar != null) {
+      this.toolbar.addAll(toolbar);
+    }
   }
 
   /**
@@ -65,4 +75,10 @@ public abstract class AbstractPanel {
   public String getPanelType() {
     return getClass().getSimpleName();
   }
+
+  /** Returns the List of optional buttons to render as a toolbar in the panel titleBar. */
+  public List<InfoNodeElement> getToolbar() {
+    return toolbar;
+  }
+
 }

@@ -18,11 +18,14 @@ package com.thruzero.common.web.model.nav.builder.xml;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
+import com.thruzero.common.core.infonode.builder.SaxInfoNodeBuilder;
 import com.thruzero.common.core.locator.ConfigLocator;
+import com.thruzero.common.core.support.SimpleIdGenerator;
 import com.thruzero.common.web.model.nav.MenuBar;
 import com.thruzero.common.web.model.nav.MenuNode;
 import com.thruzero.common.web.model.nav.MenuStateHolder;
@@ -36,30 +39,20 @@ import com.thruzero.common.web.model.nav.builder.AbstractMenuBarBuilder;
  *
  * <pre>
  * {@code
- *  <menuBar>
- *    <menu>
- *      <id>design</id>
- *      <title>Design</title>
+ *  <menuBar title="MenuBar Title">
+ *    <menu id="design" title="Design">
  *      <dataList>
- *        <item>
- *          <id>software</id>
- *          <title>Software</title>
+ *        <item id="software" title="Software">
  *          <payload>design.software</payload>
  *        </item>
- *        <item>
- *          <id>ui</id>
- *          <title>UI</title>
+ *        <item id="ui" title="UI">
  *          <payload>design.ui</payload>
  *        </item>
  *      </dataList>
  *    </menu>
- *    <menu>
- *      <id>languages</id>
- *      <title>Languages</title>
+ *    <menu id="languages" title="Languages">
  *      <dataList>
- *        <item>
- *          <id>java</id>
- *          <title>Java</title>
+ *        <item id="java" title="Java">
  *          <payload>languages.java</payload>
  *        </item>
  *      </dataList>
@@ -74,16 +67,22 @@ public class XmlMenuBarBuilder extends AbstractMenuBarBuilder {
   private static final Logger logger = Logger.getLogger(XmlMenuBarBuilder.class);
 
   /**
-   * Name of the child element representing the ID of a particular menu. The default name is "id" and can be changed via
+   * Name of the menu bar attribute representing the ID of a particular menu. The default name is "id" and can be changed via
    * config.
    */
   private static final String MENU_ID = ConfigLocator.locate().getValue(MenuNode.class.getName(), "id", "id");
 
   /**
-   * Name of the child element representing the title of a particular menu. The default name is "title" and can be
+   * Name of the menu bar attribute representing the title of a particular menu. The default name is "title" and can be
    * changed via config.
    */
   private static final String TITLE_ID = ConfigLocator.locate().getValue(MenuNode.class.getName(), "title", "title");
+
+  /**
+   * Name of the child element representing the description of a particular menu. The default name is "description" and can be
+   * changed via config.
+   */
+  private static final String DESCRIPTION_ID = ConfigLocator.locate().getValue(MenuNode.class.getName(), "description", "description");
 
   /**
    * Name of the child element representing optional data associated with a menu (e.g., resource ID of a record in a
@@ -98,6 +97,16 @@ public class XmlMenuBarBuilder extends AbstractMenuBarBuilder {
 
   public XmlMenuBarBuilder(InfoNodeElement menusNode) {
     this.menusNode = menusNode;
+  }
+
+  @Override
+  protected void loadTitle(MenuBar menuBar) {
+    String title = menusNode.getAttributeValue(TITLE_ID);
+    if (StringUtils.isEmpty(title)) {
+      title = TITLE_ID + " not found";
+    }
+
+    menuBar.setTitle(title);
   }
 
   @Override
@@ -116,10 +125,25 @@ public class XmlMenuBarBuilder extends AbstractMenuBarBuilder {
 
   protected MenuNode loadMenu(MenuStateHolder parent, InfoNodeElement menuNodeElement) {
     MenuNode result = null;
-    String id = menuNodeElement.getChildText(MENU_ID);
+    String id = menuNodeElement.getAttributeValue(MENU_ID);
+    if (StringUtils.isEmpty(id)) {
+      id = "id" + SimpleIdGenerator.getInstance().getNextIdAsString();
+    }
+
+    String title = menuNodeElement.getAttributeValue(TITLE_ID);
+    if (StringUtils.isEmpty(title)) {
+      title = TITLE_ID + " not found";
+    }
+
+    String description = menuNodeElement.getChildText(DESCRIPTION_ID);
 
     try {
-      result = new MenuNode(parent, id, menuNodeElement.getChildText(TITLE_ID), (InfoNodeElement)menuNodeElement.getChild(PAYLOAD_ID));
+      // detach payload
+      InfoNodeElement payload = (InfoNodeElement)menuNodeElement.getChild(PAYLOAD_ID);
+      if (payload != null) {
+        payload = SaxInfoNodeBuilder.WITH_ROOT_NODE.buildInfoNode(payload.toStringFormatted(), null);
+      }
+      result = new MenuNode(parent, id, title, description, payload);
       InfoNodeElement dataListNode = menuNodeElement.findElement(DATALIST_ID);
 
       if (dataListNode != null) {

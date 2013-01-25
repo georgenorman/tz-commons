@@ -40,7 +40,7 @@ import com.thruzero.common.core.infonode.builder.filter.InfoNodeFilterChain;
  * <b>Example:</b>
  *
  * <pre>
- * <code>
+ * {@code
  * String subLinks =
  *   "<dataList>"+
  *   "  <anchor>"+
@@ -56,7 +56,7 @@ import com.thruzero.common.core.infonode.builder.filter.InfoNodeFilterChain;
  *   "</dataList>";
  *
  * InfoNodeElement subLinks = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(subLinks);
- * </code>
+ * }
  * </pre>
  *
  * @author George Norman

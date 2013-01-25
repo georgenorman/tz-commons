@@ -28,13 +28,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
-import com.thruzero.common.core.locator.ConfigLocator;
 import com.thruzero.common.core.locator.ProviderLocator;
 import com.thruzero.common.core.provider.ResourceProvider;
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.utils.PerformanceTimerUtils.PerformanceLoggerHelper;
 import com.thruzero.common.jsf.support.ContentQuery;
 import com.thruzero.common.jsf.support.provider.RootNodeCacheBuilderProvider;
+import com.thruzero.common.jsf.utils.FacesUtils;
 import com.thruzero.common.web.model.container.HtmlPanel;
 import com.thruzero.common.web.model.container.PanelSet;
 import com.thruzero.common.web.model.nav.MenuBar;
@@ -58,9 +58,10 @@ public class DynamicContentBean implements Serializable {
   private static final ErrorBuilder errorBuilder = new ErrorBuilder();
   private static final ContentQueryBuilder contentQueryBuilder = new ContentQueryBuilder();
 
-  private final RootNodeCacheBuilder rootNodeCacheBuilder = ProviderLocator.locate(RootNodeCacheBuilderProvider.class).createRootNodeCacheBuilder();
+  private transient RootNodeCacheBuilder rootNodeCacheBuilder;
 
-  private final transient DataStoreCache dataStoreCache = new DataStoreCache();
+  // BUG Fix: http://stackoverflow.com/questions/2968876/final-transient-fields-and-serialization
+  private transient DataStoreCache dataStoreCache;
 
   // ------------------------------------------------------
   // ContentException
@@ -86,22 +87,19 @@ public class DynamicContentBean implements Serializable {
    * A cache of root nodes as well as the list of component models built from the root node (see RootNodeCache).
    */
   public static class DataStoreCache {
-    private int maxCacheSize;
+    private String requestUri;
 
     // TODO-p0(george). ConcurrentHashMap may not be the best for this (investigate this vs rw lock)
-    private final transient Map<String, RootNodeCache> cache = new ConcurrentHashMap<String, RootNodeCache>();
-
-    public DataStoreCache() {
-      maxCacheSize = ConfigLocator.locate().getIntegerValue(DataStoreCache.class.getName(), "maxCacheSize", 3);
-    }
+    private Map<String, RootNodeCache> cache = new ConcurrentHashMap<String, RootNodeCache>();
 
     public RootNodeCache getRootNodeCache(String key) {
       return cache.get(key);
     }
 
     public void putRootNodeCache(String key, RootNodeCache value) {
-      if (cache.size() > maxCacheSize) {
+      if (!StringUtils.equals(requestUri, FacesUtils.getRequest().getRequestURI())) {
         cache.clear();
+        requestUri = FacesUtils.getRequest().getRequestURI();
       }
       cache.put(key, value);
     }
@@ -182,7 +180,7 @@ public class DynamicContentBean implements Serializable {
     public PanelSet buildMissingPanelSetError(String xPath) {
       PanelSet result = new PanelSet("error");
 
-      result.addPanel(new HtmlPanel("error", "Error", null, "ERROR: Missing PanelSet for " + xPath));
+      result.addPanel(new HtmlPanel("error", "Error", null, null, "ERROR: Missing PanelSet for " + xPath));
 
       return result;
     }
@@ -190,7 +188,7 @@ public class DynamicContentBean implements Serializable {
     public MenuBar buildMissingMenuBarError(String xPath) {
       MenuBar result = new MenuBar();
 
-      result.addMenu("errorMenuNode", new MenuNode(null, "errorMenuNode", "Menu Error - XPath not found: " + xPath, null));
+      result.addMenu("errorMenuNode", new MenuNode(null, "errorMenuNode", "Menu Error - XPath not found: " + xPath, "", null));
 
       return result;
     }
@@ -320,18 +318,42 @@ public class DynamicContentBean implements Serializable {
   }
 
   // ============================================================================
-  // AbstractDynamicContentBean
+  // DynamicContentBean
   // ============================================================================
 
+  /**
+   * Lazy init transients due to dependencies on Locator.
+   * <p/>
+   * TODO-p1(george). REVISIT. This issue can happen again with another class unless a better solution is found.
+   * Issue: On Tomcat startup, serialization appears to happen before the InitFilter is called.
+   * This breaks locator as follows. First, the config locator requires the InitFilter to give it the path to the config file.
+   * Second, if readObject is used to init the transients, the locators are accessed causing the Registry to be created and interfaces registered.
+   * Then, when InitFilter is called, it causes the Locators to be loaded/initialized again, which generates
+   * an error (RegistryLocatorStrategy:57 - InterfaceBindingRegistry ERROR - Binding already exists for given interface: com.thruzero.common.core.config.Config).
+   */
+  private void ensureTransients() {
+    if (dataStoreCache == null) {
+      dataStoreCache = new DataStoreCache();
+      rootNodeCacheBuilder = ProviderLocator.locate(RootNodeCacheBuilderProvider.class).createRootNodeCacheBuilder();
+    }
+  }
+
   public String getText(String key) {
+    ensureTransients();
+
     ContentQuery contentQuery = contentQueryBuilder.buildFromKey(key, getDataStoreInfo());
     RootNodeCache rootNodeCache = getRootNodeCache(contentQuery.getEntityPath());
+
+    assertRootNodeCacheFound(rootNodeCache, "Text", key);
+
     InfoNodeElement resultNode = rootNodeCache.getContentNode(contentQuery.getXPath());
 
     return resultNode.getText();
   }
 
   public String getSafeText(String key) {
+    ensureTransients();
+
     String result = getText(key);
 
     if (StringUtils.isNotEmpty(result)) {
@@ -342,6 +364,8 @@ public class DynamicContentBean implements Serializable {
   }
 
   public InfoNodeElement getContentNode(String key) throws ContentException {
+    ensureTransients();
+
     ContentQuery contentQuery = contentQueryBuilder.buildFromKey(key, getDataStoreInfo());
     InfoNodeElement result = loadContentNode(contentQuery);
 
@@ -350,8 +374,13 @@ public class DynamicContentBean implements Serializable {
 
   //TODO-p1(george). Investigate why JSF EL can't distinguish between ContentQuery and String. Renamed to loadPanelSetList for now.
   public InfoNodeElement loadContentNode(ContentQuery contentQuery) throws ContentException {
+    ensureTransients();
+
     PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
     RootNodeCache rootNodeCache = getRootNodeCache(contentQuery.getEntityPath());
+
+    assertRootNodeCacheFound(rootNodeCache, "Content Node", contentQuery.toString());
+
     InfoNodeElement result = rootNodeCache.getContentNode(contentQuery.getXPath());
     performanceLoggerHelper.debug("loadContentNode");
 
@@ -359,9 +388,14 @@ public class DynamicContentBean implements Serializable {
   }
 
   public PanelSet getPanelSet(String key) throws Exception {
+    ensureTransients();
+
     PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
     ContentQuery contentQuery = contentQueryBuilder.buildFromKey(key, getDataStoreInfo());
     RootNodeCache rootNodeCache = getRootNodeCache(contentQuery.getEntityPath());
+
+    assertRootNodeCacheFound(rootNodeCache, "PanelSet", contentQuery.toString());
+
     PanelSet result = rootNodeCache.getPanelSet(contentQuery.getXPath());
 
     if (result == null) {
@@ -376,6 +410,8 @@ public class DynamicContentBean implements Serializable {
   }
 
   public List<PanelSet> getPanelSetList(String key) throws ContentException {
+    ensureTransients();
+
     PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
     ContentQuery contentQuery = contentQueryBuilder.buildFromKey(key, getDataStoreInfo());
     List<PanelSet> result = loadPanelSetList(contentQuery);
@@ -393,6 +429,8 @@ public class DynamicContentBean implements Serializable {
   }
 
   public List<PanelSet> loadPanelSetList(ContentQuery contentQuery) throws ContentException {
+    ensureTransients();
+
     PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
     List<PanelSet> result;
     EntityPath entityPath = contentQuery.getEntityPath();
@@ -402,6 +440,9 @@ public class DynamicContentBean implements Serializable {
       result = new ArrayList<PanelSet>();
     } else {
       RootNodeCache rootNodeCache = getRootNodeCache(entityPath);
+
+      assertRootNodeCacheFound(rootNodeCache, "Panel Set List", contentQuery.toString());
+
       try {
         result = rootNodeCache.getPanelSetList(xPath);
       } catch (Exception e) {
@@ -414,9 +455,14 @@ public class DynamicContentBean implements Serializable {
   }
 
   public MenuBar getMenuBar(String key) throws ContentException {
+    ensureTransients();
+
     PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
     ContentQuery contentQuery = contentQueryBuilder.buildFromKey(key, getDataStoreInfo());
     RootNodeCache rootNodeCache = getRootNodeCache(contentQuery.getEntityPath());
+
+    assertRootNodeCacheFound(rootNodeCache, "Menu Bar", key);
+
     MenuBar result = rootNodeCache.getMenuBar(contentQuery.getXPath());
 
     if (result == null) {
@@ -431,6 +477,8 @@ public class DynamicContentBean implements Serializable {
   }
 
   public void clearCache() {
+    ensureTransients();
+
     dataStoreCache.clear();
   }
 
@@ -443,7 +491,9 @@ public class DynamicContentBean implements Serializable {
     if (result == null) {
       result = rootNodeCacheBuilder.createRootNodeCache(entityPath, getDataStoreInfo());
 
-      dataStoreCache.putRootNodeCache(entityPath.toString(), result);
+      if (result != null) {
+        dataStoreCache.putRootNodeCache(entityPath.toString(), result);
+      }
     }
 
     return result;
@@ -453,6 +503,12 @@ public class DynamicContentBean implements Serializable {
     DataStoreInfo result = ProviderLocator.locate(DataStoreInfoProvider.class).getDataStoreInfo();
 
     return result;
+  }
+
+  protected void assertRootNodeCacheFound(RootNodeCache rootNodeCache, String contentType, String contentKey) {
+    if (rootNodeCache == null) {
+      throw new ContentException("ERROR: " + contentType + " not found for key: " + contentKey);
+    }
   }
 
 }

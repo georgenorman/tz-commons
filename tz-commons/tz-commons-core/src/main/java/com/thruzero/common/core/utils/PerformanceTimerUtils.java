@@ -101,7 +101,7 @@ public class PerformanceTimerUtils {
 
         performanceLogger.debug(StringUtils.replace(template, ELAPSED_TIME_PARAM, elapsedTime));
       } catch (Exception e) {
-        logger.error("PerformanceLoggerHelper.debug(String) generated and Exception: ", e);
+        logger.error("PerformanceLoggerHelper.debug(String) generated an Exception: ", e);
       }
     }
   }

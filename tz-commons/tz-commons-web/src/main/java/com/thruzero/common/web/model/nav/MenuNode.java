@@ -53,6 +53,9 @@ public class MenuNode implements MenuStateHolder {
   /** Title of this menu element. */
   private String title;
 
+  /** Optional description of this menu element. */
+  private String description;
+
   /** Content associated with this menu element. */
   private InfoNodeElement payload;
 
@@ -157,14 +160,15 @@ public class MenuNode implements MenuStateHolder {
   // MenuNode
   // ============================================================================
 
-  public MenuNode(MenuStateHolder parent, String id, String title, InfoNodeElement payload) {
-    this(parent, id, title, payload, null);
+  public MenuNode(MenuStateHolder parent, String id, String title, String description, InfoNodeElement payload) {
+    this(parent, id, title, description, payload, null);
   }
 
-  public MenuNode(MenuStateHolder parent, String id, String title, InfoNodeElement payload, Map<String, MenuNode> childElements) {
+  public MenuNode(MenuStateHolder parent, String id, String title, String description, InfoNodeElement payload, Map<String, MenuNode> childElements) {
     this.parent = parent;
     this.path = new MenuNodePath(parent, id);
     this.title = title;
+    this.description = description;
     this.payload = payload;
     this.childNodes = childElements == null ? new LinkedHashMap<String, MenuNode>() : childElements;
   }
@@ -208,6 +212,15 @@ public class MenuNode implements MenuStateHolder {
 
   public String getTitle() {
     return title;
+  }
+
+  /** Return the optional MenuNode description. */
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   /** Return the optional data associated with this instance. */

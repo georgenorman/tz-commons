@@ -21,7 +21,14 @@ import com.thruzero.common.web.util.ImageUtils.ImageInfo;
 
 /**
  * Support bean used to retrieve image info for a named image (e.g., src URL, width and height).
- * This enables images to be independant of the filename or location.
+ * This enables images to be independent of the filename or location. It also enables the
+ * Image registry to be used by any JSF page or tag, since it can be used directly on the page
+ * for an HTML IMG tag SRC attribute or embedded as a value for any JSF image tag attribute.
+ * <p>
+ * Example:
+ * <pre>
+ * &lt;h:graphicImage value=&quot;#{imageRegistryBean.getImageInfo(faqItem.getChildText(&apos;icon&apos;)).src}&quot;
+ * </pre>
  *
  * @author George Norman
  */
