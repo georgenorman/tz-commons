@@ -55,7 +55,6 @@ public class TimerBean implements Serializable {
     try {
       PerformanceLogger performanceLogger = PerformanceTimerUtils.get();
 
-      performanceLogger.stop();
       result = DateTimeFormatUtilsExt.formatElapsedTime(performanceLogger.getRunningElapsedMillis());
     } catch (Exception e) {
       result = "N/A";
