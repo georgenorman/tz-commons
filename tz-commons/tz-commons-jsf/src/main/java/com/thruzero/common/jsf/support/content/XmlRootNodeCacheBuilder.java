@@ -85,7 +85,7 @@ public class XmlRootNodeCacheBuilder implements RootNodeCacheBuilder, Serializab
   @Override
   public RootNodeCache createRootNodeCache(EntityPath entityPath, DataStoreInfo dataStoreInfo) {
     RootNodeCache result = null;
-    InfoNodeElement rootNode = DomainUtils.getRootNode(entityPath, dataStoreInfo);
+    InfoNodeElement rootNode = DomainUtils.loadRootNode(entityPath, dataStoreInfo);
 
     if (rootNode != null) {
       result = new XmlRootNodeCache(rootNode);

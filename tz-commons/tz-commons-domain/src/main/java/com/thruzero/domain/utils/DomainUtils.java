@@ -33,13 +33,13 @@ import com.thruzero.domain.service.impl.HttpInfoNodeService;
 public class DomainUtils {
 
   /**
-   * Return the root InfoNodeElement for the given entityPath, taking the user's private RootDataStorePath into account.
+   * Load and return the requested InfoNodeElement from either the configured DataStore or the user's private remote DataStore (defined by the user's PrivateRootDataStorePath).
    * TODO-p1(george). May need an abstraction for this to bundle various compound services related to the same type.
    *
    * @param entityPath path to the root node, from the RootDataStorePath.
    * @param dataStoreInfo determines if the user has a private RootDataStorePath and if so, modifies the given entityPath to reflect the
    */
-  public static InfoNodeElement getRootNode(EntityPath entityPath, final DataStoreInfo dataStoreInfo) {
+  public static InfoNodeElement loadRootNode(EntityPath entityPath, final DataStoreInfo dataStoreInfo) {
     InfoNodeElement result;
     InfoNodeService infoNodeService;
 

@@ -83,7 +83,7 @@ public class RssFeedPublisherServlet extends HttpServlet {
 
     // load the InfoNode from the user's datastore for the requested feed
     EntityPath entityPath = new EntityPath("/" + userName + "/rss/" + entityName + ".xml");
-    InfoNodeElement rssFeedNode = DomainUtils.getRootNode(entityPath, dataStoreInfo);
+    InfoNodeElement rssFeedNode = DomainUtils.loadRootNode(entityPath, dataStoreInfo);
 
     if (rssFeedNode == null) {
       throw new IllegalArgumentException("Feed Not Found");
