@@ -17,8 +17,6 @@ package com.thruzero.common.core.support;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.thruzero.common.core.support.EntityPath.PathAndNameValidator;
 
 /**
@@ -68,7 +66,7 @@ public class ContainerPath implements Serializable, Cloneable {
   public ContainerPath getParent() { // TODO-p1(george) test this
     ContainerPath result = null;
 
-    if (StringUtils.isNotEmpty(path) && path.length() > 1) {
+    if (path != null && path.length() > 1) {
       int parentTrailingSeparator = path.lastIndexOf(CONTAINER_PATH_SEPARATOR, path.length() - 1); // skip trailing slash to get parent's trailing slash
 
       result = new ContainerPath(path.substring(0, parentTrailingSeparator));

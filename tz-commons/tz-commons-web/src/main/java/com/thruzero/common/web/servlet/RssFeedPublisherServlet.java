@@ -31,11 +31,12 @@ import org.apache.commons.lang3.StringUtils;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ProviderLocator;
 import com.thruzero.common.core.locator.ServiceLocator;
+import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.model.DataStoreInfo;
 import com.thruzero.domain.provider.DataStoreInfoProvider;
+import com.thruzero.domain.service.InfoNodeService;
 import com.thruzero.domain.service.RssFeedService;
-import com.thruzero.domain.utils.DomainUtils;
 
 /**
  * A servlet that generates RSS 2.0 feeds for a given request. The request must contain the feed id as a request parameter
@@ -82,11 +83,14 @@ public class RssFeedPublisherServlet extends HttpServlet {
     }
 
     // load the InfoNode from the user's datastore for the requested feed
-    EntityPath entityPath = new EntityPath("/" + userName + "/rss/" + entityName + ".xml");
-    InfoNodeElement rssFeedNode = DomainUtils.loadRootNode(entityPath, dataStoreInfo);
+    EntityPath entityPath = new EntityPath(ContainerPath.CONTAINER_PATH_SEPARATOR + userName + ContainerPath.CONTAINER_PATH_SEPARATOR + "rss" + ContainerPath.CONTAINER_PATH_SEPARATOR + entityName + ".xml");
+    InfoNodeService infoNodeService = ServiceLocator.locate(InfoNodeService.class);
+    InfoNodeElement rssFeedNode = infoNodeService.getInfoNode(entityPath, dataStoreInfo);
 
     if (rssFeedNode == null) {
       throw new IllegalArgumentException("Feed Not Found");
+    } else {
+      rssFeedNode.enableRootNode();
     }
 
     // publish the feed

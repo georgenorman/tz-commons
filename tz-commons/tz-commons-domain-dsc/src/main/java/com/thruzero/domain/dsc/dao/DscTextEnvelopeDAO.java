@@ -118,10 +118,18 @@ public final class DscTextEnvelopeDAO extends AbstractDataStoreDAO<TextEnvelope>
     List<? extends DataStoreEntity> entities = dsc.getAllEntities(recursive);
 
     for (DataStoreEntity entity : entities) {
-      EntityPath id = entity.getEntityPath();
+      EntityPath id = new EntityPath(containerPath, entity.getEntityPath());
 
       result.add(getByKey(id));
     }
+
+    return result;
+  }
+
+  @Override
+  public List<EntityPath> getTextEnvelopePaths(ContainerPath containerPath, boolean recursive) {
+    DataStoreContainer dsc = createDataStoreContainer(containerPath, true);
+    List<EntityPath> result = dsc.getAllEntityPaths(recursive);
 
     return result;
   }

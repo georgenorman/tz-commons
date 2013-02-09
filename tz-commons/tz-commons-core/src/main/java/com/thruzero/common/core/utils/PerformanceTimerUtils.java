@@ -173,7 +173,14 @@ public class PerformanceTimerUtils {
   }
 
   public static PerformanceLogger get() {
-    return threadLocal.get();
+    PerformanceLogger result = threadLocal.get();
+
+    if (result == null) {
+      result = new PerformanceLogger();
+      set(result);
+    }
+
+    return result;
   }
 
   public static void set(final PerformanceLogger performanceLogger) {

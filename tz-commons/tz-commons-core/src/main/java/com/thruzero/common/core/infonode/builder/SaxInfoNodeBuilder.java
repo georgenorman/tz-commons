@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.jdom.Attribute;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -62,7 +61,6 @@ import com.thruzero.common.core.infonode.builder.filter.InfoNodeFilterChain;
  * @author George Norman
  */
 public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
-  private static final Logger logger = Logger.getLogger(SaxInfoNodeBuilder.class);
 
   /** Basic builder; does not provide parent document (only relative xpath supported) and no primary key. */
   public static final SaxInfoNodeBuilder DEFAULT = new SaxInfoNodeBuilder(PrimaryKeyOption.NO_PRIMARY_KEY, RootNodeOption.NO_ROOT_NODE);
@@ -238,34 +236,30 @@ public final class SaxInfoNodeBuilder extends AbstractInfoNodeBuilder {
   }
 
   /** Build a complete {@code InfoNodeElement} from xml. */
-  public InfoNodeElement buildInfoNode(final String xml, final InfoNodeFilterChain infoNodeFilterChain) {
+  public InfoNodeElement buildInfoNode(final String xml, final InfoNodeFilterChain infoNodeFilterChain) throws Exception {
     return doBuildInfoNode(xml, new InfoNodeElement(), infoNodeFilterChain);
   }
 
   /** Build a complete {@code InfoNodeElement} from xml. */
-  public InfoNodeElement buildInfoNode(final String xml, final InfoNodeElement targetNode, final InfoNodeFilterChain infoNodeFilterChain) {
+  public InfoNodeElement buildInfoNode(final String xml, final InfoNodeElement targetNode, final InfoNodeFilterChain infoNodeFilterChain) throws Exception {
     return doBuildInfoNode(xml, targetNode, infoNodeFilterChain);
   }
 
   // IMPLEMENTATION //////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /** construct complete {@code InfoNodeElement} from dom. */
-  protected InfoNodeElement doBuildInfoNode(final String xml, final InfoNodeElement targetNode, final InfoNodeFilterChain infoNodeFilterChain) {
+  protected InfoNodeElement doBuildInfoNode(final String xml, final InfoNodeElement targetNode, final InfoNodeFilterChain infoNodeFilterChain) throws Exception {
     handlePrimaryKey(targetNode);
     if (StringUtils.isNotEmpty(xml)) {
-      try {
-        XMLReader parser = XMLReaderFactory.createXMLReader();
-        InfoNodeSaxHandler dnHandler = new InfoNodeSaxHandler(targetNode, infoNodeFilterChain); // state for this build is kept in this InfoNode Handler instance
+      XMLReader parser = XMLReaderFactory.createXMLReader();
+      InfoNodeSaxHandler dnHandler = new InfoNodeSaxHandler(targetNode, infoNodeFilterChain); // state for this build is kept in this InfoNode Handler instance
 
-        parser.setContentHandler(dnHandler);
-        parser.setErrorHandler(dnHandler);
-        parser.setFeature("http://xml.org/sax/features/validation", false);
+      parser.setContentHandler(dnHandler);
+      parser.setErrorHandler(dnHandler);
+      parser.setFeature("http://xml.org/sax/features/validation", false);
 
-        InputSource input = new InputSource(new StringReader(xml));
-        parser.parse(input);
-      } catch (Exception e) {
-        logger.error("Failed to build InfoNodeElement from xml: ", e);
-      }
+      InputSource input = new InputSource(new StringReader(xml));
+      parser.parse(input);
     }
     handleRootNode(targetNode);
 

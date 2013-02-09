@@ -76,6 +76,12 @@ public final class HibernateTextEnvelopeDAO extends HibernateGenericDAO<TextEnve
   }
 
   @Override
+  public List<EntityPath> getTextEnvelopePaths(ContainerPath containerPath, boolean recursive) {
+    // TODO-p0(george) Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public TextEnvelope getTextEnvelope(EntityPath entityPath) {
     Session session = getCurrentSession();
 

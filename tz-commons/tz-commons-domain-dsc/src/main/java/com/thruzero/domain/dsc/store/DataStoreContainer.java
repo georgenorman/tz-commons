@@ -68,6 +68,8 @@ public interface DataStoreContainer {
    */
   List<? extends DataStoreEntity> getAllEntities(boolean recursive);
 
+  List<EntityPath> getAllEntityPaths(boolean recursive);
+
   /**
    * If an entity with the given {@code entityName} does not exist, in the container managed by this
    * {@code DataStoreContainer}, then create it and write the given {@code dataEntity} to it; if it already exists, then

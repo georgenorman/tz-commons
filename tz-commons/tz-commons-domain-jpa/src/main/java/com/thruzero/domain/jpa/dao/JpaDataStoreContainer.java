@@ -75,6 +75,13 @@ public class JpaDataStoreContainer implements DataStoreContainer {
   }
 
   @Override
+  public List<EntityPath> getAllEntityPaths(boolean recursive) {
+    List<EntityPath> result = jpaTextEnvelopeDAO.getTextEnvelopePaths(containerPath, false);
+
+    return result;
+  }
+
+  @Override
   public void saveOrUpdateEntity(String entityName, DataStoreEntity dataStoreEntity) {
     updateEntity(entityName, dataStoreEntity);
   }

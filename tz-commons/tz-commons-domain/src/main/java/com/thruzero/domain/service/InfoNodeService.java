@@ -16,12 +16,14 @@
 package com.thruzero.domain.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.service.Service;
 import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.SimpleInfoProvider;
+import com.thruzero.domain.model.DataStoreInfo;
 
 /**
  * A Service interface to manage persistence-related functionality of InfoNodeElement instances.
@@ -58,7 +60,11 @@ public interface InfoNodeService extends Service, SimpleInfoProvider {
    */
   Collection<? extends InfoNodeElement> getInfoNodes(ContainerPath containerPath, boolean recursive);
 
+  List<EntityPath> getInfoNodePaths(ContainerPath containerPath, boolean recursive);
+
   InfoNodeElement getInfoNode(EntityPath entityPath);
+
+  InfoNodeElement getInfoNode(EntityPath entityPath, final DataStoreInfo dataStoreInfo);
 
   /** Return true if resource exists at the given entity path. */
   boolean isExistingEntity(EntityPath entityPath);
@@ -97,4 +103,9 @@ public interface InfoNodeService extends Service, SimpleInfoProvider {
 
   /** Delete the domainObject from the data store, if it exists. */
   void delete(InfoNodeElement domainObject);
+
+  String getRawData(EntityPath entityPath);
+
+  void saveOrUpdateRawData(EntityPath entityPath, String data);
+
 }

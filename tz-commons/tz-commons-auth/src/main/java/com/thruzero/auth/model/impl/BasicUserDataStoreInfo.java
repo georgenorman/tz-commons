@@ -69,7 +69,12 @@ public class BasicUserDataStoreInfo extends DataStoreInfo {
   }
 
   private void initFromRawData() {
-    InfoNodeElement rootNode = SaxInfoNodeBuilder.WITH_ROOT_NODE.buildInfoNode(rawDataStoreInfo, null);
+    InfoNodeElement rootNode;
+    try {
+      rootNode = SaxInfoNodeBuilder.WITH_ROOT_NODE.buildInfoNode(rawDataStoreInfo, null);
+    } catch (Exception e) {
+      throw new RuntimeException("Invalid Raw DataStore Info.", e);
+    }
 
     setDataStoreContext(rootNode.getChildText("context"));
     setPrivateRootDataStorePath(rootNode.getChildText("private-root-data-store-path"));

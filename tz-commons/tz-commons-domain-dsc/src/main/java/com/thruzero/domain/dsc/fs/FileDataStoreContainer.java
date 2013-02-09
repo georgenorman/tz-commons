@@ -46,9 +46,6 @@ public class FileDataStoreContainer implements DataStoreContainer {
   /** Absolute path to the directory managed by this FileDataStoreContainer instance. */
   private File containerStore;
 
-  /** Saved ContainerPath instance. */
-  private ContainerPath savedContainerPath;
-
   // ------------------------------------------------
   // FileDataStoreEntity
   // ------------------------------------------------
@@ -101,7 +98,6 @@ public class FileDataStoreContainer implements DataStoreContainer {
    */
   public FileDataStoreContainer(BaseStorePath baseStorePath, ContainerPath containerPath, boolean createParentContainersIfNonExistent) {
     this.containerStore = new File(baseStorePath.toString(), containerPath.getPath());
-    this.savedContainerPath = containerPath;
 
     boolean exists = containerStore.exists();
 
@@ -122,22 +118,37 @@ public class FileDataStoreContainer implements DataStoreContainer {
    */
   @Override
   public List<? extends DataStoreEntity> getAllEntities(boolean recursive) {
-    return doGetAllEntities(savedContainerPath, recursive);
+    List<DataStoreEntity> result = new ArrayList<DataStoreEntity>();
+    List<EntityPath> paths = getAllEntityPaths(recursive);
+
+    for (EntityPath entityPath : paths) {
+      result.add(createDataStoreEntityFrom(entityPath));
+    }
+
+    return result;
   }
 
-  protected List<? extends DataStoreEntity> doGetAllEntities(ContainerPath containerPath, boolean recursive) {
-    List<DataStoreEntity> result = new ArrayList<DataStoreEntity>();
-    File[] files = containerStore.listFiles();
+  @Override
+  public List<EntityPath> getAllEntityPaths(boolean recursive) {
+    return doGetAllEntityPaths(new ContainerPath(), recursive);
+  }
 
-    for (File file : files) {
-      if (file.isFile()) {
-        EntityPath id = new EntityPath(containerPath.getPath(), file.getName());
+  protected List<EntityPath> doGetAllEntityPaths(ContainerPath childPath, boolean recursive) {
+    List<EntityPath> result = new ArrayList<EntityPath>();
+    File fromDir = new File(containerStore, childPath.toString().substring(1)); // remove leading "/"
+    File[] files = fromDir.listFiles();
 
-        result.add(createDataStoreEntityFrom(id));
-      } else if (recursive) {
-        ContainerPath childDirectoryPath = new ContainerPath(containerPath, file.getName() + ContainerPath.CONTAINER_PATH_SEPARATOR);
+    if (files != null) {
+      for (File file : files) {
+        if (file.isFile()) {
+          EntityPath id = new EntityPath(childPath.getPath(), file.getName());
 
-        result.addAll(doGetAllEntities(childDirectoryPath, recursive));
+          result.add(id);
+        } else if (recursive) {
+          ContainerPath nextChildPath = new ContainerPath(childPath, file.getName() + ContainerPath.CONTAINER_PATH_SEPARATOR);
+
+          result.addAll(doGetAllEntityPaths(nextChildPath, recursive));
+        }
       }
     }
 

@@ -46,6 +46,8 @@ public interface TextEnvelopeDAO extends GenericDAO<TextEnvelope> {
    */
   List<? extends TextEnvelope> getTextEnvelopes(ContainerPath containerPath, boolean recursive); // TODO-p1(george) what does this return if empty?
 
+  List<EntityPath> getTextEnvelopePaths(ContainerPath containerPath, boolean recursive);
+
   /**
    * Returns the {@code TextEnvelope} at the given {@code entityPath}, if it exists; otherwise, returns {@code null}.
    */

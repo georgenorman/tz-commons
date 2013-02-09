@@ -16,7 +16,6 @@
 package com.thruzero.domain.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -40,6 +39,7 @@ import com.thruzero.common.core.utils.ClassUtils;
 import com.thruzero.common.core.utils.ClassUtils.ClassUtilsException;
 import com.thruzero.common.core.utils.ExceptionUtilsExt;
 import com.thruzero.domain.dao.TextEnvelopeDAO;
+import com.thruzero.domain.model.DataStoreInfo;
 import com.thruzero.domain.model.TextEnvelope;
 import com.thruzero.domain.service.InfoNodeService;
 
@@ -115,13 +115,24 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
   }
 
   @Override
-  public Collection<? extends InfoNodeElement> getInfoNodes(final ContainerPath containerPath, final boolean recursive) {
-    Collection<InfoNodeElement> result = new ArrayList<InfoNodeElement>();
-    Collection<? extends TextEnvelope> models = getTextEnvelopeDAO().getTextEnvelopes(containerPath, recursive);
+  public List<? extends InfoNodeElement> getInfoNodes(final ContainerPath containerPath, final boolean recursive) {
+    List<InfoNodeElement> result = new ArrayList<InfoNodeElement>();
+    List<? extends TextEnvelope> models = getTextEnvelopeDAO().getTextEnvelopes(containerPath, recursive);
 
     for (TextEnvelope infoNodeModel : models) {
-      result.add(getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData(), infoNodeFilterChain));
+      try {
+        result.add(getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData(), infoNodeFilterChain));
+      } catch (Exception e) {
+        logger.error("Invalid InfoNode model.", e);
+      }
     }
+
+    return result;
+  }
+
+  @Override
+  public List<EntityPath> getInfoNodePaths(ContainerPath containerPath, boolean recursive) {
+    List<EntityPath> result = getTextEnvelopeDAO().getTextEnvelopePaths(containerPath, recursive);
 
     return result;
   }
@@ -132,8 +143,24 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
     TextEnvelope infoNodeModel = getTextEnvelopeDAO().getTextEnvelope(entityPath);
 
     if (infoNodeModel != null) {
-      result = getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData(), infoNodeFilterChain);
+      try {
+        result = getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData(), infoNodeFilterChain);
+      } catch (Exception e) {
+        logger.error("Invalid InfoNode model.", e);
+      }
     }
+
+    return result;
+  }
+
+  @Override
+  public InfoNodeElement getInfoNode(EntityPath entityPath, DataStoreInfo dataStoreInfo) {
+    InfoNodeElement result;
+
+    if (StringUtils.isNotEmpty(dataStoreInfo.getPrivateRootDataStorePath())) {
+      entityPath = new EntityPath(dataStoreInfo.getPrivateRootDataStorePath(), entityPath.getContainerPath(), entityPath.getEntityName());
+    }
+    result = getInfoNode(entityPath);
 
     return result;
   }
@@ -209,6 +236,33 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
 
     getTextEnvelopeDAO().delete(domainObject);
 
+  }
+
+  @Override
+  public String getRawData(final EntityPath entityPath) {
+    String result = null;
+    TextEnvelope infoNodeModel = getTextEnvelopeDAO().getTextEnvelope(entityPath);
+
+    if (infoNodeModel != null) {
+      result = infoNodeModel.getData(); // TODO-p0(geo) infoNodeFilterChain is ignored
+    }
+
+    return result;
+  }
+
+  @Override
+  public void saveOrUpdateRawData(EntityPath entityPath, String data) {
+    if (entityPath == null) {
+      throw new RuntimeException("Error attempting to save or update InfoNodeElement: The EntityPath is null. An EntityPath is required to save or update an InfoNodeElement.");
+    }
+
+    TextEnvelope domainObject = new TextEnvelope(entityPath, data);
+    domainObject.setId(entityPath);
+    if (isExistingEntity(entityPath)) {
+      getTextEnvelopeDAO().update(domainObject);
+    } else {
+      getTextEnvelopeDAO().save(domainObject);
+    }
   }
 
   @Override

@@ -80,6 +80,12 @@ public class WsDataStoreContainer implements DataStoreContainer {
   }
 
   @Override
+  public List<EntityPath> getAllEntityPaths(boolean recursive) {
+    // TODO-p2(george) Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public void saveOrUpdateEntity(String entityName, DataStoreEntity dataStoreEntity) {
     // TODO-p2(george) Auto-generated method stub
 
@@ -111,7 +117,12 @@ public class WsDataStoreContainer implements DataStoreContainer {
 
     String response = resource.path("isExistingEntity").queryParams(params).get(String.class);
 
-    InfoNodeElement responseAsNode = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(response, null);
+    InfoNodeElement responseAsNode;
+    try {
+      responseAsNode = SaxInfoNodeBuilder.DEFAULT.buildInfoNode(response, null);
+    } catch (Exception e) {
+      throw new RuntimeException("Invalid response node.", e);
+    }
 
     return responseAsNode.getAttributeTransformer("value").getBooleanValue();
   }

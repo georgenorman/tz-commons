@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
@@ -68,6 +69,20 @@ public final class HttpSessionTextEnvelopeDAO extends HttpSessionDAO<TextEnvelop
     for (TextEnvelope entity : allEntities) {
       if (entity.getEntityPath().getContainerPath().equals(containerPath)) {
         result.add(entity);
+      }
+    }
+
+    return result;
+  }
+
+  @Override
+  public List<EntityPath> getTextEnvelopePaths(ContainerPath containerPath, boolean recursive) {
+    List<EntityPath> result = new ArrayList<EntityPath>();
+    Set<Serializable> allPaths = getMemoryStore().getKeySet();
+
+    for (Serializable path : allPaths) {
+      if (path.toString().startsWith(containerPath.toString())) {
+        result.add((EntityPath)path);
       }
     }
 

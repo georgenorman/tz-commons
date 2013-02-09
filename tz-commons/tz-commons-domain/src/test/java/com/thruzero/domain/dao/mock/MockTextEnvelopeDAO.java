@@ -67,6 +67,12 @@ public final class MockTextEnvelopeDAO extends GenericMemoryDAO<TextEnvelope> im
   }
 
   @Override
+  public List<EntityPath> getTextEnvelopePaths(ContainerPath containerPath, boolean recursive) {
+    // TODO-p0(george) Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public TextEnvelope getTextEnvelope(EntityPath entityPath) {
     return getByKey(entityPath);
   }

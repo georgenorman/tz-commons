@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -64,6 +65,11 @@ public abstract class HttpSessionDAO<T extends Persistent> extends GenericMemory
     @Override
     public Collection<T> getResultList() {
       return getEntityMap().values();
+    }
+
+    @Override
+    public Set<Serializable> getKeySet() {
+      return getEntityMap().keySet();
     }
 
     @Override

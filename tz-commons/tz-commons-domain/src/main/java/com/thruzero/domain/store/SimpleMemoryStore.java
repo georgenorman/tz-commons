@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.thruzero.domain.dao.impl.GenericMemoryDAO.MemoryStore;
 
@@ -49,6 +50,11 @@ public class SimpleMemoryStore<T extends Persistent> implements MemoryStore<T> {
   @Override
   public Collection<T> getResultList() {
     return entityMap.values();
+  }
+
+  @Override
+  public Set<Serializable> getKeySet() {
+    return entityMap.keySet();
   }
 
   @Override

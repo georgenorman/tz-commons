@@ -15,6 +15,10 @@
  */
 package com.thruzero.common.jsf.utils;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -24,6 +28,43 @@ import javax.faces.context.FacesContext;
  * @author George Norman
  */
 public class MessageUtils {
+  private static final String STICKY_MESSAGE_CACHE_ID = "com.thruzero.common.jsf.utils.MessageUtils.stickyMessageCache";
+
+  // ----------------------------------------------------
+  // StickyMessage
+  // ----------------------------------------------------
+
+  public static class StickyMessage implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private String clientId;
+    private FacesMessage facesMessage;
+
+    public StickyMessage(String clientId, FacesMessage facesMessage) {
+      this.clientId = clientId;
+      this.facesMessage = facesMessage;
+
+      @SuppressWarnings("unchecked")
+      Set<StickyMessage> cache = (Set<StickyMessage>)FacesUtils.getSession(false).getAttribute(STICKY_MESSAGE_CACHE_ID);
+      if (cache == null) {
+        cache = new HashSet<StickyMessage>();
+        FacesUtils.getSession(false).setAttribute(STICKY_MESSAGE_CACHE_ID, cache);
+      }
+      cache.add(this);
+    }
+
+    public String getClientId() {
+      return clientId;
+    }
+
+    public FacesMessage getFacesMessage() {
+      return facesMessage;
+    }
+  }
+
+  // ===========================================================================================
+  // MessageUtils
+  // ===========================================================================================
 
   /**
    * Create a {@code FacesMessage}, with {@code FacesMessage.SEVERITY_INFO}, and add it to the {@code FacesContext}.
@@ -39,6 +80,11 @@ public class MessageUtils {
     FacesContext.getCurrentInstance().addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail));
   }
 
+  public static void addStickyInfo(String clientId, String summary, String detail) {
+    StickyMessage stickyMessage = new StickyMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail));
+    FacesContext.getCurrentInstance().addMessage(clientId, stickyMessage.getFacesMessage());
+  }
+
   /**
    * Create a {@code FacesMessage}, with {@code FacesMessage.SEVERITY_WARN}, and add it to the {@code FacesContext}.
    */
@@ -51,6 +97,11 @@ public class MessageUtils {
    */
   public static void addWarn(String clientId, String summary, String detail) {
     FacesContext.getCurrentInstance().addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_WARN, summary, detail));
+  }
+
+  public static void addStickyWarn(String clientId, String summary, String detail) {
+    StickyMessage stickyMessage = new StickyMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_WARN, summary, detail));
+    FacesContext.getCurrentInstance().addMessage(clientId, stickyMessage.getFacesMessage());
   }
 
   /**
@@ -74,6 +125,11 @@ public class MessageUtils {
     addError(clientId, summary, error.getMessage());
   }
 
+  public static void addStickyError(String clientId, String summary, String detail) {
+    StickyMessage stickyMessage = new StickyMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, detail));
+    FacesContext.getCurrentInstance().addMessage(clientId, stickyMessage.getFacesMessage());
+  }
+
   /**
    * Create a {@code FacesMessage}, with {@code FacesMessage.SEVERITY_ERROR}, and add it to the {@code FacesContext}.
    */
@@ -86,5 +142,20 @@ public class MessageUtils {
    */
   public static void addError(String detail) {
     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, null, detail));
+  }
+
+  public static Set<StickyMessage> detachStickyMessages(boolean moveToFaces) {
+    @SuppressWarnings("unchecked")
+    Set<StickyMessage> result = (Set<StickyMessage>)FacesUtils.getSession(false).getAttribute(STICKY_MESSAGE_CACHE_ID);
+
+    FacesUtils.getSession(false).removeAttribute(STICKY_MESSAGE_CACHE_ID);
+
+    if (moveToFaces && result != null) {
+      for (StickyMessage stickyMessage : result) {
+        FacesContext.getCurrentInstance().addMessage(stickyMessage.getClientId(), stickyMessage.getFacesMessage());
+      }
+    }
+
+    return result;
   }
 }

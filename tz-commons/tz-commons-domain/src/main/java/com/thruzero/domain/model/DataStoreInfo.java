@@ -74,7 +74,7 @@ public class DataStoreInfo implements Serializable {
   }
 
   // ============================================================================
-  // UserDataStoreInfo
+  // DataStoreInfo
   // ============================================================================
 
   /** Return the ID of the user's personal data store. */

@@ -17,10 +17,7 @@ package com.thruzero.common.core.infonode.builder;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.infonode.builder.AbstractInfoNodeBuilder.RootNodeOption;
@@ -36,7 +33,7 @@ import com.thruzero.test.support.AbstractCoreTestCase;
 public class SaxInfoNodeBuilderTest extends AbstractCoreTestCase {
 
   @Test
-  public void testSaxInfoNodeBuilder() {
+  public void testSaxInfoNodeBuilder() throws Exception {
     String xmlContent = "<test a=\"A\" b=\"B\">T1V1" + "  <ele1 c=\"C\">" + "  <!-- this is a comment -->" + "  Element1 Value" + "  </ele1>T1V2" + "</test>";
 
     //  <test a="A" b="B">
@@ -52,7 +49,7 @@ public class SaxInfoNodeBuilderTest extends AbstractCoreTestCase {
   }
 
   @Test
-  public void testCreateSimpleInfoNode() throws IOException, SAXException {
+  public void testCreateSimpleInfoNode() throws Exception {
     InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createSimpleInfoNodeWithAttributes();
 
     // <TestParentElement TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue">TestParentElementValue</TestParentElement>
@@ -63,7 +60,7 @@ public class SaxInfoNodeBuilderTest extends AbstractCoreTestCase {
   }
 
   @Test
-  public void testPrimaryKeyInfoNode() throws IOException, SAXException {
+  public void testPrimaryKeyInfoNode() throws Exception {
     InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createEntityPathInfoNode();
 
     // <TestParentElement TestAttributeOne="TestAttributeOneValue" TestAttributeTwo="TestAttributeTwoValue" primaryKey="primaryValueOne">TestParentElementValue</TestParentElement>
@@ -74,7 +71,7 @@ public class SaxInfoNodeBuilderTest extends AbstractCoreTestCase {
   }
 
   @Test
-  public void testCreateSimpleNestedInfoNode() throws IOException, SAXException {
+  public void testCreateSimpleNestedInfoNode() throws Exception {
     InfoNodeElement sampleInfoNode = SampleInfoNodeBuilderUtils.createSimpleNestedInfoNode(RootNodeOption.GENERATE_ROOT_NODE);
 
     //  <TestParentElement>

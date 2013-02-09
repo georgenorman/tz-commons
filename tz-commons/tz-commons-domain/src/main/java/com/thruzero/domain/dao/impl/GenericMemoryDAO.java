@@ -17,6 +17,7 @@ package com.thruzero.domain.dao.impl;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 
 import com.thruzero.common.core.support.KeyGen;
 import com.thruzero.common.core.support.SimpleInfo;
@@ -49,6 +50,8 @@ public abstract class GenericMemoryDAO<T extends Persistent> implements GenericD
     T find(Serializable primaryKey);
 
     Collection<T> getResultList();
+
+    Set<Serializable> getKeySet();
 
     boolean contains(T entity);
 

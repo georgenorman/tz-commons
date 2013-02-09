@@ -76,7 +76,7 @@ public class FileDataStoreContainerFactory extends AbstractDataStoreContainerFac
         throw new InitializationException("ERROR: base is empty.", daoInitStrategy);
       }
 
-      if (rootStorePath.endsWith("/") || rootStorePath.endsWith(EnvironmentHelper.FILE_PATH_SEPARATOR)) {
+      if (rootStorePath.endsWith(ContainerPath.CONTAINER_PATH_SEPARATOR) || rootStorePath.endsWith(EnvironmentHelper.FILE_PATH_SEPARATOR)) {
         this.baseStorePath = rootStorePath + base;
       } else {
         this.baseStorePath = rootStorePath + EnvironmentHelper.FILE_PATH_SEPARATOR + base;

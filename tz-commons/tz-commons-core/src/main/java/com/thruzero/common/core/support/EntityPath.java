@@ -155,6 +155,10 @@ public final class EntityPath implements Serializable, Cloneable, Comparable<Ent
     this.entityName = entityName;
   }
 
+  public EntityPath(ContainerPath containerPath, EntityPath entityPath) {
+    this(containerPath.toString() + entityPath.toString().substring(1)); // remove leading '/' from entityPath (which always begins with a '/' and containerPath always ends with '/')
+  }
+
   public EntityPath(String rootDataStorePath, ContainerPath containerPath, String entityName) {
     pathAndNameValidator.validateEntityName(entityName);
 
@@ -224,6 +228,10 @@ public final class EntityPath implements Serializable, Cloneable, Comparable<Ent
 
   public String getEntityName() {
     return entityName;
+  }
+
+  public String[] getSegments() {
+    return StringUtils.split(toString(), ContainerPath.CONTAINER_PATH_SEPARATOR);
   }
 
   @Override

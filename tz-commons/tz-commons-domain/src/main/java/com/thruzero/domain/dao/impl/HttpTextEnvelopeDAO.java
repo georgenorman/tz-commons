@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 
@@ -29,7 +30,6 @@ import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.support.KeyGen;
 import com.thruzero.domain.dao.TextEnvelopeDAO;
-import com.thruzero.domain.dao.impl.GenericMemoryDAO;
 import com.thruzero.domain.model.TextEnvelope;
 
 /**
@@ -60,9 +60,9 @@ public final class HttpTextEnvelopeDAO extends GenericMemoryDAO<TextEnvelope> im
 
   public static class HttpTextEnvelopeMemoryStore implements MemoryStore<TextEnvelope> {
 
-    /** Not IMPLEMENTED. */
     @Override
     public void persist(TextEnvelope entity) {
+      // TODO-p2(george) Auto-generated method stub
     }
 
     /**
@@ -96,9 +96,15 @@ public final class HttpTextEnvelopeDAO extends GenericMemoryDAO<TextEnvelope> im
       return result;
     }
 
-    /** Not IMPLEMENTED */
     @Override
     public Collection<TextEnvelope> getResultList() {
+      // TODO-p2(george) Auto-generated method stub
+      return null;
+    }
+
+    @Override
+    public Set<Serializable> getKeySet() {
+      // TODO-p2(george) Auto-generated method stub
       return null;
     }
 
@@ -107,13 +113,14 @@ public final class HttpTextEnvelopeDAO extends GenericMemoryDAO<TextEnvelope> im
       return find(entity.getId()) != null; // TODO-p1(george). This may cause a double-fetch.
     }
 
-    /** Not IMPLEMENTED. */
     @Override
     public void remove(TextEnvelope entity) {
+      // TODO-p2(george) Auto-generated method stub
     }
 
     @Override
     public void clear() {
+      // TODO-p2(george) Auto-generated method stub
     }
   }
 
@@ -142,6 +149,12 @@ public final class HttpTextEnvelopeDAO extends GenericMemoryDAO<TextEnvelope> im
     }
 
     return result;
+  }
+
+  @Override
+  public List<EntityPath> getTextEnvelopePaths(ContainerPath containerPath, boolean recursive) {
+    // TODO-p2(george) Auto-generated method stub
+    return null;
   }
 
   @Override

@@ -141,7 +141,11 @@ public class XmlMenuBarBuilder extends AbstractMenuBarBuilder {
       // detach payload
       InfoNodeElement payload = (InfoNodeElement)menuNodeElement.getChild(PAYLOAD_ID);
       if (payload != null) {
-        payload = SaxInfoNodeBuilder.WITH_ROOT_NODE.buildInfoNode(payload.toStringFormatted(), null);
+        try {
+          payload = SaxInfoNodeBuilder.WITH_ROOT_NODE.buildInfoNode(payload.toStringFormatted(), null);
+        } catch (Exception e) {
+          throw new RuntimeException("Invalid Payload.", e);
+        }
       }
       result = new MenuNode(parent, id, title, description, payload);
       InfoNodeElement dataListNode = menuNodeElement.findElement(DATALIST_ID);

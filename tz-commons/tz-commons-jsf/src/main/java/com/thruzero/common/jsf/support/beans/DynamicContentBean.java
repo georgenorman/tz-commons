@@ -29,11 +29,13 @@ import org.jsoup.safety.Whitelist;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ProviderLocator;
+import com.thruzero.common.core.locator.ServiceLocator;
 import com.thruzero.common.core.provider.ResourceProvider;
+import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.common.core.utils.PerformanceTimerUtils.PerformanceLoggerHelper;
 import com.thruzero.common.jsf.support.ContentQuery;
-import com.thruzero.common.jsf.support.provider.RootNodeCacheBuilderProvider;
+import com.thruzero.common.jsf.support.content.XmlRootNodeCache;
 import com.thruzero.common.jsf.utils.FacesUtils;
 import com.thruzero.common.web.model.container.HtmlPanel;
 import com.thruzero.common.web.model.container.PanelSet;
@@ -41,6 +43,7 @@ import com.thruzero.common.web.model.nav.MenuBar;
 import com.thruzero.common.web.model.nav.MenuNode;
 import com.thruzero.domain.model.DataStoreInfo;
 import com.thruzero.domain.provider.DataStoreInfoProvider;
+import com.thruzero.domain.service.InfoNodeService;
 
 /**
  * Reads content from the data store and builds component models used to render UI components on a page.
@@ -57,8 +60,6 @@ public class DynamicContentBean implements Serializable {
 
   private static final ErrorBuilder errorBuilder = new ErrorBuilder();
   private static final ContentQueryBuilder contentQueryBuilder = new ContentQueryBuilder();
-
-  private transient RootNodeCacheBuilder rootNodeCacheBuilder;
 
   // BUG Fix: http://stackoverflow.com/questions/2968876/final-transient-fields-and-serialization
   private transient DataStoreCache dataStoreCache;
@@ -158,14 +159,14 @@ public class DynamicContentBean implements Serializable {
         throw new ContentException("ERROR with querySpec (may not be defined in resources.properties file): " + querySpec);
       }
 
-      if (querySpec.startsWith("/")) {
+      if (querySpec.startsWith(ContainerPath.CONTAINER_PATH_SEPARATOR)) {
         // fully qualified entity path (does not consider the logged in user)
         result = new ContentQuery(new EntityPath(specPaths[0]), specPaths[1]);
       } else {
         // partial entity path, so use the DataStore context, for this user
         String dataStoreContext = dataStoreInfo.getDataStoreContext();
 
-        result = new ContentQuery(new EntityPath("/"+dataStoreContext+"/"+specPaths[0]), specPaths[1]);
+        result = new ContentQuery(new EntityPath(ContainerPath.CONTAINER_PATH_SEPARATOR + dataStoreContext + ContainerPath.CONTAINER_PATH_SEPARATOR + specPaths[0]), specPaths[1]);
       }
 
       return result;
@@ -334,7 +335,6 @@ public class DynamicContentBean implements Serializable {
   private void ensureTransients() {
     if (dataStoreCache == null) {
       dataStoreCache = new DataStoreCache();
-      rootNodeCacheBuilder = ProviderLocator.locate(RootNodeCacheBuilderProvider.class).createRootNodeCacheBuilder();
     }
   }
 
@@ -489,9 +489,12 @@ public class DynamicContentBean implements Serializable {
 
     // if not found in cache, then load it from the data store and cache it
     if (result == null) {
-      result = rootNodeCacheBuilder.createRootNodeCache(entityPath, getDataStoreInfo());
+      InfoNodeService infoNodeService = ServiceLocator.locate(InfoNodeService.class);
+      InfoNodeElement rootNode = infoNodeService.getInfoNode(entityPath, getDataStoreInfo());
 
-      if (result != null) {
+      if (rootNode != null) {
+        rootNode.enableRootNode();
+        result = new XmlRootNodeCache(rootNode);
         dataStoreCache.putRootNodeCache(entityPath.toString(), result);
       }
     }

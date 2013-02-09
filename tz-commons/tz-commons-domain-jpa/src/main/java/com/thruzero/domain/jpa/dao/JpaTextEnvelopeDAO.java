@@ -77,6 +77,12 @@ public final class JpaTextEnvelopeDAO extends JpaGenericDAO<TextEnvelope> implem
   }
 
   @Override
+  public List<EntityPath> getTextEnvelopePaths(ContainerPath containerPath, boolean recursive) {
+    // TODO-p0(george) Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public TextEnvelope getTextEnvelope(EntityPath entityPath) {
     EntityManager entityManager = getCurrentPersistenceManager();
 
