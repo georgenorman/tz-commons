@@ -92,6 +92,10 @@ public class BasicDataStoreInfoProvider implements DataStoreInfoProvider, Initia
     }
   }
 
+  protected String getDefaultUserName() {
+	  return defaultUserName;
+  }
+
   @Override
   public void reset() {
   }
