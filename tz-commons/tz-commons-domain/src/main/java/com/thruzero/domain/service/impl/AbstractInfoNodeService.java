@@ -44,13 +44,12 @@ import com.thruzero.domain.model.TextEnvelope;
 import com.thruzero.domain.service.InfoNodeService;
 
 /**
- * An abstract base-class implementing the {@code InfoNodeService} interface, allowing for multiple types of
- * {@code InfoNodeService}s. <i>Note</i>: since a {@code Service} is a {@code Singleton}, there can be only one instance
- * of a concrete implementation. The {@code AbstractInfoNodeService} allows for sub-types of the {@code InfoNodeService}
- * to peacefully coexist.
+ * An abstract base-class implementing the {@code InfoNodeService} interface, allowing for multiple types of {@code InfoNodeService}s. <i>Note</i>: since a
+ * {@code Service} is a {@code Singleton}, there can be only one instance of a concrete implementation. The {@code AbstractInfoNodeService} allows for sub-types
+ * of the {@code InfoNodeService} to peacefully coexist.
  * <p>
  * An implementation of {@code AbstractInfoNodeService} need only provide a default constructor.
- *
+ * 
  * @author George Norman
  */
 public abstract class AbstractInfoNodeService implements InfoNodeService, Initializable {
@@ -83,7 +82,8 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
   }
 
   /**
-   * @throws InitializationException if a problem is encountered with the given initParams.
+   * @throws InitializationException
+   *           if a problem is encountered with the given initParams.
    */
   @Override
   public void init(InitializationStrategy initStrategy) {
@@ -175,7 +175,7 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
         if (StringUtils.startsWith(xpathExpr, "//")) {
           infoNode.enableRootNode();
         }
-        result = (InfoNodeElement)infoNode.find(xpathExpr);
+        result = (InfoNodeElement) infoNode.find(xpathExpr);
       } catch (JDOMException e) {
         throw new RuntimeException("Exception while attempting to find node using xpathExpr: " + xpathExpr, e);
       }
@@ -233,6 +233,7 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
     }
 
     TextEnvelope domainObject = new TextEnvelope(infoNodeElement);
+    domainObject.setId(infoNodeElement.getEntityPath()); // TODO-p0(geo) Should the ID be set by the TextEnvelope constructor?
 
     getTextEnvelopeDAO().delete(domainObject);
 
@@ -257,8 +258,8 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
     }
 
     TextEnvelope domainObject = new TextEnvelope(entityPath, data);
-    domainObject.setId(entityPath);
     if (isExistingEntity(entityPath)) {
+      domainObject.setId(entityPath);
       getTextEnvelopeDAO().update(domainObject);
     } else {
       getTextEnvelopeDAO().save(domainObject);
