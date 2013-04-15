@@ -29,16 +29,17 @@ import com.thruzero.domain.model.DataStoreInfo;
  * A Service interface to manage persistence-related functionality of InfoNodeElement instances.
  * <p>
  * Note: The particular DAO configured for this service defines where the data is actually stored.
- *
+ * 
  * @author George Norman
  */
 public interface InfoNodeService extends Service, SimpleInfoProvider {
 
   /**
-   * Return the collection of InfoNodeElement instances at the given containerPath.
-   * If recursive is true, then return all of the InfoNodeElement instances for all child container paths.
+   * Return the collection of InfoNodeElement instances at the given containerPath. If recursive is true, then return all of the InfoNodeElement instances for
+   * all child container paths.
    * <p/>
    * For example, consider a Service configured for a database with the TEXT_ENVELOPE table populated as follows:
+   * 
    * <pre>
    * {@literal
    *    ----------------------------------------------------------------
@@ -53,9 +54,9 @@ public interface InfoNodeService extends Service, SimpleInfoProvider {
    * </pre>
    * Then:
    * <ul>
-   *  <li>getInfoNodes("/a/", false) =&gt; "x1.xml".</li>
-   *  <li>getInfoNodes("/b/", false) =&gt; "x2.xml" and "x3.xml".</li>
-   *  <li>getInfoNodes("/a/", true)  =&gt; "x1.xml", "x2.xml" and "x3.xml".</li>
+   * <li>getInfoNodes("/a/", false) =&gt; "x1.xml".</li>
+   * <li>getInfoNodes("/b/", false) =&gt; "x2.xml" and "x3.xml".</li>
+   * <li>getInfoNodes("/a/", true) =&gt; "x1.xml", "x2.xml" and "x3.xml".</li>
    * </ul>
    */
   Collection<? extends InfoNodeElement> getInfoNodes(ContainerPath containerPath, boolean recursive);
@@ -70,8 +71,9 @@ public interface InfoNodeService extends Service, SimpleInfoProvider {
   boolean isExistingEntity(EntityPath entityPath);
 
   /**
-   * Return the first InfoNodeElement found at the given entityPath and xpathExpr.
-   * For example, consider a Service configured for a database with the TEXT_ENVELOPE table populated as follows:
+   * Return the first InfoNodeElement found at the given entityPath and xpathExpr. For example, consider a Service configured for a database with the
+   * TEXT_ENVELOPE table populated as follows:
+   * 
    * <pre>
    * {@literal
    *    ----------------------------------------------------------------
@@ -81,9 +83,10 @@ public interface InfoNodeService extends Service, SimpleInfoProvider {
    *    ----------------------------------------------------------------
    * }
    * </pre>
+   * 
    * Then:
    * <ul>
-   *  <li>getFirstInfoNode("/a/x1.xml", "//y1") =&gt; "&lt;y1&gt;D test&lt;/y1&gt;".</li> TODO-p1(george) TEST THIS
+   * <li>getFirstInfoNode("/a/x1.xml", "//y1") =&gt; "&lt;y1&gt;D test&lt;/y1&gt;".</li> TODO-p1(george) TEST THIS
    * </ul>
    */
   InfoNodeElement getFirstInfoNode(EntityPath entityPath, String xpathExpr);
@@ -92,9 +95,8 @@ public interface InfoNodeService extends Service, SimpleInfoProvider {
   void save(InfoNodeElement domainObject);
 
   /**
-   * Tests to see if the object is new or has been previously persisted and if the object is new, it creates a new
-   * entity in the data store (e.g., inserts a new row) or if it's already in the data store, it will update the
-   * existing entity.
+   * Tests to see if the object is new or has been previously persisted and if the object is new, it creates a new entity in the data store (e.g., inserts a new
+   * row) or if it's already in the data store, it will update the existing entity.
    */
   void saveOrUpdate(InfoNodeElement domainObject);
 

@@ -21,13 +21,13 @@ import java.io.FileFilter;
 import org.apache.commons.io.FilenameUtils;
 
 /**
- * Matches files, directories or files and directories, using a case-sensitive wildcard, which uses the characters '?'
- * and '*' to represent a single or multiple wildcard characters (note, the apache WildcardFilter matches only files).
- * For more details, see {@link org.apache.commons.io.FilenameUtils#wildcardMatch(java.lang.String, java.lang.String)}
- *
+ * Matches files, directories or files and directories, using a case-sensitive wildcard, which uses the characters '?' and '*' to represent a single or multiple
+ * wildcard characters (note, the apache WildcardFilter matches only files). For more details, see
+ * {@link org.apache.commons.io.FilenameUtils#wildcardMatch(java.lang.String, java.lang.String)}
+ * 
  * <p>
  * Examples:
- *
+ * 
  * <pre>
  *     "*.txt" -> "foo.txt" -> match
  *     "*.???" -> "foo.png" -> match
@@ -36,6 +36,7 @@ import org.apache.commons.io.FilenameUtils;
 public class WildcardFilter implements FileFilter {
   private final String wildcard;
   private final FilterTypes filterTypes;
+  private final boolean invert;
 
   public enum FilterTypes {
     /** matches only files */
@@ -49,28 +50,36 @@ public class WildcardFilter implements FileFilter {
   }
 
   public WildcardFilter(final String wildcard) {
-    this(wildcard, FilterTypes.FILES_AND_DIRECTORIES);
+    this(wildcard, FilterTypes.FILES_AND_DIRECTORIES, false);
   }
 
-  public WildcardFilter(final String wildcard, final FilterTypes filterTypes) {
+  public WildcardFilter(final String wildcard, final FilterTypes filterTypes, final boolean invert) {
     this.wildcard = wildcard;
     this.filterTypes = filterTypes;
+    this.invert = invert;
   }
 
   @Override
   public boolean accept(final File file) {
     switch (filterTypes) {
-      case FILES:
-        return test(file, file.isFile());
-      case DIRECTORIES:
-        return test(file, file.isDirectory());
-      default:
-        return test(file, file.isDirectory() || file.isFile());
+    case FILES:
+      return test(file, file.isFile());
+    case DIRECTORIES:
+      return test(file, file.isDirectory());
+    default:
+      return test(file, file.isDirectory() || file.isFile());
     }
   }
 
   /** if useWildcard is true, then return the result of the wildcard search; otherwise, return false. */
   protected boolean test(final File file, final boolean useWildcard) {
-    return useWildcard ? FilenameUtils.wildcardMatch(file.getName(), wildcard) : false;
+    boolean result = false;
+
+    if (useWildcard) {
+      result = FilenameUtils.wildcardMatch(file.getName(), wildcard);
+      result = invert ? !result : result;
+    }
+
+    return result;
   }
 }

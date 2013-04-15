@@ -28,23 +28,20 @@ import com.thruzero.common.core.fs.walker.visitor.HierarchicalFileVisitor;
 import com.thruzero.common.core.support.AbstractSortComparator.SortDirection;
 
 /**
- * Given a starting directory and filter, walks the filtered tree, visiting each file and sub-directory along the way.
- * The implementation is roughly based on the <a
- * href="http://en.wikipedia.org/wiki/Hierarchical_visitor_pattern">Hierarchical Visitor</a> pattern.
- *
+ * Given a starting directory and filter, walks the filtered tree, visiting each file and sub-directory along the way. The implementation is roughly based on
+ * the <a href="http://en.wikipedia.org/wiki/Hierarchical_visitor_pattern">Hierarchical Visitor</a> pattern.
+ * 
  * <p>
- * Clients create an instance of {@code HierarchicalFileWalker} and call its {@code accept} method, passing in an
- * instance of {@link com.thruzero.common.core.fs.walker.visitor.HierarchicalFileVisitor}. A variety of visitor
- * instances can be passed in, depending on the desired result. For example, a FileRenamingVisitor can be used to rename
- * a series of files based on a filename pattern. Likewise, a ZipCompressorVisitor can be used to zip-compress a
- * particular directory.
- *
+ * Clients create an instance of {@code HierarchicalFileWalker} and call its {@code accept} method, passing in an instance of
+ * {@link com.thruzero.common.core.fs.walker.visitor.HierarchicalFileVisitor}. A variety of visitor instances can be passed in, depending on the desired result.
+ * For example, a FileRenamingVisitor can be used to rename a series of files based on a filename pattern. Likewise, a ZipCompressorVisitor can be used to
+ * zip-compress a particular directory.
+ * 
  * <p>
- * The code below demonstrates how to use a {@link com.thruzero.common.core.fs.walker.visitor.SubstitutionVisitor} to
- * perform a search and replace on the contents of a series of files. This example will replace all of the "${foo}"
- * strings with "Foo" and all of the "${bar}" strings with "Bar" for all files visited by the
- * {@code HierarchicalFileWalker}.
- *
+ * The code below demonstrates how to use a {@link com.thruzero.common.core.fs.walker.visitor.SubstitutionVisitor} to perform a search and replace on the
+ * contents of a series of files. This example will replace all of the "${foo}" strings with "Foo" and all of the "${bar}" strings with "Bar" for all files
+ * visited by the {@code HierarchicalFileWalker}.
+ * 
  * <pre>
  * <code>
  *   // create the strategy
@@ -54,7 +51,7 @@ import com.thruzero.common.core.support.AbstractSortComparator.SortDirection;
  *   FileWalkerStatus status = new HierarchicalFileWalker(someDirectory).accept(new SubstitutionVisitor(strategy));
  * </code>
  * </pre>
- *
+ * 
  * @author George Norman
  */
 public class HierarchicalFileWalker {
@@ -67,8 +64,8 @@ public class HierarchicalFileWalker {
   // ----------------------------------------------------------
 
   /**
-   * The interface, used by clients of {@code HierarchicalFileWalker}, to view status information after a full traversal
-   * has completed (e.g., how many files and directories were successfully processed).
+   * The interface, used by clients of {@code HierarchicalFileWalker}, to view status information after a full traversal has completed (e.g., how many files and
+   * directories were successfully processed).
    */
   public static interface FileWalkerStatus {
 
@@ -87,8 +84,8 @@ public class HierarchicalFileWalker {
   // ========================================================================
 
   /**
-   * Constructs a deep-traversal walker for the given {@code rootDirectory}, with no sorting. This will process every
-   * file and sub-directory in {@code rootDirectory}.
+   * Constructs a deep-traversal walker for the given {@code rootDirectory}, with no sorting. This will process every file and sub-directory in
+   * {@code rootDirectory}.
    */
   public HierarchicalFileWalker(final File rootDirectory) {
     this(rootDirectory, TrueFileFilter.INSTANCE);
@@ -96,33 +93,36 @@ public class HierarchicalFileWalker {
 
   /**
    * Constructs a walker for the given {@code rootDirectory} using the given {@code filter} with no sorting.
-   *
-   * @param rootDirectory starting point.
-   * @param filter the @{link java.io.FileFilter} used to determine which files to process.
+   * 
+   * @param rootDirectory
+   *          starting point.
+   * @param filter
+   *          the @{link java.io.FileFilter} used to determine which files to process.
    */
   public HierarchicalFileWalker(final File rootDirectory, final FileFilter filter) {
     this(rootDirectory, filter, null);
   }
 
   /**
-   * Constructs a walker for the given {@code rootDirectory} using the given {@code filter} and {@code sortDirection}.
-   * If the {@code filter} is an instance of {@code FileAndDirectoryFilter}, then the {@code fileFilter} component will
-   * be used to filter files and the {@code directoryFilter} component will be used to filter directories. Otherwise,
-   * directories are implicitly accepted and files are filtered using the given {@code filter}. If the given
-   * {@code filter} is null, then all files and directories will be processed.
-   *
-   * @param rootDirectory starting point.
-   * @param filter use {@link org.apache.commons.io.filefilter.TrueFileFilter#INSTANCE} to process all files.
-   * @param sortDirection if present, files will be sorted in the direction indicated; otherwise, no sorting will take
-   * place.
+   * Constructs a walker for the given {@code rootDirectory} using the given {@code filter} and {@code sortDirection}. If the {@code filter} is an instance of
+   * {@code FileAndDirectoryFilter}, then the {@code fileFilter} component will be used to filter files and the {@code directoryFilter} component will be used
+   * to filter directories. Otherwise, directories are implicitly accepted and files are filtered using the given {@code filter}. If the given {@code filter} is
+   * null, then all files and directories will be processed.
+   * 
+   * @param rootDirectory
+   *          starting point.
+   * @param filter
+   *          use {@link org.apache.commons.io.filefilter.TrueFileFilter#INSTANCE} to process all files.
+   * @param sortDirection
+   *          if present, files will be sorted in the direction indicated; otherwise, no sorting will take place.
    */
   public HierarchicalFileWalker(final File rootDirectory, final FileFilter filter, final SortDirection sortDirection) {
     this.rootDirectory = rootDirectory;
     if (filter == null) {
       // default filter returns everything
-      this.filter = new FileAndDirectoryFilter((FileFilter)DirectoryFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+      this.filter = new FileAndDirectoryFilter((FileFilter) DirectoryFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
     } else if (filter instanceof FileAndDirectoryFilter) {
-      this.filter = (FileAndDirectoryFilter)filter;
+      this.filter = (FileAndDirectoryFilter) filter;
     } else {
       this.filter = new FileAndDirectoryFilter(DirectoryFileFilter.INSTANCE, filter);
     }
@@ -130,13 +130,13 @@ public class HierarchicalFileWalker {
   }
 
   /**
-   * For the {@code rootDirectory} given at construction time, traverse all sub-directories and files allowed by the
-   * filter(s) given at construction time. On the given {@code visitor}, for each sub-directory, the
-   * {@code visitDirectoryEnter} and {@code visitDirectoryLeave} methods will be called and for each file, the
-   * {@code visitFile} method will be called.
-   *
+   * For the {@code rootDirectory} given at construction time, traverse all sub-directories and files allowed by the filter(s) given at construction time. On
+   * the given {@code visitor}, for each sub-directory, the {@code visitDirectoryEnter} and {@code visitDirectoryLeave} methods will be called and for each
+   * file, the {@code visitFile} method will be called.
+   * 
    * @see {@link com.thruzero.common.core.fs.HierarchicalFileWalker(File, FileFilter, SortDirection)} for details on filters.
-   * @throws IllegalArgumentException if rootDirectory (given at construction time) is not a valid directory.
+   * @throws IllegalArgumentException
+   *           if rootDirectory (given at construction time) is not a valid directory.
    */
   public FileWalkerStatus accept(final HierarchicalFileVisitor visitor) throws IOException {
     assertIsDirectory(rootDirectory);
@@ -149,12 +149,11 @@ public class HierarchicalFileWalker {
   }
 
   /**
-   * For the given {@code directory}, recursively traverse all sub-directories and files allowed by the filter(s) given
-   * at construction time. On the given visitor, for each sub-directory, the {@code visitDirectoryEnter} and
-   * {@code visitDirectoryLeave} methods are called and for each file, the {@code visitFile} method is called.
-   *
-   * @see {@link com.thruzero.common.core.fs.HierarchicalFileWalker(File, FileFilter, SortDirection)} for details on
-   * filters.
+   * For the given {@code directory}, recursively traverse all sub-directories and files allowed by the filter(s) given at construction time. On the given
+   * visitor, for each sub-directory, the {@code visitDirectoryEnter} and {@code visitDirectoryLeave} methods are called and for each file, the
+   * {@code visitFile} method is called.
+   * 
+   * @see {@link com.thruzero.common.core.fs.HierarchicalFileWalker(File, FileFilter, SortDirection)} for details on filters.
    */
   protected void doAccept(final HierarchicalFileVisitor visitor, final File directory) throws IOException {
     // if directory doesn't exist, then nothing to do
@@ -200,7 +199,7 @@ public class HierarchicalFileWalker {
   }
 
   /** Return the filter given at construction time. */
-  public FileFilter getFilter() {
+  public FileAndDirectoryFilter getFilter() {
     return filter;
   }
 
@@ -218,7 +217,7 @@ public class HierarchicalFileWalker {
 
   /**
    * Throws an IllegalArgumentException if the given {@code srcDir} is not a directory.
-   *
+   * 
    * @throws IllegalArgumentException
    */
   protected final void assertIsDirectory(final File srcDir) {

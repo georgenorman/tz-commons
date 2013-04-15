@@ -19,21 +19,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.WildcardFilter;
 import org.junit.Test;
 
+import com.thruzero.common.core.fs.WildcardFilter.FilterTypes;
 import com.thruzero.common.core.fs.walker.visitor.FileListVisitor;
-import com.thruzero.common.core.fs.walker.visitor.FileListVisitor.DirectoryOption;
 import com.thruzero.common.core.fs.walker.visitor.FileListVisitor.FileListStatus;
 import com.thruzero.test.support.AbstractCoreTestCase;
 
 /**
  * Unit test for FileListVisitor.
- *
+ * 
  * @author George Norman
  */
 public class FileListVisitorTest extends AbstractCoreTestCase {
@@ -47,10 +45,61 @@ public class FileListVisitorTest extends AbstractCoreTestCase {
     // walk the temp directory
     try {
       // find files named "*test*", using FileListVisitor
-      FileAndDirectoryFilter filter = new FileAndDirectoryFilter((FileFilter)DirectoryFileFilter.INSTANCE, new WildcardFilter("*test*"));
-      FileListStatus listingStatus = (FileListStatus)new HierarchicalFileWalker(nestedTestDir, filter).accept(new FileListVisitor(DirectoryOption.IGNORE_DIRECTORIES));
-      assertEquals("Wrong number of files were renamed.", 5, listingStatus.getNumProcessed());
-      assertEquals("Wrong number of files were renamed.", 5, listingStatus.getResults().size());
+      FileAndDirectoryFilter filter = new FileAndDirectoryFilter(DirectoryFileFilter.INSTANCE, new WildcardFilter("*test*"));
+      FileListStatus listingStatus = (FileListStatus) new HierarchicalFileWalker(nestedTestDir, filter).accept(new FileListVisitor());
+      assertEquals("Wrong number of files were found.", 5, listingStatus.getNumProcessed());
+      assertEquals("Wrong number of files were found.", 5, listingStatus.getResults().size());
+    } catch (IOException e) {
+      fail("FileListFileWalker generated exception: " + e);
+    }
+  }
+
+  @Test
+  public void testWildcardFilter() {
+    // get test file in temp directory
+    File nestedTestDir = getTestFile(NESTED_TEST_DIR_NAME);
+
+    // walk the temp directory
+    try {
+      // find files named "*test*", using WildcardFilter
+      WildcardFilter filter = new WildcardFilter("*test*", FilterTypes.FILES, false);
+      FileListStatus listingStatus = (FileListStatus) new HierarchicalFileWalker(nestedTestDir, filter).accept(new FileListVisitor());
+      assertEquals("Wrong number of files were found.", 5, listingStatus.getNumProcessed());
+      assertEquals("Wrong number of files were found.", 5, listingStatus.getResults().size());
+    } catch (IOException e) {
+      fail("FileListFileWalker generated exception: " + e);
+    }
+  }
+
+  @Test
+  public void testInvertedWildcardFilter() {
+    // get test file in temp directory
+    File nestedTestDir = getTestFile(NESTED_TEST_DIR_NAME);
+
+    // walk the temp directory
+    try {
+      // find files not named "*test*", using FileListVisitor
+      WildcardFilter filter = new WildcardFilter("*test*", FilterTypes.FILES, true);
+      FileListStatus listingStatus = (FileListStatus) new HierarchicalFileWalker(nestedTestDir, filter).accept(new FileListVisitor());
+      assertEquals("Wrong number of files were found.", 6, listingStatus.getNumProcessed());
+      assertEquals("Wrong number of files were found.", 6, listingStatus.getResults().size());
+    } catch (IOException e) {
+      fail("FileListFileWalker generated exception: " + e);
+    }
+  }
+
+  @Test
+  public void testMoreWildcardFilter() {
+    // get test file in temp directory
+    File nestedTestDir = getTestFile(NESTED_TEST_DIR_NAME);
+
+    // walk the temp directory
+    try {
+      // find files named "*test*", using WildcardFilter
+      WildcardFilter filter = new WildcardFilter("*more*", FilterTypes.FILES, false);
+      FileListStatus listingStatus = (FileListStatus) new HierarchicalFileWalker(nestedTestDir, filter).accept(new FileListVisitor());
+      assertEquals("Wrong number of files were found.", 4, listingStatus.getNumProcessed());
+      assertEquals("Wrong number of files were found.", 4, listingStatus.getResults().size());
     } catch (IOException e) {
       fail("FileListFileWalker generated exception: " + e);
     }

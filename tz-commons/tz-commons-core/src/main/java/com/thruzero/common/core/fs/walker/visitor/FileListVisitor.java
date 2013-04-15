@@ -26,19 +26,16 @@ import com.thruzero.common.core.fs.HierarchicalFileWalker.FileWalkerStatus;
  * Generates a list of visited files.
  * <p>
  * <b>Example</b>:
- *
+ * 
  * <pre>
  *   FileAndDirectoryFilter filter = new FileAndDirectoryFilter((FileFilter)DirectoryFileFilter.INSTANCE, new WildcardFilter("*test*"));
  *   HierarchicalFileWalker walker = new HierarchicalFileWalker("/home/foo", filter);
  *   walker.accept(new <b>FileListVisitor</b>(false));
  * </pre>
- *
+ * 
  * @author George Norman
  */
 public class FileListVisitor extends AbstractHierarchicalFileVisitor {
-  private final DirectoryOption directoryOption;
-
-  public enum DirectoryOption {INCLUDE_DIRECTORIES, IGNORE_DIRECTORIES};
 
   // ----------------------------------------------------------
   // FileListStatus
@@ -80,23 +77,13 @@ public class FileListVisitor extends AbstractHierarchicalFileVisitor {
   // FileListVisitor
   // ========================================================================
 
-  /**
-   * @param includeDirectories if true, then directories are included in the listing.
-   */
-  public FileListVisitor(final DirectoryOption directoryOption) {
-    this.directoryOption = directoryOption;
-  }
-
   @Override
   public void visitFile(final File file) throws IOException {
-    ((FileListStatus)getStatus()).addFileResult(file);
+    ((FileListStatus) getStatus()).addFileResult(file);
   }
 
   @Override
   public void visitDirectoryEnter(final File dir) throws IOException {
-    if (directoryOption == DirectoryOption.INCLUDE_DIRECTORIES) {
-      ((FileListStatus)getStatus()).addFileResult(dir);
-    }
   }
 
   @Override

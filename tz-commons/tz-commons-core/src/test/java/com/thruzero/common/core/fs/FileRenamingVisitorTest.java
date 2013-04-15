@@ -29,7 +29,6 @@ import org.junit.Test;
 import com.thruzero.common.core.fs.HierarchicalFileWalker.FileWalkerStatus;
 import com.thruzero.common.core.fs.walker.visitor.FileListVisitor;
 import com.thruzero.common.core.fs.walker.visitor.FileRenamingVisitor;
-import com.thruzero.common.core.fs.walker.visitor.FileListVisitor.DirectoryOption;
 import com.thruzero.common.core.strategy.KeyValuePairSubstitutionStrategy;
 import com.thruzero.common.core.strategy.SubstitutionStrategy;
 import com.thruzero.common.core.support.KeyValuePair;
@@ -37,7 +36,7 @@ import com.thruzero.test.support.AbstractCoreTestCase;
 
 /**
  * Unit test for FileRenamingVisitor.
- *
+ * 
  * @author George Norman
  */
 public class FileRenamingVisitorTest extends AbstractCoreTestCase {
@@ -60,9 +59,10 @@ public class FileRenamingVisitorTest extends AbstractCoreTestCase {
       assertEquals("Wrong number of files/directories were renamed.", 4, renamingStatus.getNumProcessed());
 
       // verify files were renamed, using FileListFileWalker
-      FileAndDirectoryFilter filter = new FileAndDirectoryFilter((FileFilter)DirectoryFileFilter.INSTANCE, new WildcardFilter("*" + SUBSTITUTION_ONE_VALUE + "*"));
-      FileWalkerStatus listingStatus = new HierarchicalFileWalker(renamingTestDir, filter).accept(new FileListVisitor(DirectoryOption.IGNORE_DIRECTORIES));
-      assertEquals("Wrong number of files were renamed.", 3, listingStatus.getNumProcessed()); // 3 files should be renamed (plus one directory that's not listed here)
+      FileAndDirectoryFilter filter = new FileAndDirectoryFilter((FileFilter) DirectoryFileFilter.INSTANCE, new WildcardFilter("*" + SUBSTITUTION_ONE_VALUE + "*"));
+      FileWalkerStatus listingStatus = new HierarchicalFileWalker(renamingTestDir, filter).accept(new FileListVisitor());
+      assertEquals("Wrong number of files were renamed.", 3, listingStatus.getNumProcessed()); // 3 files should be renamed (plus one directory that's not
+                                                                                               // sslisted here)
     } catch (IOException e) {
       fail("FileRenamingFileWalker generated exception: " + e);
     }
