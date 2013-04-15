@@ -24,7 +24,7 @@ import com.thruzero.common.core.utils.UiUtils;
 
 /**
  * An instance represents an ordered set of panels (typically used to render a column of panels on a page).
- *
+ * 
  * @author George Norman
  */
 public class PanelSet {
@@ -49,5 +49,9 @@ public class PanelSet {
 
   public Collection<? extends AbstractPanel> getPanels() {
     return UiUtils.unmodifiableListHack(panels.values());
+  }
+
+  public int getNumberOfPanels() {
+    return panels.size();
   }
 }
