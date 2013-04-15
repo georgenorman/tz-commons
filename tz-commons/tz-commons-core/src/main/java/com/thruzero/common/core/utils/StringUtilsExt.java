@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
@@ -35,7 +36,7 @@ import com.thruzero.common.core.support.EnvironmentHelper;
 
 /**
  * Extensions to the apache {@code StringUtils} utility class.
- *
+ * 
  * @author George Norman
  */
 public class StringUtilsExt extends StringUtils {
@@ -48,8 +49,8 @@ public class StringUtilsExt extends StringUtils {
   // string-token functions ///////////////////////////////////////////////////////////
 
   /**
-   * Converts the given token stream of keyValuePairs, using the given separator, into a StringMap. Leading and trailing
-   * spaces of the keys and values are trimmed.
+   * Converts the given token stream of keyValuePairs, using the given separator, into a StringMap. Leading and trailing spaces of the keys and values are
+   * trimmed.
    * <p>
    * Example input: "booleanTrue=true ,booleanFalse=false, integerOne=1,longOne=1234567890"
    */
@@ -71,8 +72,8 @@ public class StringUtilsExt extends StringUtils {
   }
 
   /**
-   * Converts the given token stream of keyValuePairs, using the default separator (","), into a StringMap. Leading and
-   * trailing spaces of the keys and values are trimmed.
+   * Converts the given token stream of keyValuePairs, using the default separator (","), into a StringMap. Leading and trailing spaces of the keys and values
+   * are trimmed.
    * <p>
    * Example input: "booleanTrue=true ,booleanFalse=false, integerOne=1,longOne=1234567890"
    */
@@ -81,8 +82,7 @@ public class StringUtilsExt extends StringUtils {
   }
 
   /**
-   * Create a byte array from the given {@code tokenStream}, using the given token {@code separator}. Leading and
-   * trailing spaces of each token are trimmed.
+   * Create a byte array from the given {@code tokenStream}, using the given token {@code separator}. Leading and trailing spaces of each token are trimmed.
    * <p>
    * Example input: "0xc3, 0x41, 0x55, 0xed, 0xf4, 0x41, 0x3e, 0x61".
    */
@@ -94,7 +94,7 @@ public class StringUtilsExt extends StringUtils {
     result = new byte[stringArray.length];
     for (String string : stringArray) {
       int num = Short.decode(string.trim());
-      result[i++] = (byte)num;
+      result[i++] = (byte) num;
     }
 
     return result;
@@ -115,7 +115,7 @@ public class StringUtilsExt extends StringUtils {
    * Example: "integerOne=1,booleanTrue=true,longOne=1234567890,booleanFalse=false"
    */
   public static String toTokenStream(final Map<String, String> keyValuePairs, final String separator) {
-    StringBuilder result = new StringBuilder(keyValuePairs.size()*16); // assume 16-chars for each k/v token.
+    StringBuilder result = new StringBuilder(keyValuePairs.size() * 16); // assume 16-chars for each k/v token.
     String tokenSeparator = "";
     Map<String, String> parametersToStream = keyValuePairs;
 
@@ -149,9 +149,8 @@ public class StringUtilsExt extends StringUtils {
   }
 
   /**
-   * Return the parsed Date, using the default date format
-   * {@link com.thruzero.common.core.utils.DateTimeFormatUtilsExt#MM_DD_YYYY_DATE_FORMAT_STRING}.
-   *
+   * Return the parsed Date, using the default date format {@link com.thruzero.common.core.utils.DateTimeFormatUtilsExt#MM_DD_YYYY_DATE_FORMAT_STRING}.
+   * 
    * @throws ParseException
    */
   public static Date stringToDate(final String value, final Date defaultValue) throws ParseException {
@@ -159,10 +158,9 @@ public class StringUtilsExt extends StringUtils {
   }
 
   /**
-   * Return the parsed Date, using the given {@code parsePatterns}. If the value is null, then null is returned;
-   * otherwise, each of the given patterns will be used to parse the value as a Date, until a successful parse or all
-   * patterns have been exhausted, in which case a ParseException is thrown.
-   *
+   * Return the parsed Date, using the given {@code parsePatterns}. If the value is null, then null is returned; otherwise, each of the given patterns will be
+   * used to parse the value as a Date, until a successful parse or all patterns have been exhausted, in which case a ParseException is thrown.
+   * 
    * @throws ParseException
    */
   public static Date stringToDate(final String value, final Date defaultValue, final String... parsePatterns) throws ParseException {
@@ -186,7 +184,7 @@ public class StringUtilsExt extends StringUtils {
   }
 
   public static InputStream stringToInputStream(final String in) {
-    return new ByteArrayInputStream(in.getBytes());
+    return new ByteArrayInputStream(in.getBytes(Charset.forName("UTF-8")));
   }
 
   // utility functions /////////////////////////////////////////////////////////////
