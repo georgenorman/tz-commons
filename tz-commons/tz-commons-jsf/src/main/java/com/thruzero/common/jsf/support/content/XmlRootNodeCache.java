@@ -20,15 +20,18 @@ import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.jsf.support.beans.DynamicContentBean.ContentException;
 import com.thruzero.common.jsf.support.beans.DynamicContentBean.RootNodeCache;
 import com.thruzero.common.web.model.container.PanelSet;
+import com.thruzero.common.web.model.container.RowSet;
 import com.thruzero.common.web.model.container.builder.PanelSetBuilder;
+import com.thruzero.common.web.model.container.builder.RowSetBuilder;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.StandardXmlPanelBuilderTypeRegistry;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.XmlPanelBuilderTypeRegistry;
+import com.thruzero.common.web.model.container.builder.xml.XmlRowSetBuilder;
 import com.thruzero.common.web.model.nav.MenuBar;
 import com.thruzero.common.web.model.nav.builder.xml.XmlMenuBarBuilder;
 
 /**
- *
+ * 
  * @author George Norman
  */
 public class XmlRootNodeCache extends RootNodeCache {
@@ -39,6 +42,19 @@ public class XmlRootNodeCache extends RootNodeCache {
    */
   public XmlRootNodeCache(InfoNodeElement rootNode) {
     super(rootNode);
+  }
+
+  @Override
+  protected RowSet buildRowSet(InfoNodeElement rowSetNode) throws ContentException {
+    RowSetBuilder builder = new XmlRowSetBuilder(rowSetNode, panelBuilderTypeRegistry);
+    RowSet result;
+    try {
+      result = builder.build();
+    } catch (Exception e) {
+      throw new ContentException("ERROR building RowSet.", e);
+    }
+
+    return result;
   }
 
   @Override

@@ -39,6 +39,7 @@ import com.thruzero.common.jsf.support.content.XmlRootNodeCache;
 import com.thruzero.common.jsf.utils.FacesUtils;
 import com.thruzero.common.web.model.container.HtmlPanel;
 import com.thruzero.common.web.model.container.PanelSet;
+import com.thruzero.common.web.model.container.RowSet;
 import com.thruzero.common.web.model.nav.MenuBar;
 import com.thruzero.common.web.model.nav.MenuNode;
 import com.thruzero.domain.model.DataStoreInfo;
@@ -46,14 +47,13 @@ import com.thruzero.domain.provider.DataStoreInfoProvider;
 import com.thruzero.domain.service.InfoNodeService;
 
 /**
- * Reads content from the data store and builds component models used to render UI components on a page.
- * The data-store may reside in a relational database, the file system or be a remote private service (e.g., Dropbox).
- * The relational database and file system choices are mutually exclusive, however, the private data-store is optional
- * and unique for each individual user.
- *
+ * Reads content from the data store and builds component models used to render UI components on a page. The data-store may reside in a relational database, the
+ * file system or be a remote private service (e.g., Dropbox). The relational database and file system choices are mutually exclusive, however, the private
+ * data-store is optional and unique for each individual user.
+ * 
  * @author George Norman
  */
-@javax.faces.bean.ManagedBean(name="dynamicContentBean")
+@javax.faces.bean.ManagedBean(name = "dynamicContentBean")
 @javax.faces.bean.SessionScoped
 public class DynamicContentBean implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -140,16 +140,12 @@ public class DynamicContentBean implements Serializable {
 
     /**
      * Create the query associated with the given key, for the logged in user (or default, database context, if user isn't logged in).
-     * -----------------------------
-     * Construct a new ContentQuery using a querySpec that contains a full path for the entity segment (entity path begins with a '/').
-     * The format of the querySpec is a pipe-separated pair, where the first segment defines the
-     * full entity path and the second segment defines the xpath. The following example shows a query spec with a full entity path:
-     * "/jcat3/home/index.xml|/home/listPanel[@id='quickReference']"
-     * -----------------------------
-     * Construct a new ContentQuery using a querySpec that contains a partial path for the entity segment (entity path does not begin with a '/').
-     * The format of the querySpec is a pipe-separated pair, where the first segment defines the
-     * partial entity path and the second segment defines the xpath. The following example shows a query spec with a partial entity path:
-     * "home/index.xml|/home/listPanel[@id='quickReference']"
+     * ----------------------------- Construct a new ContentQuery using a querySpec that contains a full path for the entity segment (entity path begins with a
+     * '/'). The format of the querySpec is a pipe-separated pair, where the first segment defines the full entity path and the second segment defines the
+     * xpath. The following example shows a query spec with a full entity path: "/jcat3/home/index.xml|/home/listPanel[@id='quickReference']"
+     * ----------------------------- Construct a new ContentQuery using a querySpec that contains a partial path for the entity segment (entity path does not
+     * begin with a '/'). The format of the querySpec is a pipe-separated pair, where the first segment defines the partial entity path and the second segment
+     * defines the xpath. The following example shows a query spec with a partial entity path: "home/index.xml|/home/listPanel[@id='quickReference']"
      */
     public ContentQuery buildFromQuerySpec(String querySpec, DataStoreInfo dataStoreInfo) {
       ContentQuery result;
@@ -204,6 +200,7 @@ public class DynamicContentBean implements Serializable {
     // TODO-p0(george). ConcurrentHashMap may not be the best for this (investigate this vs rw lock)
     private final Map<String, InfoNodeElement> contentNodeCache = new ConcurrentHashMap<String, InfoNodeElement>();
     private final Map<String, PanelSet> panelSetCache = new ConcurrentHashMap<String, PanelSet>();
+    private final Map<String, List<RowSet>> rowSetListCache = new ConcurrentHashMap<String, List<RowSet>>();
     private final Map<String, List<PanelSet>> panelSetListCache = new ConcurrentHashMap<String, List<PanelSet>>();
     private final Map<String, MenuBar> menuBarCache = new ConcurrentHashMap<String, MenuBar>();
 
@@ -216,8 +213,7 @@ public class DynamicContentBean implements Serializable {
     }
 
     /**
-     * Return the content node, for the given xPath, by returning it from the cache or finding it in the RootNode
-     * and then caching it for future access).
+     * Return the content node, for the given xPath, by returning it from the cache or finding it in the RootNode and then caching it for future access).
      */
     public InfoNodeElement getContentNode(String xPath) {
       InfoNodeElement result = contentNodeCache.get(xPath);
@@ -239,8 +235,8 @@ public class DynamicContentBean implements Serializable {
     }
 
     /**
-     * Return the PanelSet, for the given xPath, by returning it from the cache or finding its model in the RootNode,
-     * then building it and finally caching it for future access.
+     * Return the PanelSet, for the given xPath, by returning it from the cache or finding its model in the RootNode, then building it and finally caching it
+     * for future access.
      */
     public PanelSet getPanelSet(String xPath) throws ContentException {
       PanelSet result = panelSetCache.get(xPath);
@@ -251,6 +247,33 @@ public class DynamicContentBean implements Serializable {
         if (panelSetNode != null) {
           result = buildPanelSet(panelSetNode);
           panelSetCache.put(xPath, result);
+        }
+      }
+
+      return result;
+    }
+
+    protected abstract RowSet buildRowSet(InfoNodeElement rowSetNode) throws ContentException;
+
+    public List<RowSet> getRowSetList(String xPath) throws ContentException {
+      List<RowSet> result = rowSetListCache.get(xPath);
+
+      if (result == null) {
+        InfoNodeElement rowSetListNode = getContentNode(xPath);
+
+        if (rowSetListNode != null) {
+          result = new ArrayList<RowSet>();
+
+          @SuppressWarnings("unchecked")
+          List<InfoNodeElement> rowSetNodes = rowSetListNode.getChildren();
+
+          for (InfoNodeElement rowSetNode : rowSetNodes) {
+            RowSet rowSet = buildRowSet(rowSetNode);
+
+            result.add(rowSet);
+          }
+
+          rowSetListCache.put(xPath, result);
         }
       }
 
@@ -325,12 +348,11 @@ public class DynamicContentBean implements Serializable {
   /**
    * Lazy init transients due to dependencies on Locator.
    * <p/>
-   * TODO-p1(george). REVISIT. This issue can happen again with another class unless a better solution is found.
-   * Issue: On Tomcat startup, serialization appears to happen before the InitFilter is called.
-   * This breaks locator as follows. First, the config locator requires the InitFilter to give it the path to the config file.
-   * Second, if readObject is used to init the transients, the locators are accessed causing the Registry to be created and interfaces registered.
-   * Then, when InitFilter is called, it causes the Locators to be loaded/initialized again, which generates
-   * an error (RegistryLocatorStrategy:57 - InterfaceBindingRegistry ERROR - Binding already exists for given interface: com.thruzero.common.core.config.Config).
+   * TODO-p1(george). REVISIT. This issue can happen again with another class unless a better solution is found. Issue: On Tomcat startup, serialization appears
+   * to happen before the InitFilter is called. This breaks locator as follows. First, the config locator requires the InitFilter to give it the path to the
+   * config file. Second, if readObject is used to init the transients, the locators are accessed causing the Registry to be created and interfaces registered.
+   * Then, when InitFilter is called, it causes the Locators to be loaded/initialized again, which generates an error (RegistryLocatorStrategy:57 -
+   * InterfaceBindingRegistry ERROR - Binding already exists for given interface: com.thruzero.common.core.config.Config).
    */
   private void ensureTransients() {
     if (dataStoreCache == null) {
@@ -347,8 +369,11 @@ public class DynamicContentBean implements Serializable {
     assertRootNodeCacheFound(rootNodeCache, "Text", key);
 
     InfoNodeElement resultNode = rootNodeCache.getContentNode(contentQuery.getXPath());
-
-    return resultNode.getText();
+    if (resultNode == null) {
+      return null;
+    } else {
+      return resultNode.getText();
+    }
   }
 
   public String getSafeText(String key) {
@@ -372,7 +397,8 @@ public class DynamicContentBean implements Serializable {
     return result;
   }
 
-  //TODO-p1(george). Investigate why JSF EL can't distinguish between ContentQuery and String. Renamed to loadPanelSetList for now.
+  // TODO-p1(george). Investigate why JSF EL can't distinguish between ContentQuery and String.
+  // Renamed from getContentNode to loadContentNode for now.
   public InfoNodeElement loadContentNode(ContentQuery contentQuery) throws ContentException {
     ensureTransients();
 
@@ -383,6 +409,32 @@ public class DynamicContentBean implements Serializable {
 
     InfoNodeElement result = rootNodeCache.getContentNode(contentQuery.getXPath());
     performanceLoggerHelper.debug("loadContentNode");
+
+    return result;
+  }
+
+  public List<RowSet> loadRowSetList(ContentQuery contentQuery) throws ContentException {
+    ensureTransients();
+
+    PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
+    List<RowSet> result;
+    EntityPath entityPath = contentQuery.getEntityPath();
+    String xPath = contentQuery.getXPath();
+
+    if (entityPath == null) {
+      result = new ArrayList<RowSet>();
+    } else {
+      RootNodeCache rootNodeCache = getRootNodeCache(entityPath);
+
+      assertRootNodeCacheFound(rootNodeCache, "Row Set List", contentQuery.toString());
+
+      try {
+        result = rootNodeCache.getRowSetList(xPath);
+      } catch (Exception e) {
+        throw new ContentException("ERROR loading RowSet list with: " + xPath, e);
+      }
+    }
+    performanceLoggerHelper.debug("loadRowSetList");
 
     return result;
   }
@@ -404,7 +456,7 @@ public class DynamicContentBean implements Serializable {
       // remove bad node
       dataStoreCache.clear(contentQuery.getEntityPath().toString());
     }
-    performanceLoggerHelper.debug("getPanelSet {"+key+"}");
+    performanceLoggerHelper.debug("getPanelSet {" + key + "}");
 
     return result;
   }
@@ -423,7 +475,7 @@ public class DynamicContentBean implements Serializable {
       // remove bad node
       dataStoreCache.clear(contentQuery.getEntityPath().toString());
     }
-    performanceLoggerHelper.debug("getPanelSetList {"+key+"}");
+    performanceLoggerHelper.debug("getPanelSetList {" + key + "}");
 
     return result;
   }
@@ -471,7 +523,7 @@ public class DynamicContentBean implements Serializable {
       // remove bad node
       dataStoreCache.clear(contentQuery.getEntityPath().toString());
     }
-    performanceLoggerHelper.debug("getMenuBar {"+key+"}");
+    performanceLoggerHelper.debug("getMenuBar {" + key + "}");
 
     return result;
   }
