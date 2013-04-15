@@ -15,11 +15,13 @@
  */
 package com.thruzero.domain.dsc.ws;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -33,13 +35,12 @@ import com.thruzero.domain.dsc.store.SimpleDataStoreEntity;
 import com.thruzero.domain.store.BaseStorePath;
 
 /**
- * Web Service based data store container
- * ### This is Work-In-Progress #### Only the readEntity function is implemented.
- * TODO-p1(george) Finish this implementation
+ * Web Service based data store container ### This is Work-In-Progress #### Only the readEntity function is implemented. TODO-p1(george) Finish this
+ * implementation
  * <p>
- * All DataStoreContainer objects are managed by {@code GenericDscDAO}, which will flatten and resurrect the
- * Domain Object instances automatically (and passed in as instances of DataStoreEntity).
- *
+ * All DataStoreContainer objects are managed by {@code GenericDscDAO}, which will flatten and resurrect the Domain Object instances automatically (and passed
+ * in as instances of DataStoreEntity).
+ * 
  * @author George Norman
  */
 public class WsDataStoreContainer implements DataStoreContainer {
@@ -68,9 +69,13 @@ public class WsDataStoreContainer implements DataStoreContainer {
 
     String response = resource.path("readEntity").queryParams(params).get(String.class);
 
-    SimpleDataStoreEntity result = new SimpleDataStoreEntity(IOUtils.toInputStream(response), new EntityPath(new ContainerPath(), entityName));
-
-    return result;
+    SimpleDataStoreEntity result;
+    try {
+      result = new SimpleDataStoreEntity(IOUtils.toInputStream(response, CharEncoding.UTF_8), new EntityPath(new ContainerPath(), entityName));
+      return result;
+    } catch (IOException e) {
+      throw new RuntimeException("couldn't convert data to InputStream.", e);
+    }
   }
 
   @Override

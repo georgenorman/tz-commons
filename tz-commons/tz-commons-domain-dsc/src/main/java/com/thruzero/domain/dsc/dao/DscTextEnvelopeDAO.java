@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
 
 import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
@@ -33,27 +34,22 @@ import com.thruzero.domain.model.TextEnvelope;
 /**
  * An implementation of TextEnvelopeDAO that uses a DataStoreContainer (DSC) as storage.
  * <p>
- * DscTextEnvelopeDAO requires initialization (see {@link AbstractDataStoreDAO.DataStoreDAOInitParamKeys} for
- * details). Following is an example initialization using the config file using the FileDataStoreContainer:
- *
- * <xmp>
- *   <!-- Define the generic file-system DAO settings (see "config.fs.domain.dao.xml") -->
- *   <section name="com.thruzero.domain.dsc.dao.DscTextEnvelopeDAO">
- *     <entry key="baseStorePath" value="[com.thruzero.domain.dsc.dao.AbstractDataStoreDAO]{storePath}/DscTextEnvelopeDAO" />
- *     <entry key="com.thruzero.domain.dsc.store.DataStoreContainerFactory" value="[com.thruzero.domain.dsc.dao.AbstractDataStoreDAO]{com.thruzero.domain.dsc.store.DataStoreContainerFactory}" />
- *   </section>
- *
- *   <!-- Define application-specific file-system DAO settings (see "config.xml" from the  "pf-test18-jpa-war" project) -->
- *   <section name="com.thruzero.domain.dsc.dao.AbstractDataStoreDAO">
- *     <!-- The type of DataStoreContainerFactory to use -->
- *     <entry key="com.thruzero.domain.dsc.store.DataStoreContainerFactory" value="com.thruzero.domain.dsc.fs.FileDataStoreContainerFactory" />
- *   </section>
- * </xmp>
- *
- * As can be seen above, 'com.thruzero.domain.dsc.dao.DscTextEnvelopeDAO' references the [com.thruzero.domain.dsc.dao.AbstractDataStoreDAO] section
- * to get the base store path (using {com.thruzero.domain.dsc.store.DataStoreContainerFactory}) and then appends
- * "DscTextEnvelopeDAO", creating a unique path to the DscTextEnvelopeDAO storage.
- *
+ * DscTextEnvelopeDAO requires initialization (see {@link AbstractDataStoreDAO.DataStoreDAOInitParamKeys} for details). Following is an example initialization
+ * using the config file using the FileDataStoreContainer:
+ * 
+ * <xmp> <!-- Define the generic file-system DAO settings (see "config.fs.domain.dao.xml") --> <section name="com.thruzero.domain.dsc.dao.DscTextEnvelopeDAO">
+ * <entry key="baseStorePath" value="[com.thruzero.domain.dsc.dao.AbstractDataStoreDAO]{storePath}/DscTextEnvelopeDAO" /> <entry
+ * key="com.thruzero.domain.dsc.store.DataStoreContainerFactory"
+ * value="[com.thruzero.domain.dsc.dao.AbstractDataStoreDAO]{com.thruzero.domain.dsc.store.DataStoreContainerFactory}" /> </section>
+ * 
+ * <!-- Define application-specific file-system DAO settings (see "config.xml" from the "pf-test18-jpa-war" project) --> <section
+ * name="com.thruzero.domain.dsc.dao.AbstractDataStoreDAO"> <!-- The type of DataStoreContainerFactory to use --> <entry
+ * key="com.thruzero.domain.dsc.store.DataStoreContainerFactory" value="com.thruzero.domain.dsc.fs.FileDataStoreContainerFactory" /> </section> </xmp>
+ * 
+ * As can be seen above, 'com.thruzero.domain.dsc.dao.DscTextEnvelopeDAO' references the [com.thruzero.domain.dsc.dao.AbstractDataStoreDAO] section to get the
+ * base store path (using {com.thruzero.domain.dsc.store.DataStoreContainerFactory}) and then appends "DscTextEnvelopeDAO", creating a unique path to the
+ * DscTextEnvelopeDAO storage.
+ * 
  * @author George Norman
  */
 public final class DscTextEnvelopeDAO extends AbstractDataStoreDAO<TextEnvelope> implements TextEnvelopeDAO {
@@ -101,7 +97,11 @@ public final class DscTextEnvelopeDAO extends AbstractDataStoreDAO<TextEnvelope>
       public DataStoreEntity flatten(TextEnvelope domainObject) {
         String data = domainObject.getData();
 
-        return new SimpleDataStoreEntity(IOUtils.toInputStream(data), domainObject.getEntityPath());
+        try {
+          return new SimpleDataStoreEntity(IOUtils.toInputStream(data, CharEncoding.UTF_8), domainObject.getEntityPath());
+        } catch (IOException e) {
+          throw new RuntimeException("couldn't convert data to InputStream.", e);
+        }
       }
     });
   }

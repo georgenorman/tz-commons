@@ -20,25 +20,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
+import org.apache.log4j.Logger;
 
 import com.thruzero.common.core.support.ContainerPath;
 import com.thruzero.common.core.support.EntityPath;
 import com.thruzero.domain.dsc.store.DataStoreContainer;
 import com.thruzero.domain.dsc.store.DataStoreException;
 import com.thruzero.domain.dsc.store.SimpleDataStoreEntity;
-import com.thruzero.domain.jpa.dao.JpaTextEnvelopeDAO;
 import com.thruzero.domain.locator.DAOLocator;
 import com.thruzero.domain.model.TextEnvelope;
-import org.apache.log4j.Logger;
 
 /**
- * A {@code DataStoreContainer} that manages entities for a single ContainerPath, accessed via {@code JpaTextEnvelopeDAO}.
- * It doesn't manage sub-containers or parent containers. Each parent container and sub-container is managed by a
- * separate instance of JpaDataStoreContainer.
+ * A {@code DataStoreContainer} that manages entities for a single ContainerPath, accessed via {@code JpaTextEnvelopeDAO}. It doesn't manage sub-containers or
+ * parent containers. Each parent container and sub-container is managed by a separate instance of JpaDataStoreContainer.
  * <p>
- * All DataStoreContainer objects are managed by {@code GenericDscDAO}, which will flatten and resurrect the
- * Domain Object instances automatically (passed in as instances of DataStoreEntity).
- *
+ * All DataStoreContainer objects are managed by {@code GenericDscDAO}, which will flatten and resurrect the Domain Object instances automatically (passed in as
+ * instances of DataStoreEntity).
+ * 
  * @author George Norman
  */
 public class JpaDataStoreContainer implements DataStoreContainer {
@@ -55,9 +54,12 @@ public class JpaDataStoreContainer implements DataStoreContainer {
   public DataStoreEntity readEntity(String entityName) {
     EntityPath primaryKey = new EntityPath(containerPath, entityName);
     TextEnvelope inputsEnvelope = jpaTextEnvelopeDAO.getTextEnvelope(primaryKey);
-    DataStoreEntity data = new SimpleDataStoreEntity(IOUtils.toInputStream(inputsEnvelope.getData()), primaryKey);
-
-    return data;
+    try {
+      DataStoreEntity data = new SimpleDataStoreEntity(IOUtils.toInputStream(inputsEnvelope.getData(), CharEncoding.UTF_8), primaryKey);
+      return data;
+    } catch (IOException e) {
+      throw new RuntimeException("couldn't convert inputsEnvelope to InputStream.", e);
+    }
   }
 
   @Override
@@ -66,9 +68,12 @@ public class JpaDataStoreContainer implements DataStoreContainer {
     List<? extends TextEnvelope> textEnvelopes = jpaTextEnvelopeDAO.getTextEnvelopes(containerPath, false);
 
     for (TextEnvelope dataEnvelope : textEnvelopes) {
-      DataStoreEntity data = new SimpleDataStoreEntity(IOUtils.toInputStream(dataEnvelope.getData()), dataEnvelope.getEntityPath());
-
-      result.add(data);
+      try {
+        DataStoreEntity data = new SimpleDataStoreEntity(IOUtils.toInputStream(dataEnvelope.getData(), CharEncoding.UTF_8), dataEnvelope.getEntityPath());
+        result.add(data);
+      } catch (IOException e) {
+        throw new RuntimeException("couldn't convert dataEnvelope to InputStream.", e);
+      }
     }
 
     return result;
