@@ -34,12 +34,12 @@ import com.thruzero.domain.dsc.store.DataStoreException;
 import com.thruzero.domain.store.BaseStorePath;
 
 /**
- * A DataStoreContainer that simply manages files within a single directory; it doesn't manage sub-directories or parent
- * directories. Each parent directory and sub-directory is managed by a separate instance of FileDataStoreContainer.
+ * A DataStoreContainer that simply manages files within a single directory; it doesn't manage sub-directories or parent directories. Each parent directory and
+ * sub-directory is managed by a separate instance of FileDataStoreContainer.
  * <p>
- * All DataStoreContainer objects are managed by {@code GenericDscDAO}, which will flatten and resurrect the
- * Domain Object instances automatically (passed in as instances of DataStoreEntity).
- *
+ * All DataStoreContainer objects are managed by {@code GenericDscDAO}, which will flatten and resurrect the Domain Object instances automatically (passed in as
+ * instances of DataStoreEntity).
+ * 
  * @author George Norman
  */
 public class FileDataStoreContainer implements DataStoreContainer {
@@ -59,7 +59,7 @@ public class FileDataStoreContainer implements DataStoreContainer {
 
     public FileDataStoreEntity(final File directoryStore, final EntityPath entityPath) {
       this.directoryStore = directoryStore;
-      this.entityPath = (EntityPath)entityPath.clone();
+      this.entityPath = (EntityPath) entityPath.clone();
     }
 
     @Override
@@ -92,9 +92,8 @@ public class FileDataStoreContainer implements DataStoreContainer {
   // ============================================================
 
   /**
-   * The given baseStorePath and directoryPath are combined to produce an absolute file path to the directory, which
-   * is validated to ensure it exists and is a directory. If it's nonexistent and createDirsIfNonExistent is true, then
-   * the directory will be created, including all nonexistent parent directories.
+   * The given baseStorePath and directoryPath are combined to produce an absolute file path to the directory, which is validated to ensure it exists and is a
+   * directory. If it's nonexistent and createDirsIfNonExistent is true, then the directory will be created, including all nonexistent parent directories.
    */
   public FileDataStoreContainer(BaseStorePath baseStorePath, ContainerPath containerPath, boolean createParentContainersIfNonExistent) {
     this.containerStore = new File(baseStorePath.toString(), containerPath.getPath());
@@ -113,8 +112,8 @@ public class FileDataStoreContainer implements DataStoreContainer {
   }
 
   /**
-   * Return a list of all the {@code DataStoreEntity} instances within this container and if {@code recursive} is true,
-   * then return all of the {@code DataStoreEntity} instances within all of the sub containers as well.
+   * Return a list of all the {@code DataStoreEntity} instances within this container and if {@code recursive} is true, then return all of the
+   * {@code DataStoreEntity} instances within all of the sub containers as well.
    */
   @Override
   public List<? extends DataStoreEntity> getAllEntities(boolean recursive) {
@@ -136,14 +135,16 @@ public class FileDataStoreContainer implements DataStoreContainer {
   protected List<EntityPath> doGetAllEntityPaths(ContainerPath childPath, boolean recursive) {
     List<EntityPath> result = new ArrayList<EntityPath>();
     File fromDir = new File(containerStore, childPath.toString().substring(1)); // remove leading "/"
-    File[] files = fromDir.listFiles();
+    File[] files = fromDir.listFiles(); // note: could use HierarchicalFileWalker here, but would need to add back the path relative to the containerStore
 
     if (files != null) {
       for (File file : files) {
         if (file.isFile()) {
-          EntityPath id = new EntityPath(childPath.getPath(), file.getName());
+          if (!".DS_Store".equals(file.getName())) { // ignore os x junk.
+            EntityPath id = new EntityPath(childPath.getPath(), file.getName());
 
-          result.add(id);
+            result.add(id);
+          }
         } else if (recursive) {
           ContainerPath nextChildPath = new ContainerPath(childPath, file.getName() + ContainerPath.CONTAINER_PATH_SEPARATOR);
 
@@ -160,8 +161,7 @@ public class FileDataStoreContainer implements DataStoreContainer {
   }
 
   /**
-   * Returns a DataStoreEntity that represents the data from the file specified by the given fileName (can have any file
-   * extension).
+   * Returns a DataStoreEntity that represents the data from the file specified by the given fileName (can have any file extension).
    */
   @Override
   public DataStoreEntity readEntity(final String fileName) {
@@ -184,8 +184,9 @@ public class FileDataStoreContainer implements DataStoreContainer {
 
   /**
    * Update an existing data file with the given fileData.
-   *
-   * @throws DAOException if nonexistent.
+   * 
+   * @throws DAOException
+   *           if nonexistent.
    */
   @Override
   public void updateEntity(String fileName, DataStoreEntity fileData) {
@@ -211,8 +212,9 @@ public class FileDataStoreContainer implements DataStoreContainer {
 
   /**
    * Create a new data file.
-   *
-   * @throws DAOException if file already exists or could not be created.
+   * 
+   * @throws DAOException
+   *           if file already exists or could not be created.
    */
   @Override
   public void createNewEntity(String fileName) {
@@ -237,8 +239,9 @@ public class FileDataStoreContainer implements DataStoreContainer {
 
   /**
    * Deletes the file specified by the given fileName.
-   *
-   * @throws DAOException if file is a directory or could not be deleted.
+   * 
+   * @throws DAOException
+   *           if file is a directory or could not be deleted.
    */
   @Override
   public void deleteEntity(String fileName) {
