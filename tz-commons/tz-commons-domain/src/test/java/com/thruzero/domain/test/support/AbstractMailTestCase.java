@@ -15,6 +15,8 @@
  */
 package com.thruzero.domain.test.support;
 
+import java.net.ServerSocket;
+
 import org.junit.After;
 import org.junit.Before;
 
@@ -22,7 +24,7 @@ import com.dumbster.smtp.SimpleSmtpServer;
 
 /**
  * Abstract test class that starts and stops the mock SMTP mail server (used for testing mail-related classes).
- *
+ * 
  * @author George Norman
  */
 public abstract class AbstractMailTestCase extends AbstractDomainTestCase {
@@ -33,7 +35,17 @@ public abstract class AbstractMailTestCase extends AbstractDomainTestCase {
   public void setUp() throws Exception {
     super.setUp();
 
-    server = SimpleSmtpServer.start();
+    try {
+      // Dumbster throws exception, without stopping server and then barfs if stop is called.
+      // Do a pre-test before calling dumbster.
+      new ServerSocket(SimpleSmtpServer.DEFAULT_SMTP_PORT);
+
+      // okay to start
+      server = SimpleSmtpServer.start();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
   }
 
   @Override
@@ -41,7 +53,9 @@ public abstract class AbstractMailTestCase extends AbstractDomainTestCase {
   public void tearDown() throws Exception {
     super.tearDown();
 
-    server.stop();
+    if (server != null) {
+      server.stop();
+    }
   }
 
   protected SimpleSmtpServer getSmtpServer() {
