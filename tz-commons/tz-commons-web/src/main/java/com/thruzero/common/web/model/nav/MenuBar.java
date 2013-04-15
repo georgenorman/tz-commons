@@ -26,7 +26,7 @@ import com.thruzero.common.web.model.nav.MenuNode.MenuNodePath;
 
 /**
  * A model representing a series of menus (e.g., menu bar or tab bar) and maintains the path to the active menu.
- *
+ * 
  * @author George Norman
  */
 public class MenuBar implements MenuStateHolder {
@@ -51,6 +51,10 @@ public class MenuBar implements MenuStateHolder {
   /** Return the set of menus associated with this menubar. */
   public Collection<MenuNode> getMenus() {
     return UiUtils.unmodifiableListHack(menus.values());
+  }
+
+  public MenuNode getMenu(String id) {
+    return menus.get(id);
   }
 
   /** Adds the given menu to the end of the menu list and associates it with the given id. */
