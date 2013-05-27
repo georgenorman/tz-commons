@@ -361,14 +361,7 @@ public class DynamicContentBean implements Serializable {
   }
 
   public String getText(String key) {
-    ensureTransients();
-
-    ContentQuery contentQuery = contentQueryBuilder.buildFromKey(key, getDataStoreInfo());
-    RootNodeCache rootNodeCache = getRootNodeCache(contentQuery.getEntityPath());
-
-    assertRootNodeCacheFound(rootNodeCache, "Text", key);
-
-    InfoNodeElement resultNode = rootNodeCache.getContentNode(contentQuery.getXPath());
+    InfoNodeElement resultNode = getContentNode(key);
     if (resultNode == null) {
       return null;
     } else {
@@ -377,8 +370,6 @@ public class DynamicContentBean implements Serializable {
   }
 
   public String getSafeText(String key) {
-    ensureTransients();
-
     String result = getText(key);
 
     if (StringUtils.isNotEmpty(result)) {
