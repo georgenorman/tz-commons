@@ -20,25 +20,24 @@ import java.io.Serializable;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * An instance of this class represents an "absolute" path to a single entity in a data store, where the ROOT data store path is
- * considered the <b>ROOT</b> of the EntityPath. The path MUST always begin with a forward slash and never end with one
- * (regardless of file system). Examples of valid EntityPath's are:
- *
+ * An instance of this class represents an "absolute" path to a single entity in a data store, where the ROOT data store path is considered the <b>ROOT</b> of
+ * the EntityPath. The path MUST always begin with a forward slash and never end with one (regardless of file system). Examples of valid EntityPath's are:
+ * 
  * <pre>
  * "/ex1.txt"
  * "/bar/ex2.txt"
  * "/bar/ex3.xml"
  * </pre>
- *
- * If the EntityPath is used in a file system based data store and the ROOT store path is {@code "/home/foo"}, then the
- * resulting file system paths for the previous examples would be:
- *
+ * 
+ * If the EntityPath is used in a file system based data store and the ROOT store path is {@code "/home/foo"}, then the resulting file system paths for the
+ * previous examples would be:
+ * 
  * <pre>
  * "/home/foo/ex1.txt"
  * "/home/foo/bar/ex2.txt"
  * "/home/foo/bar/ex3.xml".
  * </pre>
- *
+ * 
  * @author George Norman
  */
 public final class EntityPath implements Serializable, Cloneable, Comparable<EntityPath> {
@@ -62,8 +61,7 @@ public final class EntityPath implements Serializable, Cloneable, Comparable<Ent
       }
 
       if (!parentPath.startsWith(ContainerPath.CONTAINER_PATH_SEPARATOR)) {
-        throw new RuntimeException("Invalid Container path. Relative paths not supported. Path must begin with a container separator ('" + ContainerPath.CONTAINER_PATH_SEPARATOR + "'): "
-            + parentPath);
+        throw new RuntimeException("Invalid Container path. Relative paths not supported. Path must begin with a container separator ('" + ContainerPath.CONTAINER_PATH_SEPARATOR + "'): " + parentPath);
       }
 
       if (!parentPath.endsWith(ContainerPath.CONTAINER_PATH_SEPARATOR)) {
@@ -140,8 +138,7 @@ public final class EntityPath implements Serializable, Cloneable, Comparable<Ent
   }
 
   /**
-   * Construct an instance from the given {@code containerPath} and {@code entityName} (the entityName can't contain a
-   * "/").
+   * Construct an instance from the given {@code containerPath} and {@code entityName} (the entityName can't contain a "/").
    */
   public EntityPath(ContainerPath containerPath, String entityName) {
     pathAndNameValidator.validateEntityName(entityName);
@@ -172,7 +169,7 @@ public final class EntityPath implements Serializable, Cloneable, Comparable<Ent
   }
 
   /**
-   * Construct an instance from the given {@code containerPath} (which must begin and end with a "/") and
+   * Construct an instance from the given {@code containerPath} (which must begin and end with a "/") and 
    * {@code entityName} (which can't contain a "/").
    */
   public EntityPath(String containerPath, String entityName) {
@@ -195,7 +192,7 @@ public final class EntityPath implements Serializable, Cloneable, Comparable<Ent
   }
 
   /**
-   * Attempt to create an EntityPath instance from the given {@code entityPath} string, by adding missing path
+   * Attempt to create an EntityPath instance from the given {@code entityPath} string, by adding missing path 
    * separators (e.g., if the given entityPath does not begin with a "/", then add it).
    */
   public static EntityPath createFromString(String entityPath) {
@@ -216,10 +213,6 @@ public final class EntityPath implements Serializable, Cloneable, Comparable<Ent
 
   public String getRootDataStorePath() {
     return rootDataStorePath;
-  }
-
-  public String getContainerPathAsString() {
-    return containerPath.getPath();
   }
 
   public ContainerPath getContainerPath() {
@@ -245,7 +238,7 @@ public final class EntityPath implements Serializable, Cloneable, Comparable<Ent
     if (rootDataStorePath != null) {
       root = rootDataStorePath;
     }
-    return root + getContainerPathAsString() + entityName;
+    return root + getContainerPath().getPath() + entityName;
   }
 
   @Override
@@ -266,7 +259,7 @@ public final class EntityPath implements Serializable, Cloneable, Comparable<Ent
       return false;
     if (getClass() != obj.getClass())
       return false;
-    EntityPath other = (EntityPath)obj;
+    EntityPath other = (EntityPath) obj;
     if (containerPath == null) {
       if (other.containerPath != null)
         return false;

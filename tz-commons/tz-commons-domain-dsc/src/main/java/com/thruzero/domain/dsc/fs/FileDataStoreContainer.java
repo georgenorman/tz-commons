@@ -80,7 +80,7 @@ public class FileDataStoreContainer implements DataStoreContainer {
     }
 
     public File getFile() {
-      File directory = new File(directoryStore, entityPath.getContainerPathAsString());
+      File directory = new File(directoryStore, entityPath.getContainerPath().getPath());
       File file = new File(directory, entityPath.getEntityName());
 
       return file;
