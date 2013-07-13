@@ -23,13 +23,24 @@ import java.util.Map;
 import com.thruzero.common.core.utils.UiUtils;
 
 /**
- * An instance represents an ordered set of panels (typically used to render a column of panels on a page).
+ * An instance represents an ordered set of panels. The layout of the panels in the PanelSet 
+ * can be horizontal or vertical and depends on the renderer. Examples:
+ * 
+ * <pre>
+ * Horizontal
+ *   [panel-1] [panel-2] [panel-3]
+ *   
+ * Vertical
+ *   [panel-1]
+ *   [panel-2]
+ *   [panel-3]
+ * </pre>
  * 
  * @author George Norman
  */
 public class PanelSet {
-  private String id;
-  private Map<String, AbstractPanel> panels = new LinkedHashMap<String, AbstractPanel>();
+  private final String id;
+  private final Map<String, AbstractPanel> panels = new LinkedHashMap<String, AbstractPanel>();
 
   public PanelSet(String columnId) {
     this.id = columnId;

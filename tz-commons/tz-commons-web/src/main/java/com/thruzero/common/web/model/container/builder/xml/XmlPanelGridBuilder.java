@@ -19,8 +19,8 @@ import java.util.List;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
-import com.thruzero.common.web.model.container.RowSet;
-import com.thruzero.common.web.model.container.builder.RowSetBuilder;
+import com.thruzero.common.web.model.container.PanelGrid;
+import com.thruzero.common.web.model.container.builder.PanelGridBuilder;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.XmlPanelBuilderTypeRegistry;
 
 /**
@@ -30,24 +30,32 @@ import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.Xm
  * <pre>
  * {@code
  * <index>
- *  <rowSet id="row1">
+ *  <panelGrid id="row1">
  *    <panelSet id="col1">
  *     <listPanel title="Panel-1" id="col1_panel1">
  *       <dataList>
- *         <a href="item11.html" title="Item-11"/>
- *         <a href="item12.html" title="Item-12"/>
- *         <a href="item13.html" title="Item-13"/>
+ *         <a href="item1-p1c1.html" title="Item-1-p1c1"/>
+ *         <a href="item2-p1c1.html" title="Item-2-p1c1"/>
+ *         <a href="item3-p1c1.html" title="Item-3-p1c1"/>
  *       </dataList>
  *     </listPanel>
  *
  *     <listPanel title="Panel-2" id="col1_panel2">
  *       <dataList>
- *         <a href="item21.html" title="Item-21"/>
- *         <a href="item22.html" title="Item-22"/>
+ *         <a href="item1-p2c1.html" title="Item-1-p2c1"/>
+ *         <a href="item2-p2c1.html" title="Item-2-p2c1"/>
  *       </dataList>
  *     </listPanel>
  *    </panelSet>
- *  </rowSet>
+ *    
+ *    <panelSet id="col2">
+ *     <listPanel title="Panel-1" id="col2_panel1">
+ *       <dataList>
+ *         <a href="item1-p1c2.html" title="Item-1-p1c2"/>
+ *       </dataList>
+ *     </listPanel>
+ *
+ *  </panelGrid>
  *   ...
  *
  * </index>
@@ -56,35 +64,35 @@ import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.Xm
  * 
  * @author George Norman
  */
-public class XmlRowSetBuilder implements RowSetBuilder {
-  private static final String ID = ConfigLocator.locate().getValue(XmlRowSetBuilder.class.getName(), "id", "id");
+public class XmlPanelGridBuilder implements PanelGridBuilder {
+  private static final String ID = ConfigLocator.locate().getValue(XmlPanelGridBuilder.class.getName(), "id", "id");
 
-  private String rowSetId;
-  private List<InfoNodeElement> panelSetNodes;
-  private XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry;
+  private final String rowId;
+  private final List<InfoNodeElement> panelSetNodes;
+  private final XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry;
 
   /**
-   * Builds a <code>PanelSet</code> from the given <code>panelSetNode</code>.
+   * Builds a <code></code> from the given <code>panelGridNode</code>.
    * 
-   * @param panelSetNode
-   *          node containing the set of panels (each child of this node will be a panel node).
+   * @param panelGridNode
+   *          node containing the list of PanelSet nodes, each of which represents a column in the row.
    * @param panelBuilderTypeRegistry
    *          registry that specifies which builder to use for a given panel definition (based on panel name - e.g., 'listPanel').
    */
   @SuppressWarnings("unchecked")
-  public XmlRowSetBuilder(InfoNodeElement rowSetNode, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
-    this(rowSetNode.getAttributeValue(ID), rowSetNode.getChildren(), panelBuilderTypeRegistry);
+  public XmlPanelGridBuilder(InfoNodeElement panelGridNode, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
+    this(panelGridNode.getAttributeValue(ID), panelGridNode.getChildren(), panelBuilderTypeRegistry);
   }
 
-  public XmlRowSetBuilder(String rowSetId, List<InfoNodeElement> panelSetNodes, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
-    this.rowSetId = rowSetId;
+  public XmlPanelGridBuilder(String rowId, List<InfoNodeElement> panelSetNodes, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
+    this.rowId = rowId;
     this.panelSetNodes = panelSetNodes;
     this.panelBuilderTypeRegistry = panelBuilderTypeRegistry;
   }
 
   @Override
-  public RowSet build() throws Exception {
-    RowSet result = new RowSet(rowSetId);
+  public PanelGrid build() throws Exception {
+    PanelGrid result = new PanelGrid(rowId);
 
     for (InfoNodeElement panelSetNode : panelSetNodes) {
       XmlPanelSetBuilder panelSetBuilder = new XmlPanelSetBuilder(panelSetNode, panelBuilderTypeRegistry);

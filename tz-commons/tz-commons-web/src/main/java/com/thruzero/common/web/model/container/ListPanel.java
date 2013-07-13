@@ -25,7 +25,7 @@ import com.thruzero.common.core.utils.UiUtils;
 import com.thruzero.common.web.model.css.StyleClass;
 
 /**
- * An instance represents a panel containing a list of items. Each item in the list is an InfoNodeElement, which can
+ * An instance represents a panel containing a list of bullet items. Each item in the list is an InfoNodeElement, which can
  * represent the model of a simple property sheet item, a hierarchical list item, etc.
  * <p/>
  * The panel may be built manually or using an
@@ -56,8 +56,8 @@ import com.thruzero.common.web.model.css.StyleClass;
  * @author George Norman
  */
 public class ListPanel extends AbstractPanel {
-  private List<InfoNodeElement> items = new ArrayList<InfoNodeElement>();
-  private boolean renderDomain;
+  private final List<InfoNodeElement> items = new ArrayList<InfoNodeElement>();
+  private final boolean renderDomain;
 
   /**
    * Constructs a model representing a panel of list items.

@@ -19,14 +19,14 @@ package com.thruzero.common.jsf.support.content;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.jsf.support.beans.DynamicContentBean.ContentException;
 import com.thruzero.common.jsf.support.beans.DynamicContentBean.RootNodeCache;
+import com.thruzero.common.web.model.container.PanelGrid;
 import com.thruzero.common.web.model.container.PanelSet;
-import com.thruzero.common.web.model.container.RowSet;
+import com.thruzero.common.web.model.container.builder.PanelGridBuilder;
 import com.thruzero.common.web.model.container.builder.PanelSetBuilder;
-import com.thruzero.common.web.model.container.builder.RowSetBuilder;
+import com.thruzero.common.web.model.container.builder.xml.XmlPanelGridBuilder;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.StandardXmlPanelBuilderTypeRegistry;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.XmlPanelBuilderTypeRegistry;
-import com.thruzero.common.web.model.container.builder.xml.XmlRowSetBuilder;
 import com.thruzero.common.web.model.nav.MenuBar;
 import com.thruzero.common.web.model.nav.builder.xml.XmlMenuBarBuilder;
 
@@ -45,13 +45,13 @@ public class XmlRootNodeCache extends RootNodeCache {
   }
 
   @Override
-  protected RowSet buildRowSet(InfoNodeElement rowSetNode) throws ContentException {
-    RowSetBuilder builder = new XmlRowSetBuilder(rowSetNode, panelBuilderTypeRegistry);
-    RowSet result;
+  protected PanelGrid buildGridRow(InfoNodeElement panelGridNode) throws ContentException {
+    PanelGridBuilder builder = new XmlPanelGridBuilder(panelGridNode, panelBuilderTypeRegistry);
+    PanelGrid result;
     try {
       result = builder.build();
     } catch (Exception e) {
-      throw new ContentException("ERROR building RowSet.", e);
+      throw new ContentException("ERROR building PanelGrid.", e);
     }
 
     return result;

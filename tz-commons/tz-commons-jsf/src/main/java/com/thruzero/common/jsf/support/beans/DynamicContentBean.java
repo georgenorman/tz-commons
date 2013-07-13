@@ -38,8 +38,8 @@ import com.thruzero.common.jsf.support.ContentQuery;
 import com.thruzero.common.jsf.support.content.XmlRootNodeCache;
 import com.thruzero.common.jsf.utils.FacesUtils;
 import com.thruzero.common.web.model.container.HtmlPanel;
+import com.thruzero.common.web.model.container.PanelGrid;
 import com.thruzero.common.web.model.container.PanelSet;
-import com.thruzero.common.web.model.container.RowSet;
 import com.thruzero.common.web.model.nav.MenuBar;
 import com.thruzero.common.web.model.nav.MenuNode;
 import com.thruzero.domain.model.DataStoreInfo;
@@ -91,7 +91,7 @@ public class DynamicContentBean implements Serializable {
     private String requestUri;
 
     // TODO-p0(george). ConcurrentHashMap may not be the best for this (investigate this vs rw lock)
-    private Map<String, RootNodeCache> cache = new ConcurrentHashMap<String, RootNodeCache>();
+    private final Map<String, RootNodeCache> cache = new ConcurrentHashMap<String, RootNodeCache>();
 
     public RootNodeCache getRootNodeCache(String key) {
       return cache.get(key);
@@ -140,10 +140,12 @@ public class DynamicContentBean implements Serializable {
 
     /**
      * Create the query associated with the given key, for the logged in user (or default, database context, if user isn't logged in).
-     * ----------------------------- Construct a new ContentQuery using a querySpec that contains a full path for the entity segment (entity path begins with a
+     * <br>----------------------------- <br>
+     * Construct a new ContentQuery using a querySpec that contains a full path for the entity segment (entity path begins with a
      * '/'). The format of the querySpec is a pipe-separated pair, where the first segment defines the full entity path and the second segment defines the
      * xpath. The following example shows a query spec with a full entity path: "/jcat3/home/index.xml|/home/listPanel[@id='quickReference']"
-     * ----------------------------- Construct a new ContentQuery using a querySpec that contains a partial path for the entity segment (entity path does not
+     * <br>----------------------------- <br>
+     * Construct a new ContentQuery using a querySpec that contains a partial path for the entity segment (entity path does not
      * begin with a '/'). The format of the querySpec is a pipe-separated pair, where the first segment defines the partial entity path and the second segment
      * defines the xpath. The following example shows a query spec with a partial entity path: "home/index.xml|/home/listPanel[@id='quickReference']"
      */
@@ -200,7 +202,7 @@ public class DynamicContentBean implements Serializable {
     // TODO-p0(george). ConcurrentHashMap may not be the best for this (investigate this vs rw lock)
     private final Map<String, InfoNodeElement> contentNodeCache = new ConcurrentHashMap<String, InfoNodeElement>();
     private final Map<String, PanelSet> panelSetCache = new ConcurrentHashMap<String, PanelSet>();
-    private final Map<String, List<RowSet>> rowSetListCache = new ConcurrentHashMap<String, List<RowSet>>();
+    private final Map<String, List<PanelGrid>> panelGridListCache = new ConcurrentHashMap<String, List<PanelGrid>>();
     private final Map<String, List<PanelSet>> panelSetListCache = new ConcurrentHashMap<String, List<PanelSet>>();
     private final Map<String, MenuBar> menuBarCache = new ConcurrentHashMap<String, MenuBar>();
 
@@ -253,27 +255,27 @@ public class DynamicContentBean implements Serializable {
       return result;
     }
 
-    protected abstract RowSet buildRowSet(InfoNodeElement rowSetNode) throws ContentException;
+    protected abstract PanelGrid buildGridRow(InfoNodeElement panelGridNode) throws ContentException;
 
-    public List<RowSet> getRowSetList(String xPath) throws ContentException {
-      List<RowSet> result = rowSetListCache.get(xPath);
+    public List<PanelGrid> getPanelGridList(String xPath) throws ContentException {
+      List<PanelGrid> result = panelGridListCache.get(xPath);
 
       if (result == null) {
-        InfoNodeElement rowSetListNode = getContentNode(xPath);
+        InfoNodeElement panelGridListNode = getContentNode(xPath);
 
-        if (rowSetListNode != null) {
-          result = new ArrayList<RowSet>();
+        if (panelGridListNode != null) {
+          result = new ArrayList<PanelGrid>();
 
           @SuppressWarnings("unchecked")
-          List<InfoNodeElement> rowSetNodes = rowSetListNode.getChildren();
+          List<InfoNodeElement> panelGridNodes = panelGridListNode.getChildren();
 
-          for (InfoNodeElement rowSetNode : rowSetNodes) {
-            RowSet rowSet = buildRowSet(rowSetNode);
+          for (InfoNodeElement panelGridNode : panelGridNodes) {
+            PanelGrid panelGrid = buildGridRow(panelGridNode);
 
-            result.add(rowSet);
+            result.add(panelGrid);
           }
 
-          rowSetListCache.put(xPath, result);
+          panelGridListCache.put(xPath, result);
         }
       }
 
@@ -404,28 +406,28 @@ public class DynamicContentBean implements Serializable {
     return result;
   }
 
-  public List<RowSet> loadRowSetList(ContentQuery contentQuery) throws ContentException {
+  public List<PanelGrid> loadPanelGridList(ContentQuery contentQuery) throws ContentException {
     ensureTransients();
 
     PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
-    List<RowSet> result;
+    List<PanelGrid> result;
     EntityPath entityPath = contentQuery.getEntityPath();
     String xPath = contentQuery.getXPath();
 
     if (entityPath == null) {
-      result = new ArrayList<RowSet>();
+      result = new ArrayList<PanelGrid>();
     } else {
       RootNodeCache rootNodeCache = getRootNodeCache(entityPath);
 
       assertRootNodeCacheFound(rootNodeCache, "Row Set List", contentQuery.toString());
 
       try {
-        result = rootNodeCache.getRowSetList(xPath);
+        result = rootNodeCache.getPanelGridList(xPath);
       } catch (Exception e) {
-        throw new ContentException("ERROR loading RowSet list with: " + xPath, e);
+        throw new ContentException("ERROR loading PanelGrid list with: " + xPath, e);
       }
     }
-    performanceLoggerHelper.debug("loadRowSetList");
+    performanceLoggerHelper.debug("loadPanelGridList");
 
     return result;
   }

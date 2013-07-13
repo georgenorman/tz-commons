@@ -27,8 +27,8 @@ import javax.faces.event.ActionEvent;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ServiceLocator;
 import com.thruzero.common.core.utils.PerformanceTimerUtils.PerformanceLoggerHelper;
-import com.thruzero.common.jsf.support.beans.DynamicContentBean;
 import com.thruzero.common.web.model.container.AbstractPanel;
+import com.thruzero.common.web.model.container.PanelGrid;
 import com.thruzero.common.web.model.container.PanelSet;
 import com.thruzero.common.web.model.container.builder.xml.XmlCarouselPanelSetBuilder;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.StandardXmlPanelBuilderTypeRegistry;
@@ -46,7 +46,7 @@ import com.thruzero.domain.service.RssFeedService;
 public class RssFeedsBean {
   private static XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry = new StandardXmlPanelBuilderTypeRegistry();
 
-  private Map<String, List<PanelSet>> feedMap = new HashMap<String,List<PanelSet>>();
+  private final Map<String, List<PanelGrid>> feedMap = new HashMap<String,List<PanelGrid>>();
 
   @javax.faces.bean.ManagedProperty(value="#{dynamicContentBean}")
   private DynamicContentBean dynamicContentBean;
@@ -58,11 +58,12 @@ public class RssFeedsBean {
     service.clearReadCache();
   }
 
-  /** Read the set of RSS feeds, using the query specified by the given key, and return a list of PanelSet objects
+  /** 
+   * Read the set of RSS feeds, using the query specified by the given key, and return a list of PanelGrid objects
    * suitable for use in a carousel view.
    */
-  public List<PanelSet> getFeedsCarousel(String key) throws Exception {
-    List<PanelSet> result = feedMap.get(key);
+  public List<PanelGrid> getFeedsCarousel(String key) throws Exception {
+    List<PanelGrid> result = feedMap.get(key);
 
     if (result == null) {
       InfoNodeElement rssFeedSetNode = dynamicContentBean.getContentNode(key);
@@ -80,10 +81,12 @@ public class RssFeedsBean {
   /** Read the set of RSS feeds, using the query specified by the given key, and return the results as a list of panels. */
   public List<AbstractPanel> getFeedsList(String key) throws Exception {
     List<AbstractPanel> result = new ArrayList<AbstractPanel>();
-    List<PanelSet> carousel = getFeedsCarousel(key);
+    List<PanelGrid> carousel = getFeedsCarousel(key);
 
-    for (PanelSet panelSet : carousel) {
-      result.addAll(panelSet.getPanels());
+    for (PanelGrid panelGrid : carousel) {
+      for (PanelSet panelSet : panelGrid.getPanelSets()) {
+        result.addAll(panelSet.getPanels());
+      }
     }
 
     return result;

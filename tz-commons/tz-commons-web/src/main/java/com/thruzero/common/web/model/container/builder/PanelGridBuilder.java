@@ -15,18 +15,18 @@
  */
 package com.thruzero.common.web.model.container.builder;
 
-import com.thruzero.common.web.model.container.RowSet;
+import com.thruzero.common.web.model.container.PanelGrid;
 
 /**
- * An interface for a builder of row sets ({@link com.thruzero.common.web.model.container.RowSet RowSet}).
+ * An interface for a builder of {@link com.thruzero.common.web.model.container.PanelGrid PanelGrid} instances.
  * 
  * @author George Norman
  */
-public interface RowSetBuilder {
+public interface PanelGridBuilder {
 
   /**
-   * Builds a {@link com.thruzero.common.web.model.container.RowSet RowSet}.
+   * Builds a {@link com.thruzero.common.web.model.container.PanelGrid PanelGrid} instance.
    */
-  RowSet build() throws Exception;
+  PanelGrid build() throws Exception;
 
 }

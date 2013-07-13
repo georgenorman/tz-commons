@@ -18,7 +18,7 @@ package com.thruzero.common.web.model.container.builder;
 
 import java.util.List;
 
-import com.thruzero.common.web.model.container.PanelSet;
+import com.thruzero.common.web.model.container.PanelGrid;
 
 /**
  * An interface for a builder of carousel panel sets ({@link com.thruzero.common.web.model.container.CarouselPanelSet CarouselPanelSet}).
@@ -28,8 +28,29 @@ import com.thruzero.common.web.model.container.PanelSet;
 public interface CarouselPanelSetBuilder {
 
   /**
-   * Builds a List of {@link com.thruzero.common.web.model.container.PanelSet PanelSet} instances (used by a Carousel panel).
+   * Builds a List of {@link com.thruzero.common.web.model.container.PanelGrid PanelGrid} instances (used by a Carousel panel).
+   * A Carousel panel supports multiple pages, where each page may contain multiple rows and columns. 
+   * The Carousel panel renderer uses a horizontal layout, so that each PanelGrid represents a full page and renders each panel from the PanelSet as a column. 
+   * <br><br>
+   * For example, if a carouselPanelSet data model contains 8 panels, with pagination set to 4 and maxRows set to 1, then there will be 2 pages of single 
+   * rows, with each row containing 4 panels, as shown below.
+   * <pre>
+   * PanelGrid-1
+   *   [panelSet1[1]] [panelSet1[2]] [panelSet1[3]] [panelSet1[4]]
+   * PanelGrid-2
+   *   [panelSet1[1]] [panelSet1[2]] [panelSet1[3]] [panelSet1[4]]
+   * </pre>
+   * In the same example, if pagination is set to 3 and maxRows is set to 2, then each page would contain 2 rows.
+   * <pre>
+   * PanelGrid-1
+   *   [panelSet1[1]] [panelSet1[2]]
+   *   [panelSet2[1]] [panelSet2[2]]
+   * PanelGrid-2
+   *   [panelSet1[1]] [panelSet1[2]]
+   *   [panelSet2[1]] [panelSet2[2]]
+   * </pre>
+   * 
    */
-  List<PanelSet> build() throws Exception;
+  List<PanelGrid> build() throws Exception;
 
 }

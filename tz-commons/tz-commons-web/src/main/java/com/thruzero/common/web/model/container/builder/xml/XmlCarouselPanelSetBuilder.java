@@ -19,15 +19,17 @@ package com.thruzero.common.web.model.container.builder.xml;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
 import com.thruzero.common.core.support.SimpleIdGenerator;
 import com.thruzero.common.core.utils.ExceptionUtilsExt;
-import com.thruzero.common.web.model.container.PanelSet;
+import com.thruzero.common.web.model.container.PanelGrid;
+import com.thruzero.common.web.model.container.PanelGrid.Layout;
 import com.thruzero.common.web.model.container.builder.CarouselPanelSetBuilder;
 import com.thruzero.common.web.model.container.builder.PanelSetBuilder;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.XmlPanelBuilderTypeRegistry;
-import org.apache.log4j.Logger;
 
 /**
  * A builder of a list of PanelSet instances, using XML as the definition. Below is a sample {@code <carouselPanelSet>} node containing a
@@ -58,9 +60,10 @@ public class XmlCarouselPanelSetBuilder implements CarouselPanelSetBuilder {
   private static final Logger logger = Logger.getLogger(XmlCarouselPanelSetBuilder.class);
 
   private static final String PAGINATE_ATTRIBUTE_NAME = ConfigLocator.locate().getValue(XmlCarouselPanelSetBuilder.class.getName(), "paginate", "paginate");
+  private static final String MAX_ROWS_ATTRIBUTE_NAME = ConfigLocator.locate().getValue(XmlCarouselPanelSetBuilder.class.getName(), "maxRows", "maxRows");
 
-  private InfoNodeElement carouselPanelSetNode;
-  private XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry;
+  private final InfoNodeElement carouselPanelSetNode;
+  private final XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry;
 
   /**
    * Builds a list of <code>PanelSet</code> instances from the given <code>carouselPanelSet</code>. The <code>paginate</code>
@@ -76,28 +79,49 @@ public class XmlCarouselPanelSetBuilder implements CarouselPanelSetBuilder {
   }
 
   @Override
-  public List<PanelSet> build() throws Exception {
-    List<PanelSet> result = new ArrayList<PanelSet>();
+  public List<PanelGrid> build() throws Exception {
+    List<PanelGrid> result = new ArrayList<PanelGrid>();
 
-    // setup
-    @SuppressWarnings("unchecked")
-    List<InfoNodeElement> children = carouselPanelSetNode.getChildren();
+    // setup for pagination
     int paginate = carouselPanelSetNode.getAttributeTransformer(PAGINATE_ATTRIBUTE_NAME).getIntValue(1);
     if (paginate <= 0) {
       throw ExceptionUtilsExt.logAndCreateIllegalArgumentException(logger, "Pagination must be greater than 0.");
     }
     int panelCount = 0;
-    List<InfoNodeElement> panelNodes = new ArrayList<InfoNodeElement>();
+
+    // setup for rows
+    int maxRows = carouselPanelSetNode.getAttributeTransformer(MAX_ROWS_ATTRIBUTE_NAME).getIntValue(1);
+    if (maxRows <= 0) {
+      throw ExceptionUtilsExt.logAndCreateIllegalArgumentException(logger, "Max Rows must be greater than 0.");
+    }
+    int rowCount = 1; // start at row #1
+    List<InfoNodeElement> rowNodes = new ArrayList<InfoNodeElement>();
+
+    @SuppressWarnings("unchecked")
+    List<InfoNodeElement> children = carouselPanelSetNode.getChildren();
 
     // handle pagination
+    int pageCount = 1; // start at page #1
+    PanelGrid panelGrid = null;
     for (InfoNodeElement panelNode : children) {
-      panelNodes.add(panelNode);
+      rowNodes.add(panelNode);
+      panelCount++;
 
-      if (++panelCount % paginate == 0 || panelCount == children.size()) {
-        PanelSetBuilder panelSetBuilder = new XmlPanelSetBuilder(SimpleIdGenerator.getInstance().getNextIdAsString(), panelNodes, panelBuilderTypeRegistry);
-        result.add(panelSetBuilder.build());
+      if (panelCount % paginate == 0 || panelCount >= children.size()) {
+        if (panelGrid == null) {
+          panelGrid = new PanelGrid(pageCount++ + "", Layout.HORIZONTAL);
+        }
+        PanelSetBuilder rowPanelSetBuilder = new XmlPanelSetBuilder(SimpleIdGenerator.getInstance().getNextIdAsString(), rowNodes, panelBuilderTypeRegistry);
+        panelGrid.addPanelSet(rowPanelSetBuilder.build());
+        rowNodes.clear();
 
-        panelNodes.clear();
+        if (rowCount % maxRows == 0 || panelCount >= children.size()) {
+          result.add(panelGrid);
+          rowCount = 0; // rowCount is incremented below
+          panelGrid = null;
+        }
+
+        rowCount++;
       }
     }
 
