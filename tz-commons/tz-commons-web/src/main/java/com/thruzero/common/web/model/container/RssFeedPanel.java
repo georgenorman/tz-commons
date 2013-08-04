@@ -40,10 +40,11 @@ public class RssFeedPanel extends AbstractPanel {
   /**
    * @param id panel ID.
    * @param title panel title.
+   * @param collapseDirection the direction of a collapsible panel (in or out)
    * @param headerStyleClass CSS style class used for the header.
    */
-  public RssFeedPanel(String id, String title, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, RssFeed rssFeed, String titleLink, int quoteTooltipsCount) {
-    super(id, title, headerStyleClass, toolbar);
+  public RssFeedPanel(String id, String title, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, RssFeed rssFeed, String titleLink, int quoteTooltipsCount) {
+    super(id, title, collapseDirection, headerStyleClass, toolbar);
 
     this.rssFeed = rssFeed;
     this.titleLink = titleLink;

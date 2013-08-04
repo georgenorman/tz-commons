@@ -179,7 +179,7 @@ public class DynamicContentBean implements Serializable {
     public PanelSet buildMissingPanelSetError(String xPath) {
       PanelSet result = new PanelSet("error");
 
-      result.addPanel(new HtmlPanel("error", "Error", null, null, "ERROR: Missing PanelSet for " + xPath));
+      result.addPanel(new HtmlPanel("error", "Error", null, null, null, "ERROR: Missing PanelSet for " + xPath));
 
       return result;
     }

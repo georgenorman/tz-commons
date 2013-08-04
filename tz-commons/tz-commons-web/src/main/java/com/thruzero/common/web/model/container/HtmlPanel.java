@@ -33,13 +33,13 @@ import com.thruzero.common.web.model.css.StyleClass;
  * @author George Norman
  */
 public class HtmlPanel extends AbstractPanel {
-  private String content;
+  private final String content;
 
   /**
    * @param content raw HTML used to render the panel's contents.
    */
-  public HtmlPanel(String id, String title, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, String content) {
-    super(id, title, headerStyleClass, toolbar);
+  public HtmlPanel(String id, String title, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, String content) {
+    super(id, title, collapseDirection, headerStyleClass, toolbar);
 
     this.content = content;
   }

@@ -65,10 +65,11 @@ public class ListPanel extends AbstractPanel {
    * @param title panel title
    * @param renderDomain if true, then all link items should render the domain of the link as an adornment.
    * (e.g., 'This is a link to an article on Slashdot [slashdot.org]'.
+   * @param collapseDirection the direction of a collapsible panel (in or out)
    * @param headerStyleClass css class for the panel's title.
    */
-  public ListPanel(String id, String title, boolean renderDomain, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
-    super(id, title, headerStyleClass, toolbar);
+  public ListPanel(String id, String title, boolean renderDomain, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
+    super(id, title, collapseDirection, headerStyleClass, toolbar);
 
     this.renderDomain = renderDomain;
   }

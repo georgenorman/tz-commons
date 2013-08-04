@@ -34,13 +34,15 @@ import com.thruzero.common.web.model.css.StyleClass;
 public abstract class AbstractPanel {
   private final String id;
   private final String title;
+  private final String collapseDirection;
   private final StyleClass headerStyleClass;
   private final List<InfoNodeElement> toolbar = new ArrayList<InfoNodeElement>();
 
 
-  public AbstractPanel(String id, String title, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
+  public AbstractPanel(String id, String title, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
     this.id = StringUtils.isEmpty(id) ? SimpleIdGenerator.getInstance().getNextIdAsString() : id;
     this.title = title;
+    this.collapseDirection = collapseDirection;
     this.headerStyleClass = headerStyleClass;
 
     if (toolbar != null) {
@@ -60,6 +62,13 @@ public abstract class AbstractPanel {
    */
   public String getTitle() {
     return title;
+  }
+
+  /**
+   * Returns the collapse direction for a collapsible panel (in or out).
+   */
+  public String getCollapseDirection() {
+    return collapseDirection;
   }
 
   /**

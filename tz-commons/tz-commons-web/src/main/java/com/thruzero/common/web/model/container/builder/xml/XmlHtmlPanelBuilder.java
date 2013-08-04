@@ -56,7 +56,7 @@ public class XmlHtmlPanelBuilder extends AbstractXmlPanelBuilder {
   public AbstractPanel build() throws Exception {
     String content = getPanelNode().getChildText(HTML_ID);
 
-    HtmlPanel result = new HtmlPanel(getPanelId(), getPanelTitle(), getPanelHeaderStyleClass(), getToolbar(), content);
+    HtmlPanel result = new HtmlPanel(getPanelId(), getPanelTitle(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar(), content);
 
     return result;
   }

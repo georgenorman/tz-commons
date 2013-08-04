@@ -66,9 +66,9 @@ import com.thruzero.common.web.model.container.builder.xml.AbstractXmlPanelBuild
 public class XmlPanelSetBuilder implements PanelSetBuilder {
   private static final String ID = ConfigLocator.locate().getValue(XmlPanelSetBuilder.class.getName(), "id", "id");
 
-  private String panelSetId;
-  private List<InfoNodeElement> panelNodes;
-  private XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry;
+  private final String panelSetId;
+  private final List<InfoNodeElement> panelNodes;
+  private final XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry;
 
   // ------------------------------------------------------
   // XmlPanelBuilderTypeRegistry
@@ -92,7 +92,7 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
    * @author George Norman
    */
   public static class XmlPanelBuilderTypeRegistry {
-    private Map<String, Class<? extends AbstractXmlPanelBuilder>> builderRegistry = new HashMap<String, Class<? extends AbstractXmlPanelBuilder>>();
+    private final Map<String, Class<? extends AbstractXmlPanelBuilder>> builderRegistry = new HashMap<String, Class<? extends AbstractXmlPanelBuilder>>();
 
     /**
      * Builds an empty registry (use <code>registerBuilderType</code> to register builder types).
@@ -217,7 +217,7 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
       PanelBuilder panelBuilder = panelBuilderTypeRegistry.createBuilder(panelNode.getName(), panelNode);
 
       if (panelBuilder == null) {
-        result.addPanel(new HtmlPanel("error", "Panel ERROR", null, null, "PanelBuilder not found for panel type " + panelNode.getName()));
+        result.addPanel(new HtmlPanel("error", "Panel ERROR", null, null, null, "PanelBuilder not found for panel type " + panelNode.getName()));
       } else {
         result.addPanel(panelBuilder.build());
       }

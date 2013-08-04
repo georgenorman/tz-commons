@@ -53,6 +53,11 @@ public abstract class AbstractXmlPanelBuilder implements PanelBuilder {
   public static final String RENDER_DOMAIN_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "renderDomain", "renderDomain");
 
   /**
+   * Name of the attribute representing an optional flag for the collapse direction (in or out). The default name is "collapseDirection" and can be changed via config.
+   */
+  public static final String COLLAPSE_DIRECTION_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "collapseDirection", "collapseDirection");
+
+  /**
    * Name of the attribute representing an optional CSS class for the panel header. The default name is "headerStyleClass" and can be changed via config.
    */
   public static final String HEADER_STYLE_CLASS_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "headerStyleClass", "headerStyleClass");
@@ -62,7 +67,7 @@ public abstract class AbstractXmlPanelBuilder implements PanelBuilder {
    */
   public static final String TOOLBAR_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "toolbar", "toolbar");
 
-  private InfoNodeElement panelNode;
+  private final InfoNodeElement panelNode;
 
   // ------------------------------------------------------
   // XmlPanelBuilderAnnotation
@@ -102,6 +107,10 @@ public abstract class AbstractXmlPanelBuilder implements PanelBuilder {
 
   protected boolean getRenderDomain() {
     return panelNode.getAttributeTransformer(RENDER_DOMAIN_ID).getBooleanValue(false);
+  }
+
+  protected String getCollapseDirection() {
+    return panelNode.getAttributeValue(COLLAPSE_DIRECTION_ID);
   }
 
   protected StyleClass getPanelHeaderStyleClass() {

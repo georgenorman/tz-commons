@@ -53,7 +53,7 @@ public class XmlRssFeedPanelBuilder extends AbstractXmlPanelBuilder {
     performanceLoggerHelper.debug("readRssFeed [" + StringEscapeUtils.escapeHtml4(feedUrl) + "]");
     String titleLink = getPanelNode().getAttributeValue("titleLink");
 
-    RssFeedPanel result = new RssFeedPanel(getPanelId(), getPanelTitle(), getPanelHeaderStyleClass(), getToolbar(), rssFeed, titleLink, quoteTooltipsCount);
+    RssFeedPanel result = new RssFeedPanel(getPanelId(), getPanelTitle(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar(), rssFeed, titleLink, quoteTooltipsCount);
 
     return result;
   }
