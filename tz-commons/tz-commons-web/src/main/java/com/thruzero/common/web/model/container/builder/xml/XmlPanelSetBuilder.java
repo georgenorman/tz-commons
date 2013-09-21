@@ -24,7 +24,7 @@ import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
 import com.thruzero.common.core.utils.ClassUtils;
 import com.thruzero.common.core.utils.ClassUtils.ClassUtilsException;
-import com.thruzero.common.web.model.container.HtmlPanel;
+import com.thruzero.common.web.model.container.ErrorHtmlPanel;
 import com.thruzero.common.web.model.container.PanelSet;
 import com.thruzero.common.web.model.container.builder.PanelBuilder;
 import com.thruzero.common.web.model.container.builder.PanelSetBuilder;
@@ -217,7 +217,7 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
       PanelBuilder panelBuilder = panelBuilderTypeRegistry.createBuilder(panelNode.getName(), panelNode);
 
       if (panelBuilder == null) {
-        result.addPanel(new HtmlPanel("error", "Panel ERROR", null, null, null, "PanelBuilder not found for panel type " + panelNode.getName()));
+        result.addPanel(new ErrorHtmlPanel("error", "Panel ERROR", "PanelBuilder not found for panel type " + panelNode.getName()));
       } else {
         result.addPanel(panelBuilder.build());
       }

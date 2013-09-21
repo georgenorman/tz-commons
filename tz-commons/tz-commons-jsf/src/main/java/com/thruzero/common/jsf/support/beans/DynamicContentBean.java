@@ -37,7 +37,7 @@ import com.thruzero.common.core.utils.PerformanceTimerUtils.PerformanceLoggerHel
 import com.thruzero.common.jsf.support.ContentQuery;
 import com.thruzero.common.jsf.support.content.XmlRootNodeCache;
 import com.thruzero.common.jsf.utils.FacesUtils;
-import com.thruzero.common.web.model.container.HtmlPanel;
+import com.thruzero.common.web.model.container.ErrorHtmlPanel;
 import com.thruzero.common.web.model.container.PanelGrid;
 import com.thruzero.common.web.model.container.PanelSet;
 import com.thruzero.common.web.model.nav.MenuBar;
@@ -179,7 +179,7 @@ public class DynamicContentBean implements Serializable {
     public PanelSet buildMissingPanelSetError(String xPath) {
       PanelSet result = new PanelSet("error");
 
-      result.addPanel(new HtmlPanel("error", "Error", null, null, null, "ERROR: Missing PanelSet for " + xPath));
+      result.addPanel(new ErrorHtmlPanel("error", "PanelSet Error", "ERROR: Missing PanelSet for " + xPath));
 
       return result;
     }

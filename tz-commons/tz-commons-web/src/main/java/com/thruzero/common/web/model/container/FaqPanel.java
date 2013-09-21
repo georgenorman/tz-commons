@@ -56,8 +56,8 @@ import com.thruzero.common.web.model.css.StyleClass;
 public class FaqPanel extends AbstractPanel {
   private final List<InfoNodeElement> items = new ArrayList<InfoNodeElement>();
 
-  public FaqPanel(String id, String title, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
-    super(id, title, collapseDirection, headerStyleClass, toolbar);
+  public FaqPanel(String id, String title, String titleLink, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
+    super(id, title, titleLink, collapseDirection, headerStyleClass, toolbar);
   }
 
   /**

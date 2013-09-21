@@ -38,8 +38,8 @@ public class HtmlPanel extends AbstractPanel {
   /**
    * @param content raw HTML used to render the panel's contents.
    */
-  public HtmlPanel(String id, String title, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, String content) {
-    super(id, title, collapseDirection, headerStyleClass, toolbar);
+  public HtmlPanel(String id, String title, String titleLink, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, String content) {
+    super(id, title, titleLink, collapseDirection, headerStyleClass, toolbar);
 
     this.content = content;
   }

@@ -51,9 +51,8 @@ public class XmlRssFeedPanelBuilder extends AbstractXmlPanelBuilder {
     RssFeedService service = ServiceLocator.locate(RssFeedService.class);
     RssFeed rssFeed = service.readRssFeed(maxEntries, feedUrl, refreshRate, includeImage);
     performanceLoggerHelper.debug("readRssFeed [" + StringEscapeUtils.escapeHtml4(feedUrl) + "]");
-    String titleLink = getPanelNode().getAttributeValue("titleLink");
 
-    RssFeedPanel result = new RssFeedPanel(getPanelId(), getPanelTitle(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar(), rssFeed, titleLink, quoteTooltipsCount);
+    RssFeedPanel result = new RssFeedPanel(getPanelId(), getPanelTitle(), getPanelTitleLink(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar(), rssFeed, quoteTooltipsCount);
 
     return result;
   }

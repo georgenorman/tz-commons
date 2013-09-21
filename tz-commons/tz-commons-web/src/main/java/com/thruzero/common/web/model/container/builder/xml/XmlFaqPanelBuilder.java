@@ -62,7 +62,7 @@ public class XmlFaqPanelBuilder extends AbstractXmlPanelBuilder {
 
   @Override
   public AbstractPanel build() throws Exception {
-    FaqPanel result = new FaqPanel(getPanelId(), getPanelTitle(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar());
+    FaqPanel result = new FaqPanel(getPanelId(), getPanelTitle(), getPanelTitleLink(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar());
     InfoNodeElement dataListNode = getPanelNode().findElement(CHILD_DATALIST_ID);
 
     if (dataListNode != null) {
