@@ -19,9 +19,9 @@ package com.thruzero.common.core.infonode.builder.filter;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 
 /**
- * An API that represents a series of InfoNodeElement filters. Each filter is given access to the chain, when their
- * applyFilter function is called. After the filter has completed its job, it may call applyFilter on the chain, to
- * to advance to the next filter, or it may just return immediately, preventing any further filtering to occur.
+ * An API that represents a series of InfoNodeElement filters. Each filter is given access to the chain when their
+ * applyFilter function is called. After the filter has completed, it may call applyFilter on the chain, to
+ * advance to the next filter, or it may just return immediately, preventing any further filtering to occur.
  * Any filter that returns null as the result, should cause the InfoNodeElement to be removed from the DOM.
  *
  * @author George Norman
