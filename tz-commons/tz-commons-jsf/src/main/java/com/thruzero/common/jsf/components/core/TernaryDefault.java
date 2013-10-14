@@ -48,7 +48,12 @@ public class TernaryDefault extends UIComponentBase implements JsfCoreComponent 
   public void encodeBegin(FacesContext context) throws IOException {
     String var = (String)getAttributes().get("var");
     ValueExpression condition = getValueExpression("condition");
-    Object conditionResult = condition.getValue(getFacesContext().getELContext());
+    Object conditionResult;
+    if (condition == null) {
+      conditionResult = Boolean.parseBoolean(getAttributes().get("condition").toString());
+    } else {
+      conditionResult = condition.getValue(getFacesContext().getELContext());
+    }
     Object valueIfTrue = getAttributes().get("valueIfTrue");
     Object valueIfFalse = getAttributes().get("valueIfFalse");
 
