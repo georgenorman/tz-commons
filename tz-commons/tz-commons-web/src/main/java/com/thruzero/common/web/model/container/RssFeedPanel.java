@@ -33,6 +33,8 @@ public class RssFeedPanel extends AbstractPanel {
 
   /** Number of NewsEntry descriptions to inline instead of pop-up (read from dynamic content). */
   private final int quoteTooltipsCount; // from dynamic content
+  
+  private final String titleIcon; // from dynamic content
 
   /**
    * @param id panel ID.
@@ -40,11 +42,12 @@ public class RssFeedPanel extends AbstractPanel {
    * @param collapseDirection the direction of a collapsible panel (in or out)
    * @param headerStyleClass CSS style class used for the header.
    */
-  public RssFeedPanel(String id, String title, String titleLink, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, RssFeed rssFeed, int quoteTooltipsCount) {
+  public RssFeedPanel(String id, String title, String titleLink, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, RssFeed rssFeed, int quoteTooltipsCount, String titleIcon) {
     super(id, title, titleLink, collapseDirection, headerStyleClass, toolbar);
 
     this.rssFeed = rssFeed;
     this.quoteTooltipsCount = quoteTooltipsCount;
+    this.titleIcon = titleIcon;
   }
 
   /** Return the number of items that will have their tooltips rendered inline, in the panel (no pop-up tooltips will be displayed for these items). */
@@ -55,6 +58,10 @@ public class RssFeedPanel extends AbstractPanel {
   /** Return the RssFeed instance containing the news items, feed URL, etc. */
   public RssFeed getRssFeed() {
     return rssFeed;
+  }
+
+  public String getTitleIcon() {
+    return titleIcon;
   }
 
 }

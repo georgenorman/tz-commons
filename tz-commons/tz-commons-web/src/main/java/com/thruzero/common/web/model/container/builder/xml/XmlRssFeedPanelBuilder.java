@@ -44,6 +44,7 @@ public class XmlRssFeedPanelBuilder extends AbstractXmlPanelBuilder {
     int maxEntries = getPanelNode().getAttributeTransformer("size").getIntValue(5);
     int refreshRate = getPanelNode().getAttributeTransformer("refreshRate").getIntValue(480);
     int quoteTooltipsCount = getPanelNode().getAttributeTransformer("quoteTooltipsCount").getIntValue(-1);
+    String titleIcon = getPanelNode().getAttributeTransformer("titleIcon").getStringValue();
     boolean includeImage = getPanelNode().getAttributeTransformer("includeImage").getBooleanValue(false);
     String feedUrl = getPanelNode().getText();
 
@@ -52,7 +53,7 @@ public class XmlRssFeedPanelBuilder extends AbstractXmlPanelBuilder {
     RssFeed rssFeed = service.readRssFeed(maxEntries, feedUrl, refreshRate, includeImage);
     performanceLoggerHelper.debug("readRssFeed [" + StringEscapeUtils.escapeHtml4(feedUrl) + "]");
 
-    RssFeedPanel result = new RssFeedPanel(getPanelId(), getPanelTitle(), getPanelTitleLink(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar(), rssFeed, quoteTooltipsCount);
+    RssFeedPanel result = new RssFeedPanel(getPanelId(), getPanelTitle(), getPanelTitleLink(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar(), rssFeed, quoteTooltipsCount, titleIcon);
 
     return result;
   }
