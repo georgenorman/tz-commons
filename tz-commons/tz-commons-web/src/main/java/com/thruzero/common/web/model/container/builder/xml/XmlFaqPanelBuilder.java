@@ -56,13 +56,18 @@ import com.thruzero.common.web.model.container.builder.xml.AbstractXmlPanelBuild
 public class XmlFaqPanelBuilder extends AbstractXmlPanelBuilder {
   private static final String CHILD_DATALIST_ID = ConfigLocator.locate().getValue(XmlFaqPanelBuilder.class.getName(), "dataList", "dataList");
 
+  /**
+   * Name of the attribute representing an optional description for all FAQs in the FAQ panel. The default name is "description" and can be changed via config.
+   */
+  public static final String DESCRIPTION_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "description", "description");
+
   public XmlFaqPanelBuilder(InfoNodeElement panelNode) {
     super(panelNode);
   }
 
   @Override
   public AbstractPanel build() throws Exception {
-    FaqPanel result = new FaqPanel(getPanelId(), getPanelTitle(), getPanelTitleLink(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar());
+    FaqPanel result = new FaqPanel(getPanelId(), getPanelTitle(), getPanelTitleLink(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar(), getDescription());
     InfoNodeElement dataListNode = getPanelNode().findElement(CHILD_DATALIST_ID);
 
     if (dataListNode != null) {
@@ -70,6 +75,13 @@ public class XmlFaqPanelBuilder extends AbstractXmlPanelBuilder {
         result.addItem(iter.next());
       }
     }
+
+    return result;
+  }
+
+  protected String getDescription() throws Exception {
+    InfoNodeElement dataListNode = getPanelNode().findElement(DESCRIPTION_ID);
+    String result = dataListNode.getText();
 
     return result;
   }
