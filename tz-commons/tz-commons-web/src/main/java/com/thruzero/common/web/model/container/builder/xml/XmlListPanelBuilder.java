@@ -53,13 +53,18 @@ import com.thruzero.common.web.model.container.builder.xml.AbstractXmlPanelBuild
 public class XmlListPanelBuilder extends AbstractXmlPanelBuilder {
   private static final String CHILD_DATALIST_ID = ConfigLocator.locate().getValue(XmlListPanelBuilder.class.getName(), "dataList", "dataList");
 
+  /**
+   * Name of the attribute representing an optional flag to render the domain for anchor list items. The default name is "renderDomain" and can be changed via config.
+   */
+  public static final String RENDER_DOMAIN_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "renderDomain", "renderDomain");
+
   public XmlListPanelBuilder(InfoNodeElement panelNode) {
     super(panelNode);
   }
 
   @Override
   public AbstractPanel build() throws Exception {
-    ListPanel result = new ListPanel(getPanelId(), getPanelTitle(), getPanelTitleLink(), getRenderDomain(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar());
+    ListPanel result = new ListPanel(getPanelId(), getPanelTitle(), getPanelTitleLink(), getCollapseDirection(), getPanelHeaderStyleClass(), getToolbar(), getRenderDomain());
     InfoNodeElement dataListNode = getPanelNode().findElement(CHILD_DATALIST_ID);
 
     if (dataListNode != null) {
@@ -69,5 +74,9 @@ public class XmlListPanelBuilder extends AbstractXmlPanelBuilder {
     }
 
     return result;
+  }
+
+  protected boolean getRenderDomain() {
+    return getPanelNode().getAttributeTransformer(RENDER_DOMAIN_ID).getBooleanValue(false);
   }
 }

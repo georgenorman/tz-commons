@@ -68,7 +68,7 @@ public class ListPanel extends AbstractPanel {
    * @param collapseDirection the direction of a collapsible panel (in or out)
    * @param headerStyleClass css class for the panel's title.
    */
-  public ListPanel(String id, String title, String titleLink, boolean renderDomain, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
+  public ListPanel(String id, String title, String titleLink, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, boolean renderDomain) {
     super(id, title, titleLink, collapseDirection, headerStyleClass, toolbar);
 
     this.renderDomain = renderDomain;
