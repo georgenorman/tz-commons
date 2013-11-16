@@ -31,13 +31,17 @@ import com.thruzero.common.core.locator.ServiceLocator;
  */
 public class UserBean implements Serializable {
   private static final long serialVersionUID = 1L;
+  
+  /** Guest ID ("guest") must be a valid user ID in the user data store. */
+  public static final String GUEST_LOGIN_ID = "guest";
+  public static final String GUEST_FORMAL_NAME = "Guest";
 
   public String getLoginId( ) {
     String result;
     User loggedInUser = getLoggedInUser();
 
     if ( loggedInUser == null ) {
-      result = "Guest";
+      result = GUEST_LOGIN_ID;
     } else {
       result = loggedInUser.getLoginId();
     }
@@ -50,7 +54,7 @@ public class UserBean implements Serializable {
     User loggedInUser = getLoggedInUser();
 
     if ( loggedInUser == null ) {
-      result = "Guest";
+      result = GUEST_FORMAL_NAME;
     } else {
       result = loggedInUser.getDetails().getFirstName() + " " + loggedInUser.getDetails().getLastName();
     }
