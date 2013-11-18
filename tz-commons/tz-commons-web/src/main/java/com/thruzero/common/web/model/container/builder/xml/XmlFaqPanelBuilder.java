@@ -81,10 +81,10 @@ public class XmlFaqPanelBuilder extends AbstractXmlPanelBuilder {
 
   protected String getDescription() throws Exception {
     String result = null;
-    InfoNodeElement dataListNode = getPanelNode().findElement(DESCRIPTION_ID);
+    InfoNodeElement descriptionNode = getPanelNode().findElement(DESCRIPTION_ID);
     
-    if (dataListNode != null) {
-      result = dataListNode.getText();
+    if (descriptionNode != null) {
+      result = descriptionNode.getText();
     }
 
     return result;

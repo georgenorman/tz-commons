@@ -59,7 +59,7 @@ public class FaqPanel extends AbstractPanel {
 
   public FaqPanel(String id, String title, String titleLink, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, String description) {
     super(id, title, titleLink, collapseDirection, headerStyleClass, toolbar);
-    
+
     this.description = description;
   }
 
