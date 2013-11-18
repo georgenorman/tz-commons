@@ -174,7 +174,8 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
    */
   public static class StandardXmlPanelBuilderTypeRegistry extends XmlPanelBuilderTypeRegistry {
     @SuppressWarnings("unchecked")
-    private static final Class<? extends AbstractXmlPanelBuilder>[] STANDARD_BUILDER_TYPES = new Class[] {XmlFaqPanelBuilder.class, XmlListPanelBuilder.class, XmlHtmlPanelBuilder.class, XmlRssFeedPanelBuilder.class};
+    private static final Class<? extends AbstractXmlPanelBuilder>[] STANDARD_BUILDER_TYPES = 
+      new Class[] {XmlFaqPanelBuilder.class, XmlListPanelBuilder.class, XmlHtmlPanelBuilder.class, XmlRssFeedPanelBuilder.class, XmlDividerPanelBuilder.class};
 
     public StandardXmlPanelBuilderTypeRegistry() {
       registerBuilderTypes(STANDARD_BUILDER_TYPES);
