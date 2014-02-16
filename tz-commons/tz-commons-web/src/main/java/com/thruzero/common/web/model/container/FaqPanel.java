@@ -57,8 +57,8 @@ public class FaqPanel extends AbstractPanel {
   private final List<InfoNodeElement> items = new ArrayList<InfoNodeElement>();
   private final String description;
 
-  public FaqPanel(String id, String title, String titleLink, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, String description) {
-    super(id, title, titleLink, collapseDirection, headerStyleClass, toolbar);
+  public FaqPanel(String id, String title, String titleLink, String collapseDirection, boolean useWhiteChevron, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, String description) {
+    super(id, title, titleLink, collapseDirection, useWhiteChevron, headerStyleClass, toolbar);
 
     this.description = description;
   }

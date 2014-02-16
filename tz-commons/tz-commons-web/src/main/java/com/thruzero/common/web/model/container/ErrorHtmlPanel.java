@@ -7,6 +7,6 @@ package com.thruzero.common.web.model.container;
 public class ErrorHtmlPanel extends HtmlPanel {
 
   public ErrorHtmlPanel(String id, String title, String errorContent) {
-    super(id, title, title, null, null, null, errorContent);
+    super(id, title, title, null, false, null, null, errorContent);
   }
 }

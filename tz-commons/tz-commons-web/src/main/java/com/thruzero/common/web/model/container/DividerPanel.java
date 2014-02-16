@@ -17,7 +17,7 @@ public class DividerPanel extends AbstractPanel {
    * @param content raw HTML used to render the panel's contents.
    */
   public DividerPanel(String id, String title, String titleLink, StyleClass headerStyleClass, List<InfoNodeElement> toolbar, String description) {
-    super(id, title, titleLink, null, headerStyleClass, toolbar);
+    super(id, title, titleLink, null, false, headerStyleClass, toolbar);
 
     this.description = description;
   }

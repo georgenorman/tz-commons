@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
 import com.thruzero.common.web.model.container.builder.PanelBuilder;
@@ -57,6 +59,11 @@ public abstract class AbstractXmlPanelBuilder implements PanelBuilder {
    * Name of the attribute representing an optional flag for the collapse direction (in or out). The default name is "collapseDirection" and can be changed via config.
    */
   public static final String COLLAPSE_DIRECTION_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "collapseDirection", "collapseDirection");
+
+  /**
+   * Name of the attribute representing an optional flag for the collapse direction (in or out). The default name is "useWhiteChevron" and can be changed via config.
+   */
+  public static final String USE_WHITE_CHEVRON_ID = ConfigLocator.locate().getValue(AbstractXmlPanelBuilder.class.getName(), "useWhiteChevron", "useWhiteChevron");
 
   /**
    * Name of the attribute representing an optional CSS class for the panel header. The default name is "headerStyleClass" and can be changed via config.
@@ -114,6 +121,10 @@ public abstract class AbstractXmlPanelBuilder implements PanelBuilder {
     return panelNode.getAttributeValue(COLLAPSE_DIRECTION_ID);
   }
 
+  protected boolean isUseWhiteChevron() {
+    return BooleanUtils.toBoolean(panelNode.getAttributeValue(USE_WHITE_CHEVRON_ID));
+  }
+  
   protected StyleClass getPanelHeaderStyleClass() {
     return new StyleClass(panelNode.getAttributeValue(HEADER_STYLE_CLASS_ID));
   }

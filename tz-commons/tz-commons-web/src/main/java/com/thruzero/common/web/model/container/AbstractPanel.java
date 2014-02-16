@@ -36,15 +36,17 @@ public abstract class AbstractPanel {
   private final String title;
   private final String titleLink;
   private final String collapseDirection;
+  private final boolean useWhiteChevron;
   private final StyleClass headerStyleClass;
   private final List<InfoNodeElement> toolbar = new ArrayList<InfoNodeElement>();
 
 
-  public AbstractPanel(String id, String title, String titleLink, String collapseDirection, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
+  public AbstractPanel(String id, String title, String titleLink, String collapseDirection, boolean useWhiteChevron, StyleClass headerStyleClass, List<InfoNodeElement> toolbar) {
     this.id = StringUtils.isEmpty(id) ? SimpleIdGenerator.getInstance().getNextIdAsString() : id;
     this.title = title;
     this.titleLink = titleLink;
     this.collapseDirection = collapseDirection;
+    this.useWhiteChevron = useWhiteChevron;
     this.headerStyleClass = headerStyleClass;
 
     if (toolbar != null) {
@@ -78,6 +80,13 @@ public abstract class AbstractPanel {
    */
   public String getCollapseDirection() {
     return collapseDirection;
+  }
+
+  /**
+   * Returns true if the expand/collapse toggle icon should be white.
+   */
+  public boolean isUseWhiteChevron() {
+    return useWhiteChevron;
   }
 
   /**
