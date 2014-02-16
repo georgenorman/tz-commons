@@ -170,6 +170,8 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
    *  <li>{@link com.thruzero.common.web.model.container.builder.xml.XmlFaqPanelBuilder XmlFaqPanelBuilder}</li>
    *  <li>{@link com.thruzero.common.web.model.container.builder.xml.XmlListPanelBuilder XmlListPanelBuilder}</li>
    *  <li>{@link com.thruzero.common.web.model.container.builder.xml.XmlHtmlPanelBuilder XmlHtmlPanelBuilder}</li>
+   *  <li>{@link com.thruzero.common.web.model.container.builder.xml.XmlRssFeedPanelBuilder XmlRssFeedPanelBuilder}</li>
+   *  <li>{@link com.thruzero.common.web.model.container.builder.xml.XmlDividerPanelBuilder XmlDividerPanelBuilder}</li>
    * </ul>
    */
   public static class StandardXmlPanelBuilderTypeRegistry extends XmlPanelBuilderTypeRegistry {

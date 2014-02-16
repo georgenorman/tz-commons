@@ -25,8 +25,8 @@
   PreferenceDAO preferenceDAO = DAOLocator.locate(PreferenceDAO.class);
 </div>
         A Service may use zero or more DAOs for its implementation. If a Service uses a DAO, it typically uses a DAOLocator to locate it.
-        Services and DAOs are configured independently. If a particular Service is coded to a particular
-        DAO interface (e.g., PreferenceDAO), then it's possible to reuse the Service across different implementations of the DAO
+        Services and DAOs are configured independently. If a particular Service is coded to a particular generic
+        DAO interface (e.g., PreferenceDAO as opposed to JpaPreferenceDAO), then it's possible to reuse the Service across different implementations of the DAO
         (e.g., the PreferenceService can be re-used with JpaPreferenceDAO or DscPreferenceDAO, giving a common service implementation across a variety of store types).
         <p/>
         </li>
