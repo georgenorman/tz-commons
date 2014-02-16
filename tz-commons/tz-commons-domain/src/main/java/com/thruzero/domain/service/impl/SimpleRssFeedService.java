@@ -18,6 +18,7 @@ package com.thruzero.domain.service.impl;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -72,6 +73,13 @@ public class SimpleRssFeedService implements RssFeedService {
       try {
         URL feedSource = new URL(feedUrl);
         SyndFeedInput input = new SyndFeedInput();
+        HttpURLConnection connection = (HttpURLConnection)feedSource.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setAllowUserInteraction(false);
+        connection.setConnectTimeout(4000);
+        connection.setReadTimeout(4000);
+        connection.connect();
+        
         SyndFeed feed = input.build(new XmlReader(feedSource));
         @SuppressWarnings("unchecked")
         List<SyndEntry> syndEntries = feed.getEntries();

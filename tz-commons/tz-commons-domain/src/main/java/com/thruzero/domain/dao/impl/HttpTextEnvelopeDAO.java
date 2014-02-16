@@ -79,6 +79,7 @@ public final class HttpTextEnvelopeDAO extends GenericMemoryDAO<TextEnvelope> im
         connection = (HttpURLConnection)remoteUrl.openConnection();
         connection.setRequestMethod("GET");
         connection.setAllowUserInteraction(false);
+        connection.setConnectTimeout(5000);
         connection.setReadTimeout(5000);
         connection.connect();
 
