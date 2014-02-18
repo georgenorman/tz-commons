@@ -39,6 +39,7 @@ import com.sun.syndication.io.SyndFeedOutput;
 import com.sun.syndication.io.XmlReader;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.utils.DateTimeUtilsExt;
+import com.thruzero.common.core.utils.PerformanceTimerUtils.PerformanceLoggerHelper;
 import com.thruzero.domain.model.RssFeed;
 import com.thruzero.domain.model.RssFeed.NewsEntry;
 import com.thruzero.domain.service.RssFeedService;
@@ -54,7 +55,10 @@ import com.thruzero.domain.service.RssFeedService;
  */
 public class SimpleRssFeedService implements RssFeedService {
   private static final Logger logger = Logger.getLogger(SimpleRssFeedService.class);
+  private static final int ONE_HOUR = 60 * 60 * 1000;
+  private static final int DEFAULT_ERROR_RETRY_DELAY = 8 * ONE_HOUR;
 
+  // TODO-p1(george). Should cache should be saved to file?
   private final ConcurrentHashMap<String, RssFeed> feedCache = new ConcurrentHashMap<String, RssFeed>();
 
   @Override
@@ -68,9 +72,8 @@ public class SimpleRssFeedService implements RssFeedService {
     }
 
     if (result == null) {
-      long refreshPoint = refreshRate * 60 * 60 * 1000 + System.currentTimeMillis();
-
       try {
+        PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
         URL feedSource = new URL(feedUrl);
         SyndFeedInput input = new SyndFeedInput();
         HttpURLConnection connection = (HttpURLConnection)feedSource.openConnection();
@@ -79,8 +82,10 @@ public class SimpleRssFeedService implements RssFeedService {
         connection.setConnectTimeout(4000);
         connection.setReadTimeout(4000);
         connection.connect();
+        performanceLoggerHelper.debug("  connected");
         
         SyndFeed feed = input.build(new XmlReader(feedSource));
+        performanceLoggerHelper.debug("  built");
         @SuppressWarnings("unchecked")
         List<SyndEntry> syndEntries = feed.getEntries();
         List<NewsEntry> newsEntries = new ArrayList<NewsEntry>();
@@ -94,13 +99,19 @@ public class SimpleRssFeedService implements RssFeedService {
           }
         }
 
+        long refreshPoint = refreshRate * ONE_HOUR + System.currentTimeMillis(); // next time to refresh the feed
         result = new RssFeed(feedUrl, feed.getPublishedDate(), newsEntries, refreshPoint, "");
 
         feedCache.put(feedUrl, result);
+        performanceLoggerHelper.debug("  completed");
       } catch (MalformedURLException e) {
-        result = new RssFeed(feedUrl, null, null, refreshPoint, "RSS Feed URL is malformed: " + feedUrl);
+        // on feed error, don't try again for another N-hours
+        result = new RssFeed(feedUrl, null, null, DEFAULT_ERROR_RETRY_DELAY + System.currentTimeMillis(), "RSS Feed URL is malformed: " + feedUrl);
+        feedCache.put(feedUrl, result); 
       } catch (Exception e) {
-        result = new RssFeed(feedUrl, null, null, refreshPoint, "RSS Feed could not be read: "+ e.getClass().getSimpleName() + " [using url: " + feedUrl + "]" );
+        // on feed error, don't try again for another N-hours
+        result = new RssFeed(feedUrl, null, null, DEFAULT_ERROR_RETRY_DELAY + System.currentTimeMillis(), "RSS Feed could not be read: "+ e.getClass().getSimpleName() + " [using url: " + feedUrl + "]" );
+        feedCache.put(feedUrl, result);
       }
     }
 
