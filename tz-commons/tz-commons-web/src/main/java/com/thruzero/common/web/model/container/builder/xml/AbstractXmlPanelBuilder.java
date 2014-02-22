@@ -25,9 +25,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
+import com.thruzero.common.web.model.container.AbstractPanel;
+import com.thruzero.common.web.model.container.ErrorHtmlPanel;
 import com.thruzero.common.web.model.container.builder.PanelBuilder;
 import com.thruzero.common.web.model.css.StyleClass;
 
@@ -101,6 +104,33 @@ public abstract class AbstractXmlPanelBuilder implements PanelBuilder {
     this.panelNode = panelNode;
   }
 
+  /** Returns the default error panel with the given title and errorMessage (ErrorHtmlPanel). */
+  public AbstractPanel buildErrorPanel(String id, String title, String errorMessage) {
+    AbstractPanel result = new ErrorHtmlPanel("error", "Panel ERROR", getPanelInfoForError() + " - " + errorMessage);
+    
+    return result;
+  }
+  
+  /** Return the panel-name, ID and title of the panel this builder is expected to create. */
+  public String getPanelInfoForError() {
+    StringBuilder result = new StringBuilder( );
+    
+    appendError("PANEL NAME", panelNode.getName(), result);
+    appendError("PANEL_ID", getPanelId(), result);
+    appendError("TITLE_ID", getPanelTitle(), result);
+    
+    return result.toString();
+  }
+  
+  protected void appendError(String title, String value, StringBuilder errorMessage) {    
+    if (StringUtils.isNotEmpty(value)) {
+      errorMessage.append( errorMessage.length() > 0 ? ", " : "" );
+      errorMessage.append( title + ": " );
+      errorMessage.append( getPanelId() );
+    }
+  }
+
+  /** Return the PanelNode used by this builder, to create the panel. */
   protected InfoNodeElement getPanelNode() {
     return panelNode;
   }

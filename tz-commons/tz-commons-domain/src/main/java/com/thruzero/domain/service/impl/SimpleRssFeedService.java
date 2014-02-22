@@ -16,17 +16,22 @@
 
 package com.thruzero.domain.service.impl;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
@@ -36,10 +41,10 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.SyndFeedOutput;
-import com.sun.syndication.io.XmlReader;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.utils.DateTimeUtilsExt;
-import com.thruzero.common.core.utils.PerformanceTimerUtils.PerformanceLoggerHelper;
+import com.thruzero.common.core.utils.LogUtils;
+import com.thruzero.common.core.utils.XmlUtils;
 import com.thruzero.domain.model.RssFeed;
 import com.thruzero.domain.model.RssFeed.NewsEntry;
 import com.thruzero.domain.service.RssFeedService;
@@ -55,37 +60,55 @@ import com.thruzero.domain.service.RssFeedService;
  */
 public class SimpleRssFeedService implements RssFeedService {
   private static final Logger logger = Logger.getLogger(SimpleRssFeedService.class);
-  private static final int ONE_HOUR = 60 * 60 * 1000;
-  private static final int DEFAULT_ERROR_RETRY_DELAY = 8 * ONE_HOUR;
 
-  // TODO-p1(george). Should cache should be saved to file?
-  private final ConcurrentHashMap<String, RssFeed> feedCache = new ConcurrentHashMap<String, RssFeed>();
+  // TODO-p1(george). Should cache be saved to file?
+  private final Map<String, RssFeed> feedCache = new HashMap<String, RssFeed>();
+  
+  public SimpleRssFeedService() {
+    logger.debug(LogUtils.getObjectCreationMessage(this));
+  }
 
-  @Override
   // TODO-p1(george). Add support for multiple users (so every user can have their own title, refresh-rate, etc).
-  public RssFeed readRssFeed(int maxEntries, String feedUrl, int refreshRate, boolean includeImage) {
-    // TODO-p1(george). Need to clean out stale URLs
-    RssFeed result = feedCache.get(feedUrl);
+  @Override
+  public RssFeed readRssFeed(int maxEntries, String feedUrl, int refreshRateInHours, boolean includeImage) {
+    RssFeed result;
+    boolean feedNeedsRefresh = false;
+    
+    synchronized(feedCache) {
+      result = feedCache.get(feedUrl);
 
-    if (result != null && result.getRefreshPoint() < System.currentTimeMillis()) {
-      result = null;
+      // if node not found or the refresh point has been exceeded, then it's time to refresh this node.
+      if (result == null || result.getRefreshPoint() < System.currentTimeMillis()) {
+        // allow 3-minutes to refresh this feed (if timeouts are working properly, then the feed should be refreshed in about 9-seconds, or else fail out).
+        feedNeedsRefresh = true;
+        result = new RssFeed(feedUrl, null, null, TimeUnit.MINUTES.toMillis(3) + System.currentTimeMillis(), "Refresh is in progress...");
+        feedCache.put(feedUrl, result);
+      }
     }
 
-    if (result == null) {
-      try {
-        PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
+    // if node wasn't found, or it needs to be refreshed, then connect to RSS feed end-point and reload the data.
+    if (feedNeedsRefresh) {
+      HttpURLConnection connection = null;
+      BufferedInputStream feedInputStream = null;
+      
+      try {        
         URL feedSource = new URL(feedUrl);
-        SyndFeedInput input = new SyndFeedInput();
-        HttpURLConnection connection = (HttpURLConnection)feedSource.openConnection();
+        HttpURLConnection.setFollowRedirects(true);
+        connection = (HttpURLConnection)feedSource.openConnection();
         connection.setRequestMethod("GET");
         connection.setAllowUserInteraction(false);
-        connection.setConnectTimeout(4000);
-        connection.setReadTimeout(4000);
+        connection.setConnectTimeout(3000);
+        connection.setReadTimeout(6000);
         connection.connect();
-        performanceLoggerHelper.debug("  connected");
         
-        SyndFeed feed = input.build(new XmlReader(feedSource));
-        performanceLoggerHelper.debug("  built");
+        SyndFeedInput input = new SyndFeedInput();
+        feedInputStream = new BufferedInputStream(connection.getInputStream(), 65536);
+        Document document = XmlUtils.createDocument(feedInputStream);
+        SyndFeed feed = input.build(document);
+        feedInputStream.close();
+        connection.disconnect();
+        //SyndFeed feed = input.build(new XmlReader(connection.getInputStream()));
+
         @SuppressWarnings("unchecked")
         List<SyndEntry> syndEntries = feed.getEntries();
         List<NewsEntry> newsEntries = new ArrayList<NewsEntry>();
@@ -99,22 +122,52 @@ public class SimpleRssFeedService implements RssFeedService {
           }
         }
 
-        long refreshPoint = refreshRate * ONE_HOUR + System.currentTimeMillis(); // next time to refresh the feed
+        long refreshPoint = refreshRateInHours * TimeUnit.HOURS.toMillis(1) + System.currentTimeMillis(); // next time to refresh the feed
         result = new RssFeed(feedUrl, feed.getPublishedDate(), newsEntries, refreshPoint, "");
 
-        feedCache.put(feedUrl, result);
-        performanceLoggerHelper.debug("  completed");
+        synchronized(feedCache) {
+          feedCache.put(feedUrl, result);
+        }
       } catch (MalformedURLException e) {
         // on feed error, don't try again for another N-hours
-        result = new RssFeed(feedUrl, null, null, DEFAULT_ERROR_RETRY_DELAY + System.currentTimeMillis(), "RSS Feed URL is malformed: " + feedUrl);
-        feedCache.put(feedUrl, result); 
+        result = createErrorFeed(feedUrl, "RSS Feed URL is malformed: " + feedUrl);
+        synchronized(feedCache) {
+          feedCache.put(feedUrl, result);
+        }
+      } catch (SocketTimeoutException e) {
+        // on feed error, don't try again for another N-hours
+        result = createErrorFeed(feedUrl, "RSS Feed could not be read: "+ e.getClass().getSimpleName() + " [using url: " + feedUrl + "]" );
+        synchronized(feedCache) {
+          feedCache.put(feedUrl, result);
+        }
+        logger.debug("** SocketTimeoutException occurred‎.");
       } catch (Exception e) {
         // on feed error, don't try again for another N-hours
-        result = new RssFeed(feedUrl, null, null, DEFAULT_ERROR_RETRY_DELAY + System.currentTimeMillis(), "RSS Feed could not be read: "+ e.getClass().getSimpleName() + " [using url: " + feedUrl + "]" );
-        feedCache.put(feedUrl, result);
+        result = createErrorFeed(feedUrl, "RSS Feed could not be read: "+ e.getClass().getSimpleName() + " [using url: " + feedUrl + "]" );
+        synchronized(feedCache) {
+          feedCache.put(feedUrl, result);
+        }
+      } finally {
+        if (feedInputStream != null) {
+          try {
+            feedInputStream.close();
+          } catch (IOException e) {
+            logger.error("****** Failed to close RSS Feed InputStream: ", e);
+          }
+        }
+        
+        if (connection != null) {
+          connection.disconnect();
+        }
       }
     }
 
+    return result;
+  }
+  
+  private RssFeed createErrorFeed(String feedUrl, String errorMessage) {
+    RssFeed result = new RssFeed(feedUrl, null, null, DEFAULT_RETRY_DELAY + System.currentTimeMillis(), errorMessage);
+    
     return result;
   }
 

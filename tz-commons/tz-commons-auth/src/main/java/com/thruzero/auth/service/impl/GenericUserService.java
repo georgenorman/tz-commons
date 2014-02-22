@@ -15,6 +15,7 @@
  */
 package com.thruzero.auth.service.impl;
 
+import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
@@ -23,6 +24,7 @@ import com.thruzero.auth.model.User;
 import com.thruzero.auth.service.UserService;
 import com.thruzero.auth.utils.AuthenticationUtils;
 import com.thruzero.common.core.support.SimpleInfo;
+import com.thruzero.common.core.utils.LogUtils;
 import com.thruzero.domain.locator.DAOLocator;
 
 /**
@@ -32,12 +34,15 @@ import com.thruzero.domain.locator.DAOLocator;
  * @author George Norman
  */
 public final class GenericUserService implements UserService {
+  private static final Logger logger = Logger.getLogger(GenericUserService.class);
+
   private final UserDAO userDAO = DAOLocator.locate(UserDAO.class);
 
   /**
    * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
    */
   private GenericUserService() {
+    logger.debug(LogUtils.getObjectCreationMessage(this));
   }
 
   @Override

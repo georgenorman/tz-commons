@@ -26,6 +26,7 @@ import com.thruzero.common.core.bookmarks.InitializationParameterKeysBookmark;
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.infonode.builder.SaxInfoNodeBuilder;
 import com.thruzero.common.core.infonode.builder.filter.InfoNodeFilter;
+import com.thruzero.common.core.infonode.builder.filter.InfoNodeFilterChain;
 import com.thruzero.common.core.infonode.builder.filter.SimpleInfoNodeFilterChain;
 import com.thruzero.common.core.locator.Initializable;
 import com.thruzero.common.core.locator.InitializationException;
@@ -38,6 +39,7 @@ import com.thruzero.common.core.support.SimpleInfo;
 import com.thruzero.common.core.utils.ClassUtils;
 import com.thruzero.common.core.utils.ClassUtils.ClassUtilsException;
 import com.thruzero.common.core.utils.ExceptionUtilsExt;
+import com.thruzero.common.core.utils.LogUtils;
 import com.thruzero.domain.dao.TextEnvelopeDAO;
 import com.thruzero.domain.model.DataStoreInfo;
 import com.thruzero.domain.model.TextEnvelope;
@@ -56,8 +58,8 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
   private static final Logger logger = Logger.getLogger(AbstractInfoNodeService.class);
 
   private final TextEnvelopeDAO textEnvelopeDAO;
-
-  private SimpleInfoNodeFilterChain infoNodeFilterChain;
+  
+  private String[] infoNodeFilters; // virtually "final" (initialized once via the init method and never updated).
 
   // ------------------------------------------------
   // InfoNodeServiceInitParamKeys
@@ -79,17 +81,13 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
 
   protected AbstractInfoNodeService(TextEnvelopeDAO textEnvelopeDAO) {
     this.textEnvelopeDAO = textEnvelopeDAO;
+ 
+    logger.debug(LogUtils.getObjectCreationMessage(this));
   }
-
-  /**
-   * @throws InitializationException
-   *           if a problem is encountered with the given initParams.
-   */
-  @Override
-  public void init(InitializationStrategy initStrategy) {
-    StringMap initParams = LocatorUtils.getInheritedParameters(initStrategy, this.getClass(), AbstractInfoNodeService.class);
-
-    String[] infoNodeFilters = initParams.getValueTransformer(InfoNodeServiceInitParamKeys.INFONODE_FILTER_LIST).getStringArrayValue();
+  
+  protected InfoNodeFilterChain createFilterChain() {
+    InfoNodeFilterChain result = null;
+    
     if (infoNodeFilters != null) {
       List<InfoNodeFilter> filterList = new ArrayList<InfoNodeFilter>();
 
@@ -102,8 +100,21 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
         }
       }
 
-      infoNodeFilterChain = new SimpleInfoNodeFilterChain(filterList);
+      result = new SimpleInfoNodeFilterChain(filterList);
     }
+    
+    return result;
+  }
+
+  /**
+   * @throws InitializationException
+   *           if a problem is encountered with the given initParams.
+   */
+  @Override
+  public void init(InitializationStrategy initStrategy) {
+    StringMap initParams = LocatorUtils.getInheritedParameters(initStrategy, this.getClass(), AbstractInfoNodeService.class);
+
+    infoNodeFilters = initParams.getValueTransformer(InfoNodeServiceInitParamKeys.INFONODE_FILTER_LIST).getStringArrayValue();
   }
 
   /**
@@ -111,7 +122,6 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
    */
   @Override
   public void reset() {
-    infoNodeFilterChain = null;
   }
 
   @Override
@@ -121,7 +131,7 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
 
     for (TextEnvelope infoNodeModel : models) {
       try {
-        result.add(getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData(), infoNodeFilterChain));
+        result.add(getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData(), createFilterChain()));
       } catch (Exception e) {
         logger.error("Invalid InfoNode model.", e);
       }
@@ -144,7 +154,7 @@ public abstract class AbstractInfoNodeService implements InfoNodeService, Initia
 
     if (infoNodeModel != null) {
       try {
-        result = getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData(), infoNodeFilterChain);
+        result = getSaxInfoNodeBuilder(false).buildInfoNode(infoNodeModel.getData(), createFilterChain());
       } catch (Exception e) {
         logger.error("Invalid InfoNode model.", e);
       }

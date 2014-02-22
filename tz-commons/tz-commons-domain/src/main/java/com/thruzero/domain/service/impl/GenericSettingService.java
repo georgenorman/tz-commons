@@ -20,8 +20,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.thruzero.common.core.support.ValueTransformer;
+import com.thruzero.common.core.utils.LogUtils;
 import com.thruzero.domain.dao.SettingDAO;
 import com.thruzero.domain.locator.DAOLocator;
 import com.thruzero.domain.model.Setting;
@@ -38,12 +40,15 @@ import com.thruzero.domain.service.SettingService;
  * TODO-p1(george) Cache the settings. Add ability to force a refresh.
  */
 public final class GenericSettingService implements SettingService {
+  private static final Logger logger = Logger.getLogger(GenericSettingService.class);
+
   private final SettingDAO settingDAO = DAOLocator.locate(SettingDAO.class);
 
   /**
    * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
    */
   private GenericSettingService() {
+    logger.debug(LogUtils.getObjectCreationMessage(this));
   }
 
   @Override

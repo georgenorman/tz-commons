@@ -16,8 +16,10 @@
 package com.thruzero.domain.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.thruzero.common.core.support.ValueTransformer;
+import com.thruzero.common.core.utils.LogUtils;
 import com.thruzero.domain.dao.PreferenceDAO;
 import com.thruzero.domain.locator.DAOLocator;
 import com.thruzero.domain.model.Preference;
@@ -31,6 +33,8 @@ import com.thruzero.domain.service.PreferenceService;
  * Note: The particular DAO configured for this service defines where the data is actually stored (e.g., file system, relational table, etc).
  */
 public final class GenericPreferenceService implements PreferenceService {
+  private static final Logger logger = Logger.getLogger(GenericPreferenceService.class);
+
   private final PreferenceDAO preferenceDAO;
 
   /**
@@ -38,6 +42,8 @@ public final class GenericPreferenceService implements PreferenceService {
    */
   private GenericPreferenceService() {
     this.preferenceDAO = DAOLocator.locate(PreferenceDAO.class);
+    
+    logger.debug(LogUtils.getObjectCreationMessage(this));
   }
 
   @Override

@@ -42,7 +42,7 @@ public class XmlRssFeedPanelBuilder extends AbstractXmlPanelBuilder {
   @Override
   public AbstractPanel build() throws Exception {
     int maxEntries = getPanelNode().getAttributeTransformer("size").getIntValue(5);
-    int refreshRate = getPanelNode().getAttributeTransformer("refreshRate").getIntValue(480);
+    int refreshRateInHours = getPanelNode().getAttributeTransformer("refreshRate").getIntValue(24);
     int quoteTooltipsCount = getPanelNode().getAttributeTransformer("quoteTooltipsCount").getIntValue(-1);
     String titleIcon = getPanelNode().getAttributeTransformer("titleIcon").getStringValue();
     boolean includeImage = getPanelNode().getAttributeTransformer("includeImage").getBooleanValue(false);
@@ -50,7 +50,7 @@ public class XmlRssFeedPanelBuilder extends AbstractXmlPanelBuilder {
 
     PerformanceLoggerHelper performanceLoggerHelper = new PerformanceLoggerHelper();
     RssFeedService service = ServiceLocator.locate(RssFeedService.class);
-    RssFeed rssFeed = service.readRssFeed(maxEntries, feedUrl, refreshRate, includeImage);
+    RssFeed rssFeed = service.readRssFeed(maxEntries, feedUrl, refreshRateInHours, includeImage);
     performanceLoggerHelper.debug("readRssFeed [" + StringEscapeUtils.escapeHtml4(feedUrl) + "]");
 
     RssFeedPanel result = new RssFeedPanel(getPanelId(), getPanelTitle(), getPanelTitleLink(), getCollapseDirection(), isUseWhiteChevron(), getPanelHeaderStyleClass(), getToolbar(), rssFeed, quoteTooltipsCount, titleIcon);
@@ -58,4 +58,13 @@ public class XmlRssFeedPanelBuilder extends AbstractXmlPanelBuilder {
     return result;
   }
 
+  @Override
+  public AbstractPanel buildErrorPanel(String id, String title, String errorMessage) {
+    RssFeed rssFeed = new RssFeed(getPanelNode().getText(), null, null, 0, "RSS Feed could not be read: "+ errorMessage );
+    String titleIcon = getPanelNode().getAttributeTransformer("titleIcon").getStringValue();
+
+    AbstractPanel result = new RssFeedPanel(getPanelId(), getPanelTitle(), getPanelTitleLink(), getCollapseDirection(), isUseWhiteChevron(), getPanelHeaderStyleClass(), null, rssFeed, 0, titleIcon);
+    
+    return result;
+  }
 }

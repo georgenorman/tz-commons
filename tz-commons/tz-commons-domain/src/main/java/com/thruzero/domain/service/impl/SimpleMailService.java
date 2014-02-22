@@ -38,6 +38,7 @@ import com.thruzero.common.core.locator.LocatorUtils;
 import com.thruzero.common.core.map.StringMap;
 import com.thruzero.common.core.strategy.SubstitutionStrategy;
 import com.thruzero.common.core.support.LogHelper;
+import com.thruzero.common.core.utils.LogUtils;
 import com.thruzero.domain.service.MailService;
 import com.thruzero.domain.support.EmailTemplate;
 
@@ -255,6 +256,7 @@ public final class SimpleMailService implements MailService, Initializable {
    * Use {@link com.thruzero.common.core.locator.ServiceLocator ServiceLocator} to access a particular Service.
    */
   private SimpleMailService() {
+    logHelper.getLogger().debug(LogUtils.getObjectCreationMessage(this));
   }
 
   /**

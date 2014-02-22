@@ -25,8 +25,10 @@ import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
 import com.thruzero.common.core.support.SimpleIdGenerator;
 import com.thruzero.common.core.utils.ExceptionUtilsExt;
+import com.thruzero.common.web.model.container.AbstractPanel;
 import com.thruzero.common.web.model.container.PanelGrid;
 import com.thruzero.common.web.model.container.PanelGrid.Layout;
+import com.thruzero.common.web.model.container.PanelSet;
 import com.thruzero.common.web.model.container.builder.CarouselPanelSetBuilder;
 import com.thruzero.common.web.model.container.builder.PanelSetBuilder;
 import com.thruzero.common.web.model.container.builder.xml.XmlPanelSetBuilder.XmlPanelBuilderTypeRegistry;
@@ -61,6 +63,7 @@ public class XmlCarouselPanelSetBuilder implements CarouselPanelSetBuilder {
 
   private static final String PAGINATE_ATTRIBUTE_NAME = ConfigLocator.locate().getValue(XmlCarouselPanelSetBuilder.class.getName(), "paginate", "paginate");
   private static final String MAX_ROWS_ATTRIBUTE_NAME = ConfigLocator.locate().getValue(XmlCarouselPanelSetBuilder.class.getName(), "maxRows", "maxRows");
+  private static final String TIME_OUT_IN_SECONDS = ConfigLocator.locate().getValue(XmlCarouselPanelSetBuilder.class.getName(), "timeOutInSeconds", "timeOutInSeconds");
 
   private final InfoNodeElement carouselPanelSetNode;
   private final XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry;
@@ -95,25 +98,37 @@ public class XmlCarouselPanelSetBuilder implements CarouselPanelSetBuilder {
       throw ExceptionUtilsExt.logAndCreateIllegalArgumentException(logger, "Max Rows must be greater than 0.");
     }
     int rowCount = 1; // start at row #1
-    List<InfoNodeElement> rowNodes = new ArrayList<InfoNodeElement>();
 
     @SuppressWarnings("unchecked")
     List<InfoNodeElement> children = carouselPanelSetNode.getChildren();
 
-    // handle pagination
+    // setup for timeout
+    int timeout = carouselPanelSetNode.getAttributeTransformer(TIME_OUT_IN_SECONDS).getIntValue(10);
+    if (timeout <= 0) {
+      throw ExceptionUtilsExt.logAndCreateIllegalArgumentException(logger, "Time-Out must be greater than 0.");
+    }
+    
+    // first, build all panels
+    PanelSetBuilder carouselPanelSetBuilder = new XmlPanelSetBuilder(SimpleIdGenerator.getInstance().getNextIdAsString(), timeout, children, panelBuilderTypeRegistry);
+    PanelSet carouselPanelSet = carouselPanelSetBuilder.build();
+
+    // next, handle pagination
     int pageCount = 1; // start at page #1
     PanelGrid panelGrid = null;
-    for (InfoNodeElement panelNode : children) {
-      rowNodes.add(panelNode);
+    PanelSet panelSetRow = null;
+    for (AbstractPanel panel : carouselPanelSet.getPanels()) {
+      if (panelSetRow == null) {
+        panelSetRow = new PanelSet(SimpleIdGenerator.getInstance().getNextIdAsString());
+      }
+      panelSetRow.addPanel(panel);
       panelCount++;
 
       if (panelCount % paginate == 0 || panelCount >= children.size()) {
         if (panelGrid == null) {
           panelGrid = new PanelGrid(pageCount++ + "", Layout.HORIZONTAL);
         }
-        PanelSetBuilder rowPanelSetBuilder = new XmlPanelSetBuilder(SimpleIdGenerator.getInstance().getNextIdAsString(), rowNodes, panelBuilderTypeRegistry);
-        panelGrid.addPanelSet(rowPanelSetBuilder.build());
-        rowNodes.clear();
+        panelGrid.addPanelSet(panelSetRow);
+        panelSetRow = null;
 
         if (rowCount % maxRows == 0 || panelCount >= children.size()) {
           result.add(panelGrid);

@@ -17,6 +17,7 @@
 package com.thruzero.domain.service;
 
 import java.io.Writer;
+import java.util.concurrent.TimeUnit;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.service.Service;
@@ -29,16 +30,17 @@ import com.thruzero.domain.model.RssFeed;
  * @author George Norman
  */
 public interface RssFeedService extends Service {
+  long DEFAULT_RETRY_DELAY = TimeUnit.HOURS.toMillis(4); // wait 4-hours before the next refresh
 
   /**
    * Return an RssFeed instance for the given {@code feedUrl}.
    *
    * @param maxEntries maximum entries to include in the returned RssFeed.
    * @param feedUrl the URL to the RSS feed.
-   * @param refreshRate specifies how long to cache the RssFeed instance, before requesting new data from the source feed.
+   * @param refreshRateInHours specifies how long to cache the RssFeed instance, before requesting new data from the source feed (in hours).
    * @param includeImage if true, then retrieve the first image from each news entry description; otherwise, image is null.
    */
-  RssFeed readRssFeed(int maxEntries, String feedUrl, int refreshRate, boolean includeImage);
+  RssFeed readRssFeed(int maxEntries, String feedUrl, int refreshRateInHours, boolean includeImage);
 
   /** Force the feed cache to be cleared, causing all feed entries to be reloaded from the RSS source. */
   void clearReadCache();

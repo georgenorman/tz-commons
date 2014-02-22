@@ -382,9 +382,9 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
     if (result == null) {
       // write protect entire initialization process, plus check that it's still not initialized (TODO-p1(george) probably not a safe solution 'Double-checked locking')
       rwl.writeLock().lock();
-      result = instanceCache.getInstance(typeName);
-      if (result == null) {
-        try {
+      try {
+        result = instanceCache.getInstance(typeName);
+        if (result == null) {
           // instance was not cached, so create one from the registered binding and cache it
           InterfaceToClassBinding<T> binding = getRegisteredBinding(type); // this will acquire the lock again for read and possibly write
 
@@ -396,9 +396,9 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
 
             instanceCache.cacheInstance(typeName, result);
           }
-        } finally {
-          rwl.writeLock().unlock();
         }
+      } finally {
+        rwl.writeLock().unlock();
       }
     }
 
@@ -555,17 +555,18 @@ public class RegistryLocatorStrategy<T extends Singleton> implements LocatorStra
       logHelper.logBindingsDiscovered(targetInterfaceTypeName);
       logHelper.logBeginRegisterInterfaces(targetInterfaceTypeName, config.getClass());
 
-      // write protect entire initialization process (caller should have already write locked this), plus check that it's still not initialized (TODO-p1(george) probably not a safe solution 'Double-checked locking')
+      // write protect entire initialization process (caller should have already write locked this), plus check that it's still not initialized (TODO-p1(george)
+      // probably not a safe solution 'Double-checked locking')
       rwl.writeLock().lock();
-      if (interfaceBindingRegistry.bindingMap == null) {
-        try {
+      try {
+        if (interfaceBindingRegistry.bindingMap == null) {
           for (Entry<String, String> entry : bindings.entrySet()) {
             InterfaceToClassBinding<T> binding = new InterfaceToClassBinding<T>(entry.getKey(), entry.getValue());
             interfaceBindingRegistry.registerInterface(binding);
           }
-        } finally {
-          rwl.writeLock().unlock();
         }
+      } finally {
+        rwl.writeLock().unlock();
       }
     }
   }

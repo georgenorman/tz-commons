@@ -19,11 +19,18 @@ package com.thruzero.common.web.model.container.builder.xml;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.math.NumberUtils;
 
 import com.thruzero.common.core.infonode.InfoNodeElement;
 import com.thruzero.common.core.locator.ConfigLocator;
+import com.thruzero.common.core.support.LogHelper;
 import com.thruzero.common.core.utils.ClassUtils;
 import com.thruzero.common.core.utils.ClassUtils.ClassUtilsException;
+import com.thruzero.common.web.model.container.AbstractPanel;
 import com.thruzero.common.web.model.container.ErrorHtmlPanel;
 import com.thruzero.common.web.model.container.PanelSet;
 import com.thruzero.common.web.model.container.builder.PanelBuilder;
@@ -64,9 +71,14 @@ import com.thruzero.common.web.model.container.builder.xml.AbstractXmlPanelBuild
  * @author George Norman
  */
 public class XmlPanelSetBuilder implements PanelSetBuilder {
+  private static final SimpleXmlPanelBuilderLogHelper logHelper = new SimpleXmlPanelBuilderLogHelper(XmlPanelSetBuilder.class, false);
+
   private static final String ID = ConfigLocator.locate().getValue(XmlPanelSetBuilder.class.getName(), "id", "id");
+  
+  private static final String TIME_OUT_IN_SECONDS = ConfigLocator.locate().getValue(XmlPanelSetBuilder.class.getName(), "timeOutInSeconds", "timeOutInSeconds");
 
   private final String panelSetId;
+  private final long timeoutInSeconds;
   private final List<InfoNodeElement> panelNodes;
   private final XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry;
 
@@ -190,6 +202,64 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
     }
   }
 
+  // -----------------------------------------------------------
+  // SimpleXmlPanelBuilderLogHelper
+  // -----------------------------------------------------------
+
+  public static final class SimpleXmlPanelBuilderLogHelper extends LogHelper {
+    private final boolean paranoidLogging;
+    
+    public SimpleXmlPanelBuilderLogHelper(Class<?> clazz, boolean paranoidLogging) {
+      super(clazz);
+      
+      this.paranoidLogging = paranoidLogging;
+    }
+    
+    public void logExecutorServiceCreated(String panelSetId) {
+      if (paranoidLogging && getLogger().isDebugEnabled()) {
+        getLogger().debug("* ExecutorService created for: " + panelSetId);
+      }
+    }
+    
+    public void logExecutorServiceShutdown(String panelSetId) {
+      if (paranoidLogging && getLogger().isDebugEnabled()) {
+        logHelper.getLogger().debug("* ExecutorService shutdown for: " + panelSetId);
+      }
+    }
+    
+    public void logExecutorServiceInterrupted(String panelSetId) {
+      if (getLogger().isDebugEnabled()) {
+        logHelper.getLogger().debug("* ExecutorService termination was interrupted for: " + panelSetId);
+      }
+    }
+
+    public void logExecutorServiceIsTerminated(String panelSetId) {
+      if (paranoidLogging && getLogger().isDebugEnabled()) {
+        getLogger().debug("* ExecutorService is terminated for: " + panelSetId);
+      }
+    }
+
+    public void logExecutorServiceIsNotTerminated(ExecutorService executorService, List<Runnable> straglers, String panelSetId) {
+      if (getLogger().isDebugEnabled()) {
+        for (Runnable runnable : straglers) {
+          getLogger().debug("  * " + runnable);
+        }
+        
+        if (executorService.isTerminated()) {
+          logExecutorServiceIsTerminated(panelSetId);
+        } else {
+          getLogger().debug("******* ExecutorService is NOT terminated for: " + panelSetId + ". ActiveThreadCount: " + Thread.activeCount());
+        }
+      }
+    }
+
+    public void logPanelSetCompleted(String panelSetId) {
+      if (paranoidLogging && getLogger().isDebugEnabled()) {
+        logHelper.getLogger().debug("* Completed XmlPanelSetBuilder.build() for: " + panelSetId);
+      }
+    }
+  }
+
   // ============================================================================
   // XmlPanelSetBuilder
   // ============================================================================
@@ -203,17 +273,102 @@ public class XmlPanelSetBuilder implements PanelSetBuilder {
    */
   @SuppressWarnings("unchecked")
   public XmlPanelSetBuilder(InfoNodeElement panelSetNode, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
-    this(panelSetNode.getAttributeValue(ID), panelSetNode.getChildren(), panelBuilderTypeRegistry);
+    this(panelSetNode.getAttributeValue(ID), NumberUtils.toLong(panelSetNode.getAttributeValue(TIME_OUT_IN_SECONDS), 0), panelSetNode.getChildren(), panelBuilderTypeRegistry);
   }
 
-  public XmlPanelSetBuilder(String panelSetId, List<InfoNodeElement> panelNodes, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
+  public XmlPanelSetBuilder(String panelSetId, long timeoutInSeconds, List<InfoNodeElement> panelNodes, XmlPanelBuilderTypeRegistry panelBuilderTypeRegistry) {
     this.panelSetId = panelSetId;
+    this.timeoutInSeconds = timeoutInSeconds;
     this.panelNodes = panelNodes;
     this.panelBuilderTypeRegistry = panelBuilderTypeRegistry;
   }
 
   @Override
   public PanelSet build() throws Exception {
+    PanelSet result;
+
+    // build concurrently if more than one panel and if time-out is specified (e.g., making remote requests).
+    if (panelNodes.size() > 1 && timeoutInSeconds > 0) {
+      result = buildConcurrently();
+    } else {
+      result = buildSequentially();
+    }
+
+    return result;
+  }
+
+  protected PanelSet buildConcurrently() throws Exception {
+    PanelSet result = new PanelSet(panelSetId);
+
+    if (!panelNodes.isEmpty()) {
+      // Build the panels in parallel (e.g., RSS Feed panels should be created in parallel).
+      ExecutorService executorService = Executors.newFixedThreadPool(panelNodes.size());
+      logHelper.logExecutorServiceCreated(panelSetId);
+      
+      final Map<String,AbstractPanel> panels = new HashMap<String,AbstractPanel>();
+      for (final InfoNodeElement panelNode : panelNodes) {
+        final AbstractXmlPanelBuilder panelBuilder = panelBuilderTypeRegistry.createBuilder(panelNode.getName(), panelNode);
+        final String panelKey = Integer.toHexString(panelNode.hashCode());
+  
+        if (panelBuilder == null) {
+          panels.put(panelKey, new ErrorHtmlPanel("error", "Panel ERROR", "PanelBuilder not found for panel type " + panelNode.getName()));
+        } else {
+          //logger.debug("  - prepare to build: " + panelNode.getName());
+          executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+              try {
+                AbstractPanel panel = panelBuilder.build();
+                panels.put(panelKey, panel);
+              } catch (Exception e) {
+                panels.put(panelKey, panelBuilder.buildErrorPanel(panelBuilder.getPanelId(), "Panel ERROR", "PanelBuilder encountered an Exception: " + e.getClass().getSimpleName()));
+              }
+            }
+            
+            @Override
+            public String toString() {
+              return panelBuilder.getPanelInfoForError();
+            }
+          });
+        }
+      }
+
+      // Wait for all panels to be built
+      executorService.shutdown();
+      logHelper.logExecutorServiceShutdown(panelSetId);
+      try {
+        executorService.awaitTermination(timeoutInSeconds, TimeUnit.SECONDS);
+      } catch (InterruptedException e) {
+        // ignore (handled below)
+        logHelper.logExecutorServiceInterrupted(panelSetId);
+      }
+      
+      if (executorService.isTerminated()) {
+        logHelper.logExecutorServiceIsTerminated(panelSetId);
+      } else {
+        logHelper.logExecutorServiceIsNotTerminated(executorService, executorService.shutdownNow(), panelSetId);
+      }
+
+      // add panels in the same order as defined
+      for (InfoNodeElement panelNode : panelNodes) {
+        String panelKey = Integer.toHexString(panelNode.hashCode());
+        AbstractPanel panel = panels.get(panelKey);
+        if (panel == null) {
+          // if it wasn't added to the panelNodes map, then there must have been a timeout error
+          AbstractXmlPanelBuilder panelBuilder = panelBuilderTypeRegistry.createBuilder(panelNode.getName(), panelNode);
+          
+          result.addPanel(panelBuilder.buildErrorPanel(panelKey, "Panel ERROR", "PanelBuilder encountered a timeout error: " + panelNode.getName()));
+        } else {
+          result.addPanel(panel);
+        }
+      }
+    }
+    logHelper.logPanelSetCompleted(panelSetId);
+
+    return result;
+  }
+
+  protected PanelSet buildSequentially() throws Exception {
     PanelSet result = new PanelSet(panelSetId);
 
     for (InfoNodeElement panelNode : panelNodes) {
