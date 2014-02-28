@@ -54,7 +54,7 @@ import com.thruzero.domain.service.InfoNodeService;
  * @author George Norman
  */
 @javax.faces.bean.ManagedBean(name = "dynamicContentBean")
-@javax.faces.bean.SessionScoped
+@javax.faces.bean.RequestScoped
 public class DynamicContentBean implements Serializable {
   private static final long serialVersionUID = 1L;
 
