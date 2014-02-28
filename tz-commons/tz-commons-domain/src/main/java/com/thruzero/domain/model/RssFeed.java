@@ -127,6 +127,16 @@ public class RssFeed {
     this.errorStatus = errorStatus;
   }
 
+  public RssFeed(RssFeed copyFrom, long refreshPoint) {
+    feedUrl = copyFrom.feedUrl;
+    this.publishedDate = copyFrom.publishedDate;
+    if (copyFrom.entries != null) {
+      this.entries.addAll(entries);
+    }
+    this.refreshPoint = copyFrom.refreshPoint;
+    this.errorStatus = copyFrom.errorStatus;
+  }
+
   public String getFeedUrl() {
     return feedUrl;
   }

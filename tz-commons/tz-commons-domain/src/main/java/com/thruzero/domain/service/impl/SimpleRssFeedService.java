@@ -74,19 +74,28 @@ public class SimpleRssFeedService implements RssFeedService {
     RssFeed result;
     boolean feedNeedsRefresh = false;
     
+    // block just long enough to get the existing feed from the cache or create and add a new one if refresh is required
     synchronized(feedCache) {
       result = feedCache.get(feedUrl);
 
       // if node not found or the refresh point has been exceeded, then it's time to refresh this node.
       if (result == null || result.getRefreshPoint() < System.currentTimeMillis()) {
-        // allow 3-minutes to refresh this feed (if timeouts are working properly, then the feed should be refreshed in about 9-seconds, or else fail out).
         feedNeedsRefresh = true;
-        result = new RssFeed(feedUrl, null, null, TimeUnit.MINUTES.toMillis(3) + System.currentTimeMillis(), "Refresh is in progress...");
+
+        // allow 3-minutes to refresh this feed (if timeouts are working properly, then the feed should be refreshed in about 9-seconds, or else fail out).
+        long refreshPoint = TimeUnit.MINUTES.toMillis(3) + System.currentTimeMillis();
+        if (result == null) {
+          // create new empty feed for refresh
+          result = new RssFeed(feedUrl, null, null, refreshPoint, "Refresh is in progress...");
+        } else {
+          // use existing feed, for other users, until the latest feed content is loaded
+          result = new RssFeed(result, refreshPoint);
+        }
         feedCache.put(feedUrl, result);
       }
     }
 
-    // if node wasn't found, or it needs to be refreshed, then connect to RSS feed end-point and reload the data.
+    // refresh node, if needed, by connecting to RSS feed end-point and fetching the latest data.
     if (feedNeedsRefresh) {
       HttpURLConnection connection = null;
       BufferedInputStream feedInputStream = null;
